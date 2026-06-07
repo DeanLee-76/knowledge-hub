@@ -104,7 +104,7 @@
   .tag-QA工具     { background:#e8f4fd; color:#1a6fd4; }
   .tag-AI-Prompt  { background:#e0f7f3; color:#00897b; }
   .tag-學習筆記   { background:#fef9e7; color:#e67e22; }
-  .tag-供應商指引 { background:#f3f0ff; color:#7c3aed; }
+  .tag-供應商管理 { background:#f3f0ff; color:#7c3aed; }
 
   .card-desc { font-size:13px; color:var(--text2); line-height:1.55; }
   /* Highlight mark */
@@ -181,7 +181,7 @@
       <span class="hero-emoji">🎯</span>
       <div>
         <h1>Dean's <em>Knowledge Hub</em></h1>
-        <p>知識管理庫・集中管理 QA 工具、AI Prompt、學習筆記與供應商指引。<br>在 Google Sheets 新增資料，這裡自動更新。</p>
+        <p>知識管理庫・集中管理 QA 工具、AI Prompt、學習筆記與供應商管理。<br>在 Google Sheets 新增資料，這裡自動更新。</p>
       </div>
     </div>
     <div class="stats">
@@ -189,7 +189,7 @@
       <div class="stat"><div class="stat-icon">🔧</div><div class="stat-num" id="count-qa">—</div><div class="stat-label">QA 工具</div></div>
       <div class="stat"><div class="stat-icon">🤖</div><div class="stat-num" id="count-ai">—</div><div class="stat-label">AI Prompt</div></div>
       <div class="stat"><div class="stat-icon">📝</div><div class="stat-num" id="count-note">—</div><div class="stat-label">學習筆記</div></div>
-      <div class="stat"><div class="stat-icon">🏭</div><div class="stat-num" id="count-sup">—</div><div class="stat-label">供應商指引</div></div>
+      <div class="stat"><div class="stat-icon">🏭</div><div class="stat-num" id="count-sup">—</div><div class="stat-label">供應商管理</div></div>
     </div>
   </div>
 
@@ -203,7 +203,7 @@
       <button class="filter-btn" data-cat="QA工具">🔧 QA 工具</button>
       <button class="filter-btn" data-cat="AI-Prompt">🤖 AI Prompt</button>
       <button class="filter-btn" data-cat="學習筆記">📝 學習筆記</button>
-      <button class="filter-btn" data-cat="供應商指引">🏭 供應商指引</button>
+      <button class="filter-btn" data-cat="供應商管理">🏭 供應商管理</button>
     </div>
   </div>
 
@@ -236,7 +236,7 @@ const SITE_PASSWORD = 'quality2026';
 // ============================================================
 // 📋 Google Sheets CSV 網址
 // ============================================================
-const SHEET_CSV_URL = '';
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSr4IfhlZfDjW5YMAhgex6S3cBdB6WtfWbzJYsU12l2_1XykWhe6WM0A5Vj5c7z9JKw90JnjJiZAlR8/pub?output=csv';
 
 // ============================================================
 // ⏱ 快取設定：1小時 = 3600000 ms
@@ -246,7 +246,7 @@ const CACHE_KEY = 'kh_data_cache';
 const CACHE_TS_KEY = 'kh_data_ts';
 
 // 分類 emoji
-const CAT_ICON = { 'QA工具':'🔧', 'AI-Prompt':'🤖', '學習筆記':'📝', '供應商指引':'🏭' };
+const CAT_ICON = { 'QA工具':'🔧', 'AI-Prompt':'🤖', '學習筆記':'📝', '供應商管理':'🏭' };
 
 // Demo 資料（無 SHEET_CSV_URL 時顯示）
 const DEMO_DATA = [
@@ -256,7 +256,7 @@ const DEMO_DATA = [
   { 標題:'OOB 郵件解析 Prompt', 分類:'AI-Prompt', 說明:'解析 email chain，自動整理 OOB 問題進度追蹤表，含負責人標記與狀態顏色。', 連結:'', 日期:'2026-06-01', 關鍵字:'oob email ai prompt' },
   { 標題:'DFX 設計審查要點', 分類:'學習筆記', 說明:'Design for Excellence 四大維度：DFM / DFA / DFR / DFT 審查清單', 連結:'', 日期:'2026-04-15', 關鍵字:'dfx dfm dfa dfr dft' },
   { 標題:'QPA 供應商評鑑架構', 分類:'學習筆記', 說明:'Quality Performance Assessment 評分方法與季度評鑑流程筆記', 連結:'', 日期:'2026-05-05', 關鍵字:'qpa supplier assessment' },
-  { 標題:'供應商稽核查核表', 分類:'供應商指引', 說明:'現場稽核用標準查核表，涵蓋 5S、製程管制、品質記錄等項目', 連結:'', 日期:'2026-05-28', 關鍵字:'audit supplier checklist' },
+  { 標題:'供應商稽核查核表', 分類:'供應商管理', 說明:'現場稽核用標準查核表，涵蓋 5S、製程管制、品質記錄等項目', 連結:'', 日期:'2026-05-28', 關鍵字:'audit supplier checklist' },
   { 標題:'TDM 技術深化路線', 分類:'學習筆記', 說明:'Technology Depth Management 2026 路線圖筆記與關鍵里程碑', 連結:'', 日期:'2026-06-03', 關鍵字:'tdm technology roadmap' },
 ];
 
@@ -424,7 +424,7 @@ function render() {
   document.getElementById('count-qa').textContent   = allData.filter(r=>r['分類']==='QA工具').length;
   document.getElementById('count-ai').textContent   = allData.filter(r=>r['分類']==='AI-Prompt').length;
   document.getElementById('count-note').textContent = allData.filter(r=>r['分類']==='學習筆記').length;
-  document.getElementById('count-sup').textContent  = allData.filter(r=>r['分類']==='供應商指引').length;
+  document.getElementById('count-sup').textContent  = allData.filter(r=>r['分類']==='供應商管理').length;
 
   document.getElementById('section-label').textContent =
     currentCat === '全部' ? `所有知識卡片（共 ${filtered.length} 筆）` : `${currentCat}（${filtered.length} 筆）`;
