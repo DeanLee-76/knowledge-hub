@@ -8,144 +8,127 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&family=Sora:wght@300;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f7f8fa; --bg2: #ffffff; --bg3: #eef0f5; --border: #e2e5ec; --border2: #d0d5df;
-    --accent: #2f80ed; --accent-light: #e8f1fd; --accent2: #00b894; --accent2-light: #e0f7f3;
-    --warn: #f39c12; --warn-light: #fef9e7; --purple: #8b5cf6; --purple-light: #f3f0ff;
-    --coral: #e17055; --coral-light: #fdf0ed;
-    --text: #1a1d23; --text2: #4a5568; --muted: #8a94a6;
-    --shadow: 0 2px 12px rgba(0,0,0,0.07); --shadow-hover: 0 6px 24px rgba(0,0,0,0.12);
+    --bg:#f7f8fa;--bg2:#ffffff;--bg3:#eef0f5;--border:#e2e5ec;--border2:#d0d5df;
+    --accent:#2f80ed;--accent-light:#e8f1fd;--accent2:#00b894;--accent2-light:#e0f7f3;
+    --warn:#f39c12;--warn-light:#fef9e7;--purple:#8b5cf6;--purple-light:#f3f0ff;
+    --coral:#e17055;--coral-light:#fdf0ed;
+    --text:#1a1d23;--text2:#4a5568;--muted:#8a94a6;
+    --shadow:0 2px 12px rgba(0,0,0,0.07);--shadow-hover:0 6px 24px rgba(0,0,0,0.12);
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'Noto Sans TC',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; font-size:15px; line-height:1.6; }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;}
 
-  /* ===== LOGIN ===== */
-  #login-overlay { position:fixed; inset:0; background:linear-gradient(135deg,#e8f4fd 0%,#f0f9f6 50%,#f5f0ff 100%); z-index:1000; display:flex; align-items:center; justify-content:center; }
-  #login-overlay.hidden { display:none; }
-  .login-card { background:white; border-radius:20px; box-shadow:0 8px 40px rgba(0,0,0,0.12); padding:40px 44px; width:100%; max-width:380px; text-align:center; }
-  .login-emoji { font-size:52px; margin-bottom:12px; display:block; animation:bounce 2s ease-in-out infinite; }
-  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
-  .login-title { font-family:'Sora',sans-serif; font-size:20px; font-weight:700; color:var(--text); margin-bottom:4px; }
-  .login-sub { font-size:13px; color:var(--muted); margin-bottom:28px; }
-  .login-input-wrap { position:relative; margin-bottom:14px; }
-  .login-input-wrap .lock-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:16px; }
-  #password-input { width:100%; padding:12px 14px 12px 40px; border:1.5px solid var(--border); border-radius:10px; font-size:15px; font-family:'Noto Sans TC',sans-serif; outline:none; transition:border-color .2s,box-shadow .2s; background:var(--bg); color:var(--text); }
-  #password-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-light); }
-  #login-btn { width:100%; padding:12px; background:var(--accent); color:white; border:none; border-radius:10px; font-size:15px; font-family:'Noto Sans TC',sans-serif; font-weight:500; cursor:pointer; transition:background .2s,transform .1s; }
-  #login-btn:hover { background:#1a6fd4; } #login-btn:active { transform:scale(.98); }
-  #login-error { margin-top:10px; font-size:13px; color:var(--coral); min-height:18px; }
-  .login-hint { margin-top:18px; font-size:11px; color:var(--muted); }
+  /* LOGIN */
+  #login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#e8f4fd 0%,#f0f9f6 50%,#f5f0ff 100%);z-index:1000;display:flex;align-items:center;justify-content:center;}
+  #login-overlay.hidden{display:none;}
+  .login-card{background:white;border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,0.12);padding:40px 44px;width:100%;max-width:380px;text-align:center;}
+  .login-emoji{font-size:52px;margin-bottom:12px;display:block;animation:bounce 2s ease-in-out infinite;}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .login-title{font-family:'Sora',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;}
+  .login-sub{font-size:13px;color:var(--muted);margin-bottom:28px;}
+  .login-input-wrap{position:relative;margin-bottom:14px;}
+  .lock-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;}
+  #password-input{width:100%;padding:12px 14px 12px 40px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:'Noto Sans TC',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;background:var(--bg);color:var(--text);}
+  #password-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);}
+  #login-btn{width:100%;padding:12px;background:var(--accent);color:white;border:none;border-radius:10px;font-size:15px;font-family:'Noto Sans TC',sans-serif;font-weight:500;cursor:pointer;transition:background .2s,transform .1s;}
+  #login-btn:hover{background:#1a6fd4;}#login-btn:active{transform:scale(.98);}
+  #login-btn:disabled{background:#aaa;cursor:not-allowed;}
+  #login-error{margin-top:10px;font-size:13px;color:var(--coral);min-height:18px;}
+  .login-hint{margin-top:18px;font-size:11px;color:var(--muted);}
 
-  /* ===== APP ===== */
-  #app { display:none; } #app.visible { display:block; }
+  /* APP */
+  #app{display:none;}#app.visible{display:block;}
 
   /* Header */
-  header { background:white; border-bottom:1px solid var(--border); padding:0 32px; position:sticky; top:0; z-index:100; box-shadow:0 1px 8px rgba(0,0,0,0.06); }
-  .header-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; gap:16px; height:62px; }
-  .logo-wrap { display:flex; align-items:center; gap:10px; }
-  .logo-icon { font-size:26px; }
-  .logo-text { font-family:'Sora',sans-serif; font-weight:700; font-size:16px; color:var(--accent); letter-spacing:-.3px; }
-  .logo-text span { color:var(--text2); font-weight:400; }
-  .header-right { margin-left:auto; display:flex; align-items:center; gap:10px; }
-  .header-meta { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); }
-  #last-updated { color:var(--accent2); }
-
-  /* Sync & cache buttons */
-  .sync-btn { background:none; border:1px solid var(--border2); border-radius:6px; padding:5px 10px; font-size:12px; color:var(--accent2); cursor:pointer; font-family:'Noto Sans TC',sans-serif; transition:all .15s; display:flex; align-items:center; gap:4px; }
-  .sync-btn:hover { background:var(--accent2-light); border-color:var(--accent2); }
-  .sync-btn.spinning .sync-icon { display:inline-block; animation:spin .7s linear infinite; }
-  @keyframes spin { to{transform:rotate(360deg)} }
-  .logout-btn { background:none; border:1px solid var(--border2); border-radius:6px; padding:5px 10px; font-size:12px; color:var(--muted); cursor:pointer; font-family:'Noto Sans TC',sans-serif; transition:all .15s; }
-  .logout-btn:hover { border-color:var(--coral); color:var(--coral); }
-  .cache-badge { font-family:'DM Mono',monospace; font-size:10px; background:var(--accent2-light); color:var(--accent2); padding:2px 7px; border-radius:10px; }
+  header{background:white;border-bottom:1px solid var(--border);padding:0 32px;position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,0.06);}
+  .header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:16px;height:62px;}
+  .logo-wrap{display:flex;align-items:center;gap:10px;}
+  .logo-icon{font-size:26px;}
+  .logo-text{font-family:'Sora',sans-serif;font-weight:700;font-size:16px;color:var(--accent);letter-spacing:-.3px;}
+  .logo-text span{color:var(--text2);font-weight:400;}
+  .header-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+  .header-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
+  #last-updated{color:var(--accent2);}
+  .cache-badge{font-family:'DM Mono',monospace;font-size:10px;background:var(--accent2-light);color:var(--accent2);padding:2px 7px;border-radius:10px;}
+  .sync-btn{background:none;border:1px solid var(--border2);border-radius:6px;padding:5px 10px;font-size:12px;color:var(--accent2);cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all .15s;display:flex;align-items:center;gap:4px;}
+  .sync-btn:hover{background:var(--accent2-light);border-color:var(--accent2);}
+  .sync-btn.spinning .sync-icon{display:inline-block;animation:spin .7s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .logout-btn{background:none;border:1px solid var(--border2);border-radius:6px;padding:5px 10px;font-size:12px;color:var(--muted);cursor:pointer;font-family:'Noto Sans TC',sans-serif;transition:all .15s;}
+  .logout-btn:hover{border-color:var(--coral);color:var(--coral);}
 
   /* Hero */
-  .hero { max-width:1100px; margin:0 auto; padding:44px 32px 28px; }
-  .hero-top { display:flex; align-items:flex-start; gap:20px; }
-  .hero-emoji { font-size:48px; line-height:1; }
-  .hero h1 { font-family:'Sora',sans-serif; font-size:clamp(22px,3.5vw,34px); font-weight:700; color:var(--text); letter-spacing:-.8px; line-height:1.2; }
-  .hero h1 em { font-style:normal; color:var(--accent); }
-  .hero p { margin-top:8px; color:var(--text2); font-size:14px; max-width:480px; }
-  .stats { display:flex; gap:12px; margin-top:24px; flex-wrap:wrap; }
-  .stat { background:white; border:1px solid var(--border); border-radius:12px; padding:14px 20px; min-width:110px; box-shadow:var(--shadow); transition:box-shadow .2s; cursor:default; }
-  .stat:hover { box-shadow:var(--shadow-hover); }
-  .stat-icon { font-size:18px; margin-bottom:4px; }
-  .stat-num { font-family:'DM Mono',monospace; font-size:24px; font-weight:500; color:var(--accent); }
-  .stat-label { font-size:11px; color:var(--muted); margin-top:2px; }
+  .hero{max-width:1100px;margin:0 auto;padding:44px 32px 28px;}
+  .hero-top{display:flex;align-items:flex-start;gap:20px;}
+  .hero-emoji{font-size:48px;line-height:1;}
+  .hero h1{font-family:'Sora',sans-serif;font-size:clamp(22px,3.5vw,34px);font-weight:700;color:var(--text);letter-spacing:-.8px;line-height:1.2;}
+  .hero h1 em{font-style:normal;color:var(--accent);}
+  .hero p{margin-top:8px;color:var(--text2);font-size:14px;max-width:480px;}
+  .stats{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;}
+  .stat{background:white;border:1px solid var(--border);border-radius:12px;padding:14px 20px;min-width:110px;box-shadow:var(--shadow);transition:box-shadow .2s;}
+  .stat:hover{box-shadow:var(--shadow-hover);}
+  .stat-icon{font-size:18px;margin-bottom:4px;}
+  .stat-num{font-family:'DM Mono',monospace;font-size:24px;font-weight:500;color:var(--accent);}
+  .stat-label{font-size:11px;color:var(--muted);margin-top:2px;}
 
   /* Controls */
-  .controls { max-width:1100px; margin:0 auto; padding:0 32px 20px; display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
-  .search-wrap { position:relative; flex:1; min-width:200px; max-width:360px; }
-  .search-icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:15px; pointer-events:none; }
-  input[type="text"]#search { width:100%; background:white; border:1.5px solid var(--border); border-radius:10px; color:var(--text); font-family:'Noto Sans TC',sans-serif; font-size:14px; padding:10px 14px 10px 38px; outline:none; transition:border-color .2s,box-shadow .2s; box-shadow:var(--shadow); }
-  input[type="text"]#search:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-light); }
-  input[type="text"]#search::placeholder { color:var(--muted); }
-  .filters { display:flex; gap:8px; flex-wrap:wrap; }
-  .filter-btn { background:white; border:1.5px solid var(--border); border-radius:20px; color:var(--text2); font-family:'Noto Sans TC',sans-serif; font-size:13px; padding:7px 16px; cursor:pointer; transition:all .15s; box-shadow:var(--shadow); display:flex; align-items:center; gap:5px; }
-  .filter-btn:hover { border-color:var(--accent); color:var(--accent); }
-  .filter-btn.active { background:var(--accent); border-color:var(--accent); color:white; font-weight:500; }
+  .controls{max-width:1100px;margin:0 auto;padding:0 32px 20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+  .search-wrap{position:relative;flex:1;min-width:200px;max-width:360px;}
+  .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;}
+  input[type="text"]#search{width:100%;background:white;border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:14px;padding:10px 14px 10px 38px;outline:none;transition:border-color .2s,box-shadow .2s;box-shadow:var(--shadow);}
+  input[type="text"]#search:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-light);}
+  input[type="text"]#search::placeholder{color:var(--muted);}
+  .filters{display:flex;gap:8px;flex-wrap:wrap;}
+  .filter-btn{background:white;border:1.5px solid var(--border);border-radius:20px;color:var(--text2);font-family:'Noto Sans TC',sans-serif;font-size:13px;padding:7px 16px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow);display:flex;align-items:center;gap:5px;}
+  .filter-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .filter-btn.active{background:var(--accent);border-color:var(--accent);color:white;font-weight:500;}
 
   /* Grid */
-  .grid-wrap { max-width:1100px; margin:0 auto; padding:0 32px 60px; }
-  .section-title { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid var(--border); }
-  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+  .grid-wrap{max-width:1100px;margin:0 auto;padding:0 32px 60px;}
+  .section-title{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
 
   /* Card */
-  .card { background:white; border:1.5px solid var(--border); border-radius:14px; padding:20px 22px; transition:border-color .2s,box-shadow .2s,transform .15s; animation:fadeIn .3s ease both; display:flex; flex-direction:column; gap:10px; box-shadow:var(--shadow); }
-  .card:hover { border-color:var(--accent); box-shadow:var(--shadow-hover); transform:translateY(-3px); }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-  .card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
-  .card-title-row { display:flex; align-items:center; gap:8px; flex:1; }
-  .card-icon { font-size:20px; flex-shrink:0; }
-  .card-title { font-size:15px; font-weight:500; color:var(--text); line-height:1.4; }
-
-  /* Tag — clickable */
-  .tag { font-size:11px; font-weight:500; padding:3px 10px; border-radius:20px; white-space:nowrap; cursor:pointer; transition:opacity .15s,transform .1s; user-select:none; }
-  .tag:hover { opacity:.8; transform:scale(1.05); }
-  .tag-QA工具     { background:#e8f4fd; color:#1a6fd4; }
-  .tag-AI-Prompt  { background:#e0f7f3; color:#00897b; }
-  .tag-學習筆記   { background:#fef9e7; color:#e67e22; }
-  .tag-供應商管理 { background:#f3f0ff; color:#7c3aed; }
-
-  .card-desc { font-size:13px; color:var(--text2); line-height:1.55; }
-  /* Highlight mark */
-  mark { background:#ffe066; color:inherit; border-radius:2px; padding:0 1px; }
-
-  .card-footer { display:flex; align-items:center; justify-content:space-between; margin-top:4px; padding-top:10px; border-top:1px solid var(--bg3); font-size:12px; color:var(--muted); gap:6px; flex-wrap:wrap; }
-  .card-actions { display:flex; gap:6px; align-items:center; }
-  .card-link { color:var(--accent); text-decoration:none; font-size:12px; font-weight:500; padding:4px 10px; background:var(--accent-light); border-radius:6px; transition:background .15s; }
-  .card-link:hover { background:#c5ddfb; }
-
-  /* Copy button */
-  .copy-btn { font-size:12px; font-weight:500; padding:4px 10px; background:var(--accent2-light); color:var(--accent2); border:none; border-radius:6px; cursor:pointer; font-family:'Noto Sans TC',sans-serif; transition:all .15s; display:flex; align-items:center; gap:4px; }
-  .copy-btn:hover { background:#b2eee5; }
-  .copy-btn.copied { background:#d4edda; color:#1a7a3f; }
+  .card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px 22px;transition:border-color .2s,box-shadow .2s,transform .15s;animation:fadeIn .3s ease both;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow);}
+  .card:hover{border-color:var(--accent);box-shadow:var(--shadow-hover);transform:translateY(-3px);}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+  .card-title-row{display:flex;align-items:center;gap:8px;flex:1;}
+  .card-icon{font-size:20px;flex-shrink:0;}
+  .card-title{font-size:15px;font-weight:500;color:var(--text);line-height:1.4;}
+  .tag{font-size:11px;font-weight:500;padding:3px 10px;border-radius:20px;white-space:nowrap;cursor:pointer;transition:opacity .15s,transform .1s;user-select:none;}
+  .tag:hover{opacity:.8;transform:scale(1.05);}
+  .tag-QA工具{background:#e8f4fd;color:#1a6fd4;}
+  .tag-AI-Prompt{background:#e0f7f3;color:#00897b;}
+  .tag-學習筆記{background:#fef9e7;color:#e67e22;}
+  .tag-供應商管理{background:#f3f0ff;color:#7c3aed;}
+  .card-desc{font-size:13px;color:var(--text2);line-height:1.55;}
+  mark{background:#ffe066;color:inherit;border-radius:2px;padding:0 1px;}
+  .card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:4px;padding-top:10px;border-top:1px solid var(--bg3);font-size:12px;color:var(--muted);gap:6px;flex-wrap:wrap;}
+  .card-actions{display:flex;gap:6px;align-items:center;}
+  .card-link{color:var(--accent);text-decoration:none;font-size:12px;font-weight:500;padding:4px 10px;background:var(--accent-light);border-radius:6px;transition:background .15s;}
+  .card-link:hover{background:#c5ddfb;}
 
   /* Toast */
-  #toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(20px); background:#1a1d23; color:white; padding:10px 20px; border-radius:10px; font-size:13px; opacity:0; pointer-events:none; transition:opacity .25s,transform .25s; z-index:9999; }
-  #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1d23;color:white;padding:10px 20px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:9999;}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-  /* Notices */
-  .config-notice { background:var(--warn-light); border:1px solid #fad7a0; border-radius:10px; padding:12px 16px; color:var(--warn); font-size:13px; margin-bottom:16px; display:none; }
-  .error-banner { background:var(--coral-light); border:1px solid #f5c6b8; border-radius:10px; padding:12px 16px; color:var(--coral); font-size:13px; margin-bottom:16px; display:none; }
-
-  /* Loading */
-  .loading { grid-column:1/-1; text-align:center; padding:60px 0; color:var(--muted); font-size:14px; }
-  .spinner { width:32px; height:32px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 12px; }
-  .empty { grid-column:1/-1; text-align:center; padding:60px 0; color:var(--muted); font-size:14px; }
-  .empty-icon { font-size:40px; margin-bottom:12px; }
-
-  footer { border-top:1px solid var(--border); text-align:center; padding:20px; font-size:12px; color:var(--muted); font-family:'DM Mono',monospace; background:white; }
-  footer a { color:var(--accent); text-decoration:none; }
+  .error-banner{background:var(--coral-light);border:1px solid #f5c6b8;border-radius:10px;padding:12px 16px;color:var(--coral);font-size:13px;margin-bottom:16px;display:none;}
+  .loading{grid-column:1/-1;text-align:center;padding:60px 0;color:var(--muted);font-size:14px;}
+  .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
+  .empty{grid-column:1/-1;text-align:center;padding:60px 0;color:var(--muted);font-size:14px;}
+  .empty-icon{font-size:40px;margin-bottom:12px;}
+  footer{border-top:1px solid var(--border);text-align:center;padding:20px;font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;background:white;}
+  footer a{color:var(--accent);text-decoration:none;}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login-overlay">
   <div class="login-card">
     <span class="login-emoji">🔐</span>
     <div class="login-title">Dean's Knowledge Hub</div>
-    <div class="login-sub">品質管理知識庫・請輸入密碼</div>
+    <div class="login-sub">知識管理庫・請輸入密碼</div>
     <div class="login-input-wrap">
       <span class="lock-icon">🔑</span>
       <input type="password" id="password-input" placeholder="輸入密碼..." autocomplete="off">
@@ -156,7 +139,6 @@
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
 <header>
   <div class="header-inner">
@@ -167,7 +149,7 @@
     <div class="header-right">
       <span class="cache-badge" id="cache-badge" style="display:none">📦 快取</span>
       <div class="header-meta">🕐 更新：<span id="last-updated">—</span></div>
-      <button class="sync-btn" onclick="forceSync()" title="強制從 Google Sheets 重新抓取">
+      <button class="sync-btn" onclick="forceSync()">
         <span class="sync-icon">🔄</span> 手動同步
       </button>
       <button class="logout-btn" onclick="doLogout()">🔓 登出</button>
@@ -208,7 +190,6 @@
   </div>
 
   <div class="grid-wrap">
-    <div class="config-notice" id="config-notice">⚙️ 尚未設定 Google Sheets CSV 網址，目前顯示示範資料。</div>
     <div class="error-banner" id="error-banner"></div>
     <div class="section-title" id="section-label">所有知識卡片</div>
     <div class="grid" id="grid">
@@ -218,54 +199,28 @@
 </main>
 
 <footer>
-  📚 Dean Lee · Quality Manager ·
-  <a href="https://github.com/DeanLee-76/knowledge-hub" target="_blank">GitHub</a> ·
-  資料來源：Google Sheets
+  📚 Dean Lee · Quality Manager · 資料來源：Google Sheets
 </footer>
 </div>
 
-<!-- Toast -->
 <div id="toast"></div>
 
 <script>
 // ============================================================
-// 🔐 密碼設定（建議將 GitHub repo 改為 Private 以提高安全性）
+// ⚙️ 密碼和 Sheets 網址都在 Netlify 後台環境變數，這裡不需要填
 // ============================================================
-const SITE_PASSWORD = 'quality2026';
-
-// ============================================================
-// 📋 Google Sheets CSV 網址已更新
-// ============================================================
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSr4IfhlZfDjW5YMAhgex6S3cBdB6WtfWbzJYsU12l2_1XykWhe6WM0A5Vj5c7z9JKw90JnjJiZAlR8/pub?output=csv';
-
-// ============================================================
-// ⏱ 快取設定：1小時 = 3600000 ms
-// ============================================================
-const CACHE_TTL = 3600000;
+const CACHE_TTL = 3600000; // 1小時快取
 const CACHE_KEY = 'kh_data_cache';
 const CACHE_TS_KEY = 'kh_data_ts';
-
-// 分類 emoji
-const CAT_ICON = { 'QA工具':'🔧', 'AI-Prompt':'🤖', '學習筆記':'📝', '供應商管理':'🏭' };
-
-// Demo 資料（無 SHEET_CSV_URL 時顯示）
-const DEMO_DATA = [
-  { 標題:'RFTY 計算模板', 分類:'QA工具', 說明:'Roll-through Yield 逐站良率計算，自動統計各工站直通率', 連結:'', 日期:'2026-05-10', 關鍵字:'yield rfty oob' },
-  { 標題:'供應商 8D 追蹤表', 分類:'QA工具', 說明:'從問題描述到根因分析、防錯驗證的完整 8D 格式', 連結:'', 日期:'2026-05-18', 關鍵字:'8d supplier rca' },
-  { 標題:'PPM 趨勢分析 Prompt', 分類:'AI-Prompt', 說明:'讓 AI 自動分析每月 PPM 數據，識別異常供應商並建議行動，使用方式：複製此 Prompt 貼到 Claude，再貼上你的 PPM 數據。', 連結:'', 日期:'2026-05-22', 關鍵字:'ppm trend ai prompt' },
-  { 標題:'OOB 郵件解析 Prompt', 分類:'AI-Prompt', 說明:'解析 email chain，自動整理 OOB 問題進度追蹤表，含負責人標記與狀態顏色。', 連結:'', 日期:'2026-06-01', 關鍵字:'oob email ai prompt' },
-  { 標題:'DFX 設計審查要點', 分類:'學習筆記', 說明:'Design for Excellence 四大維度：DFM / DFA / DFR / DFT 審查清單', 連結:'', 日期:'2026-04-15', 關鍵字:'dfx dfm dfa dfr dft' },
-  { 標題:'QPA 供應商評鑑架構', 分類:'學習筆記', 說明:'Quality Performance Assessment 評分方法與季度評鑑流程筆記', 連結:'', 日期:'2026-05-05', 關鍵字:'qpa supplier assessment' },
-  { 標題:'供應商稽核查核表', 分類:'供應商管理', 說明:'現場稽核用標準查核表，涵蓋 5S、製程管制、品質記錄等項目', 連結:'', 日期:'2026-05-28', 關鍵字:'audit supplier checklist' },
-  { 標題:'TDM 技術深化路線', 分類:'學習筆記', 說明:'Technology Depth Management 2026 路線圖筆記與關鍵里程碑', 連結:'', 日期:'2026-06-03', 關鍵字:'tdm technology roadmap' },
-];
+const CAT_ICON = {'QA工具':'🔧','AI-Prompt':'🤖','學習筆記':'📝','供應商管理':'🏭'};
 
 let allData = [];
 let currentCat = '全部';
 let searchTerm = '';
+let sessionPassword = ''; // 記住本次登入密碼，用於 API 請求
 
 // ===== TOAST =====
-function showToast(msg, duration = 2000) {
+function showToast(msg, duration = 2500) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
@@ -273,29 +228,68 @@ function showToast(msg, duration = 2000) {
 }
 
 // ===== LOGIN =====
-function doLogin() {
-  const val = document.getElementById('password-input').value;
+async function doLogin() {
+  const pw = document.getElementById('password-input').value.trim();
   const err = document.getElementById('login-error');
-  if (val === SITE_PASSWORD) {
+  const btn = document.getElementById('login-btn');
+  if (!pw) return;
+
+  btn.disabled = true;
+  btn.textContent = '驗證中...';
+
+  // 直接嘗試用密碼呼叫 API 驗證
+  try {
+    const res = await fetch('/.netlify/functions/get-data', {
+      headers: { 'x-password': pw }
+    });
+
+    if (res.status === 401) {
+      err.textContent = '❌ 密碼錯誤，請再試一次';
+      document.getElementById('password-input').value = '';
+      document.getElementById('password-input').focus();
+      setTimeout(() => { err.textContent = ''; }, 3000);
+      btn.disabled = false;
+      btn.textContent = '進入知識庫 →';
+      return;
+    }
+
+    if (!res.ok) throw new Error('Server error');
+
+    // 成功
+    sessionPassword = pw;
     sessionStorage.setItem('kh_auth', '1');
+    sessionStorage.setItem('kh_pw', pw);
+
     document.getElementById('login-overlay').classList.add('hidden');
     document.getElementById('app').classList.add('visible');
-    loadData();
-  } else {
-    err.textContent = '❌ 密碼錯誤，請再試一次';
-    document.getElementById('password-input').value = '';
-    document.getElementById('password-input').focus();
+
+    const data = await res.json();
+    processAndRender(data.csv, true);
+
+  } catch(e) {
+    err.textContent = '⚠️ 連線失敗，請稍後再試';
     setTimeout(() => { err.textContent = ''; }, 3000);
+    btn.disabled = false;
+    btn.textContent = '進入知識庫 →';
   }
 }
+
 function doLogout() {
   sessionStorage.removeItem('kh_auth');
+  sessionStorage.removeItem('kh_pw');
+  sessionPassword = '';
   document.getElementById('login-overlay').classList.remove('hidden');
   document.getElementById('app').classList.remove('visible');
   document.getElementById('password-input').value = '';
 }
-document.getElementById('password-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+document.getElementById('password-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+// Auto-login if session exists
 if (sessionStorage.getItem('kh_auth') === '1') {
+  sessionPassword = sessionStorage.getItem('kh_pw') || '';
   document.getElementById('login-overlay').classList.add('hidden');
   document.getElementById('app').classList.add('visible');
   loadData();
@@ -305,8 +299,7 @@ if (sessionStorage.getItem('kh_auth') === '1') {
 function getCached() {
   try {
     const ts = parseInt(localStorage.getItem(CACHE_TS_KEY) || '0');
-    const now = Date.now();
-    if (now - ts < CACHE_TTL) {
+    if (Date.now() - ts < CACHE_TTL) {
       const raw = localStorage.getItem(CACHE_KEY);
       if (raw) return { data: JSON.parse(raw), ts };
     }
@@ -323,23 +316,14 @@ function clearCache() {
   localStorage.removeItem(CACHE_KEY);
   localStorage.removeItem(CACHE_TS_KEY);
 }
-
 function updateLastUpdated(ts) {
   const d = new Date(ts);
   document.getElementById('last-updated').textContent =
-    d.toLocaleString('zh-TW', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit' });
+    d.toLocaleString('zh-TW', {month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
 }
 
 // ===== DATA =====
 async function loadData(force = false) {
-  if (!SHEET_CSV_URL) {
-    document.getElementById('config-notice').style.display = 'block';
-    allData = DEMO_DATA;
-    render();
-    return;
-  }
-
-  // Try cache first
   if (!force) {
     const cached = getCached();
     if (cached) {
@@ -351,22 +335,17 @@ async function loadData(force = false) {
     }
   }
 
-  // Fetch fresh
   document.getElementById('cache-badge').style.display = 'none';
   try {
-    const res = await fetch(SHEET_CSV_URL + '&t=' + Date.now());
+    const res = await fetch('/.netlify/functions/get-data', {
+      headers: { 'x-password': sessionPassword }
+    });
+    if (res.status === 401) { doLogout(); return; }
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const csv = await res.text();
-    allData = parseCSV(csv);
-    setCache(allData);
-    updateLastUpdated(Date.now());
-    render();
+    const data = await res.json();
+    processAndRender(data.csv, false);
     if (force) showToast('✅ 資料已同步完成！');
   } catch(e) {
-    const el = document.getElementById('error-banner');
-    el.textContent = '⚠️ 無法讀取 Google Sheets：' + e.message;
-    el.style.display = 'block';
-    // Fall back to cache if available
     const cached = getCached();
     if (cached) {
       allData = cached.data;
@@ -375,10 +354,17 @@ async function loadData(force = false) {
       render();
       showToast('⚠️ 使用快取資料');
     } else {
-      allData = DEMO_DATA;
-      render();
+      document.getElementById('error-banner').textContent = '⚠️ 無法載入資料：' + e.message;
+      document.getElementById('error-banner').style.display = 'block';
     }
   }
+}
+
+function processAndRender(csv, fromLogin) {
+  allData = parseCSV(csv);
+  setCache(allData);
+  updateLastUpdated(Date.now());
+  render();
 }
 
 async function forceSync() {
@@ -438,20 +424,10 @@ function render() {
   grid.innerHTML = filtered.map((r, i) => {
     const cat = (r['分類'] || '').replace(/\s/g,'');
     const icon = CAT_ICON[r['分類']] || '📄';
-    const isPrompt = r['分類'] === 'AI-Prompt';
-
     const titleHL = highlight(r['標題'] || '', q);
     const descHL  = highlight(r['說明'] || '', q);
-
     const linkBtn = r['連結']
       ? `<a class="card-link" href="${r['連結']}" target="_blank">開啟 ↗</a>` : '';
-
-    // Copy button only for AI-Prompt; priority: Prompt內容 > 說明 > 連結
-    const promptContent = r['Prompt內容'] || r['prompt內容'] || r['說明'] || r['連結'] || '';
-    const copyBtn = isPrompt && promptContent && promptContent !== (r['說明'] || '')
-      ? `<button class="copy-btn" onclick="copyPrompt(this, ${JSON.stringify(promptContent).replace(/'/g,"\\'")})" title="複製完整 Prompt">📋 複製</button>`
-      : '';
-
     return `
     <div class="card" style="animation-delay:${i * 0.04}s">
       <div class="card-top">
@@ -459,21 +435,17 @@ function render() {
           <span class="card-icon">${icon}</span>
           <div class="card-title">${titleHL}</div>
         </div>
-        <span class="tag tag-${cat}" onclick="filterByTag('${r['分類']}')" title="篩選此分類">${r['分類'] || ''}</span>
+        <span class="tag tag-${cat}" onclick="filterByTag('${r['分類']}')">${r['分類'] || ''}</span>
       </div>
       <div class="card-desc">${descHL}</div>
       <div class="card-footer">
         <span>${r['日期'] || ''}</span>
-        <div class="card-actions">
-          ${copyBtn}
-          ${linkBtn}
-        </div>
+        <div class="card-actions">${linkBtn}</div>
       </div>
     </div>`;
   }).join('');
 }
 
-// ===== TAG CLICK FILTER =====
 function filterByTag(cat) {
   currentCat = cat;
   document.querySelectorAll('.filter-btn').forEach(b => {
@@ -483,36 +455,6 @@ function filterByTag(cat) {
   showToast(`🔖 已篩選：${cat}`);
 }
 
-// ===== COPY PROMPT =====
-function copyPrompt(btn, text) {
-  if (!text) { showToast('⚠️ 請在 Google Sheets 的「Prompt內容」欄填入完整 Prompt'); return; }
-  navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = '✅ 已複製！';
-    btn.classList.add('copied');
-    showToast('📋 Prompt 已複製到剪貼簿！');
-    setTimeout(() => {
-      btn.textContent = '📋 複製';
-      btn.classList.remove('copied');
-    }, 2000);
-  }).catch(() => {
-    // Fallback for older browsers
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand('copy');
-    document.body.removeChild(ta);
-    btn.textContent = '✅ 已複製！';
-    btn.classList.add('copied');
-    showToast('📋 Prompt 已複製到剪貼簿！');
-    setTimeout(() => {
-      btn.textContent = '📋 複製';
-      btn.classList.remove('copied');
-    }, 2000);
-  });
-}
-
-// ===== EVENTS =====
 document.getElementById('search').addEventListener('input', e => {
   searchTerm = e.target.value;
   render();
