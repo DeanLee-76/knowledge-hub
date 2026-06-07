@@ -207,7 +207,7 @@
 
 <script>
 // ============================================================
-// ⚙️ 密碼和 Sheets 網址都在 Netlify 後台環境變數，這裡不需要填 (test)
+// ⚙️ 密碼和 Sheets 網址都在 Netlify 後台環境變數，這裡不需要填
 // ============================================================
 const CACHE_TTL = 3600000; // 1小時快取
 const CACHE_KEY = 'kh_data_cache';
@@ -387,11 +387,35 @@ function parseCSV(text) {
   }).filter(r => r['標題']);
 }
 
+// ===== SECURITY HELPERS =====
+// Escape HTML to prevent XSS from Sheets data
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
+// Only allow http/https URLs — block javascript: and other dangerous protocols
+function safeUrl(url) {
+  if (!url) return '';
+  try {
+    const u = new URL(url.trim());
+    if (u.protocol === 'http:' || u.protocol === 'https:') return u.href;
+  } catch(e) {}
+  return ''; // reject anything that's not a valid http/https URL
+}
+
 // ===== HIGHLIGHT =====
+// Escape the raw text first, THEN wrap matched parts in <mark>
 function highlight(text, q) {
-  if (!q || !text) return text || '';
-  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return text.replace(new RegExp(escaped, 'gi'), m => `<mark>${m}</mark>`);
+  const safe = escapeHtml(text);
+  if (!q || !safe) return safe;
+  const escapedQ = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return safe.replace(new RegExp(escapedQ, 'gi'), m => `<mark>${m}</mark>`);
 }
 
 // ===== RENDER =====
@@ -422,12 +446,19 @@ function render() {
   }
 
   grid.innerHTML = filtered.map((r, i) => {
-    const cat = (r['分類'] || '').replace(/\s/g,'');
-    const icon = CAT_ICON[r['分類']] || '📄';
+    // Escape all text fields before inserting into HTML
+    const cat     = escapeHtml((r['分類'] || '').replace(/\s/g,''));
+    const catRaw  = escapeHtml(r['分類'] || '');
+    const icon    = CAT_ICON[r['分類']] || '📄';
     const titleHL = highlight(r['標題'] || '', q);
     const descHL  = highlight(r['說明'] || '', q);
-    const linkBtn = r['連結']
-      ? `<a class="card-link" href="${r['連結']}" target="_blank">開啟 ↗</a>` : '';
+    const dateStr = escapeHtml(r['日期'] || '');
+
+    // Validate URL — only allow http/https
+    const url = safeUrl(r['連結'] || '');
+    const linkBtn = url
+      ? `<a class="card-link" href="${url}" target="_blank" rel="noopener noreferrer">開啟 ↗</a>` : '';
+
     return `
     <div class="card" style="animation-delay:${i * 0.04}s">
       <div class="card-top">
@@ -435,11 +466,11 @@ function render() {
           <span class="card-icon">${icon}</span>
           <div class="card-title">${titleHL}</div>
         </div>
-        <span class="tag tag-${cat}" onclick="filterByTag('${r['分類']}')">${r['分類'] || ''}</span>
+        <span class="tag tag-${cat}" onclick="filterByTag('${catRaw}')">${catRaw}</span>
       </div>
       <div class="card-desc">${descHL}</div>
       <div class="card-footer">
-        <span>${r['日期'] || ''}</span>
+        <span>${dateStr}</span>
         <div class="card-actions">${linkBtn}</div>
       </div>
     </div>`;
