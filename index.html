@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dean's Quality Knowledge Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&family=Sora:wght@300;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #1c2330;
+    --border: #30363d;
+    --accent: #00c896;
+    --accent2: #0ea5e9;
+    --warn: #f59e0b;
+    --text: #e6edf3;
+    --muted: #7d8590;
+    --tag-qa: #003d2e;
+    --tag-qa-t: #00c896;
+    --tag-ai: #002040;
+    --tag-ai-t: #0ea5e9;
+    --tag-note: #2d1f00;
+    --tag-note-t: #f59e0b;
+    --tag-sup: #2a0030;
+    --tag-sup-t: #c084fc;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 60px;
+  }
+  .logo {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+    white-space: nowrap;
+  }
+  .logo span { color: var(--muted); font-weight: 300; }
+  .header-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
+  }
+  #last-updated { color: var(--accent2); }
+
+  /* Hero */
+  .hero {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 32px 32px;
+  }
+  .hero h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(24px, 4vw, 38px);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    color: var(--text);
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero p {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 500px;
+  }
+
+  /* Stats bar */
+  .stats {
+    display: flex;
+    gap: 24px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 18px;
+    min-width: 120px;
+  }
+  .stat-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  /* Controls */
+  .controls {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px 20px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+    max-width: 360px;
+  }
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 15px;
+    pointer-events: none;
+  }
+  input[type="text"] {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    padding: 9px 14px 9px 36px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus { border-color: var(--accent); }
+  input[type="text"]::placeholder { color: var(--muted); }
+
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 13px;
+    padding: 7px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 500; }
+
+  /* Grid */
+  .grid-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px 60px;
+  }
+  .section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  /* Card */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.15s;
+    animation: fadeIn 0.3s ease both;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .card-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    letter-spacing: 0.5px;
+  }
+  .tag-QA工具   { background: var(--tag-qa);  color: var(--tag-qa-t);  }
+  .tag-AI-Prompt { background: var(--tag-ai);  color: var(--tag-ai-t);  }
+  .tag-學習筆記 { background: var(--tag-note); color: var(--tag-note-t); }
+  .tag-供應商指引 { background: var(--tag-sup); color: var(--tag-sup-t); }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: #4a5568;
+  }
+  .card-date { }
+  .card-link {
+    color: var(--accent2);
+    text-decoration: none;
+    font-size: 11px;
+    padding: 4px 8px;
+    border: 1px solid var(--tag-ai);
+    border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .card-link:hover { background: var(--tag-ai); }
+
+  /* Empty state */
+  .empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .empty-icon { font-size: 32px; margin-bottom: 12px; }
+
+  /* Loading */
+  .loading {
+    text-align: center;
+    padding: 60px 0;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+  }
+  .dot-anim::after {
+    content: '';
+    animation: dots 1.2s infinite;
+  }
+  @keyframes dots {
+    0%   { content: '.'; }
+    33%  { content: '..'; }
+    66%  { content: '...'; }
+  }
+
+  /* Error banner */
+  .error-banner {
+    background: #2d1500;
+    border: 1px solid #7c3500;
+    border-radius: 8px;
+    padding: 14px 18px;
+    color: #f59e0b;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  /* Sheet config notice */
+  .config-notice {
+    background: var(--bg3);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .config-notice a { color: var(--accent2); }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: #4a5568;
+    font-family: 'DM Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">Dean's <span>Quality</span> Knowledge Hub</div>
+    <div class="header-meta">
+      更新時間：<span id="last-updated">—</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>品質管理<em>知識庫</em></h1>
+    <p>集中管理 QA 工具、AI Prompt、學習筆記與供應商指引。<br>在 Google Sheets 新增資料，這裡自動更新。</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-num" id="count-all">—</div><div class="stat-label">全部項目</div></div>
+      <div class="stat"><div class="stat-num" id="count-qa">—</div><div class="stat-label">QA 工具</div></div>
+      <div class="stat"><div class="stat-num" id="count-ai">—</div><div class="stat-label">AI Prompt</div></div>
+      <div class="stat"><div class="stat-num" id="count-note">—</div><div class="stat-label">學習筆記</div></div>
+      <div class="stat"><div class="stat-num" id="count-sup">—</div><div class="stat-label">供應商指引</div></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search" placeholder="搜尋標題、說明、關鍵字...">
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" data-cat="全部">全部</button>
+      <button class="filter-btn" data-cat="QA工具">QA 工具</button>
+      <button class="filter-btn" data-cat="AI-Prompt">AI Prompt</button>
+      <button class="filter-btn" data-cat="學習筆記">學習筆記</button>
+      <button class="filter-btn" data-cat="供應商指引">供應商指引</button>
+    </div>
+  </div>
+
+  <div class="grid-wrap">
+    <div class="config-notice" id="config-notice">
+      ⚙️ 尚未設定 Google Sheets。請編輯此頁面，將 <code>SHEET_CSV_URL</code> 替換為你的 Sheets CSV 網址。
+      <a href="https://github.com/DeanLee-76/knowledge-hub" target="_blank">前往 GitHub 編輯</a>
+    </div>
+    <div class="error-banner" id="error-banner" style="display:none"></div>
+
+    <div class="section-title" id="section-label">所有知識卡片</div>
+    <div class="grid" id="grid">
+      <div class="loading"><span class="dot-anim">載入資料中</span></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Dean Lee · Quality Manager · <a href="https://github.com/DeanLee-76/knowledge-hub" target="_blank" style="color:var(--accent2)">GitHub</a> · 資料來源：Google Sheets
+</footer>
+
+<script>
+// ============================================================
+// 📋 設定區：把你的 Google Sheets CSV 網址貼在這裡
+// 步驟：Sheets → 檔案 → 共用 → 發布到網路 → CSV → 複製連結
+// ============================================================
+const SHEET_CSV_URL = '';
+// 範例格式：
+// 'https://docs.google.com/spreadsheets/d/xxxxx/pub?gid=0&single=true&output=csv'
+// ============================================================
+
+// Demo 資料（SHEET_CSV_URL 空白時顯示）
+const DEMO_DATA = [
+  { 標題:'RFTY 計算模板', 分類:'QA工具', 說明:'Roll-through Yield 逐站良率計算，自動統計各工站直通率', 連結:'', 日期:'2026-05-10', 關鍵字:'yield rfty oob' },
+  { 標題:'供應商 8D 追蹤表', 分類:'QA工具', 說明:'從問題描述到根因分析、防錯驗證的完整 8D 格式', 連結:'', 日期:'2026-05-18', 關鍵字:'8d supplier rca' },
+  { 標題:'PPM 趨勢分析 Prompt', 分類:'AI-Prompt', 說明:'讓 AI 自動分析每月 PPM 數據，識別異常供應商並建議行動', 連結:'', 日期:'2026-05-22', 關鍵字:'ppm trend ai prompt' },
+  { 標題:'OOB 郵件解析 Prompt', 分類:'AI-Prompt', 說明:'解析 email chain，自動整理 OOB 問題進度追蹤表，含負責人標記', 連結:'', 日期:'2026-06-01', 關鍵字:'oob email ai prompt' },
+  { 標題:'DFX 設計審查要點', 分類:'學習筆記', 說明:'Design for Excellence 四大維度：DFM / DFA / DFR / DFT 審查清單', 連結:'', 日期:'2026-04-15', 關鍵字:'dfx dfm dfa dfr dft' },
+  { 標題:'QPA 供應商評鑑架構', 分類:'學習筆記', 說明:'Quality Performance Assessment 評分方法與季度評鑑流程筆記', 連結:'', 日期:'2026-05-05', 關鍵字:'qpa supplier assessment' },
+  { 標題:'供應商稽核查核表', 分類:'供應商指引', 說明:'現場稽核用標準查核表，涵蓋 5S、製程管制、品質記錄等項目', 連結:'', 日期:'2026-05-28', 關鍵字:'audit supplier checklist' },
+  { 標題:'TDM 技術深化路線', 分類:'學習筆記', 說明:'Technology Depth Management 2026 路線圖筆記與關鍵里程碑', 連結:'', 日期:'2026-06-03', 關鍵字:'tdm technology roadmap' },
+];
+
+let allData = [];
+let currentCat = '全部';
+let searchTerm = '';
+
+async function loadData() {
+  if (!SHEET_CSV_URL) {
+    document.getElementById('config-notice').style.display = 'block';
+    allData = DEMO_DATA;
+    render();
+    return;
+  }
+  try {
+    const res = await fetch(SHEET_CSV_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const csv = await res.text();
+    allData = parseCSV(csv);
+    document.getElementById('last-updated').textContent = new Date().toLocaleString('zh-TW', { month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit' });
+    render();
+  } catch(e) {
+    showError('無法讀取 Google Sheets 資料：' + e.message + '。請確認 CSV 網址正確且已公開發布。');
+    allData = DEMO_DATA;
+    render();
+  }
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  const headers = lines[0].split(',').map(h => h.replace(/"/g,'').trim());
+  return lines.slice(1).map(line => {
+    const vals = line.match(/(".*?"|[^,]+|(?<=,)(?=,)|^(?=,)|(?<=,)$)/g) || [];
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = (vals[i] || '').replace(/^"|"$/g,'').trim(); });
+    return obj;
+  }).filter(r => r['標題']);
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-banner');
+  el.textContent = '⚠️ ' + msg;
+  el.style.display = 'block';
+}
+
+function render() {
+  const q = searchTerm.toLowerCase();
+  const filtered = allData.filter(r => {
+    const matchCat = currentCat === '全部' || r['分類'] === currentCat;
+    const matchQ = !q || (r['標題'] || '').toLowerCase().includes(q)
+                      || (r['說明'] || '').toLowerCase().includes(q)
+                      || (r['關鍵字'] || '').toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+
+  // Update stats
+  document.getElementById('count-all').textContent  = allData.length;
+  document.getElementById('count-qa').textContent   = allData.filter(r=>r['分類']==='QA工具').length;
+  document.getElementById('count-ai').textContent   = allData.filter(r=>r['分類']==='AI-Prompt').length;
+  document.getElementById('count-note').textContent = allData.filter(r=>r['分類']==='學習筆記').length;
+  document.getElementById('count-sup').textContent  = allData.filter(r=>r['分類']==='供應商指引').length;
+
+  const label = currentCat === '全部' ? `所有知識卡片（共 ${filtered.length} 筆）` : `${currentCat}（${filtered.length} 筆）`;
+  document.getElementById('section-label').textContent = label;
+
+  const grid = document.getElementById('grid');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div>找不到符合的項目</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map((r, i) => {
+    const cat = (r['分類'] || '').replace(/\s/g,'');
+    const tagClass = 'tag tag-' + cat;
+    const link = r['連結'] ? `<a class="card-link" href="${r['連結']}" target="_blank">開啟 ↗</a>` : '';
+    return `
+    <div class="card" style="animation-delay:${i * 0.04}s">
+      <div class="card-top">
+        <div class="card-title">${r['標題'] || ''}</div>
+        <span class="${tagClass}">${r['分類'] || ''}</span>
+      </div>
+      <div class="card-desc">${r['說明'] || ''}</div>
+      <div class="card-footer">
+        <span class="card-date">${r['日期'] || ''}</span>
+        ${link}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Events
+document.getElementById('search').addEventListener('input', e => {
+  searchTerm = e.target.value;
+  render();
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCat = btn.dataset.cat;
+    render();
+  });
+});
+
+loadData();
+</script>
+</body>
+</html>
