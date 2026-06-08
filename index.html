@@ -217,7 +217,7 @@ const CAT_ICON = {'QA工具':'🔧','AI-Prompt':'🤖','學習筆記':'📝','�
 let allData = [];
 let currentCat = '全部';
 let searchTerm = '';
-let sessionPassword = ''; // 記住本次登入密碼，用於 API 請求
+let sessionToken = ''; // stores session token only — never the raw password
 
 // ===== TOAST =====
 function showToast(msg, duration = 2500) {
@@ -229,7 +229,7 @@ function showToast(msg, duration = 2500) {
 
 // ===== LOGIN =====
 async function doLogin() {
-  const pw = document.getElementById('password-input').value.trim();
+  const pw  = document.getElementById('password-input').value.trim();
   const err = document.getElementById('login-error');
   const btn = document.getElementById('login-btn');
   if (!pw) return;
@@ -237,8 +237,8 @@ async function doLogin() {
   btn.disabled = true;
   btn.textContent = '驗證中...';
 
-  // 直接嘗試用密碼呼叫 API 驗證
   try {
+    // Send password once — server returns a session token
     const res = await fetch('/.netlify/functions/get-data', {
       headers: { 'x-password': pw }
     });
@@ -255,16 +255,17 @@ async function doLogin() {
 
     if (!res.ok) throw new Error('Server error');
 
-    // 成功
-    sessionPassword = pw;
+    const data = await res.json();
+
+    // ✅ Store token only — never store the raw password
+    sessionToken = data.token;
     sessionStorage.setItem('kh_auth', '1');
-    sessionStorage.setItem('kh_pw', pw);
+    sessionStorage.setItem('kh_token', data.token);
 
     document.getElementById('login-overlay').classList.add('hidden');
     document.getElementById('app').classList.add('visible');
 
-    const data = await res.json();
-    processAndRender(data.csv, true);
+    processAndRender(data.csv);
 
   } catch(e) {
     err.textContent = '⚠️ 連線失敗，請稍後再試';
@@ -276,8 +277,8 @@ async function doLogin() {
 
 function doLogout() {
   sessionStorage.removeItem('kh_auth');
-  sessionStorage.removeItem('kh_pw');
-  sessionPassword = '';
+  sessionStorage.removeItem('kh_token');
+  sessionToken = '';
   document.getElementById('login-overlay').classList.remove('hidden');
   document.getElementById('app').classList.remove('visible');
   document.getElementById('password-input').value = '';
@@ -287,12 +288,17 @@ document.getElementById('password-input').addEventListener('keydown', e => {
   if (e.key === 'Enter') doLogin();
 });
 
-// Auto-login if session exists
+// Auto-login if valid session token exists
 if (sessionStorage.getItem('kh_auth') === '1') {
-  sessionPassword = sessionStorage.getItem('kh_pw') || '';
-  document.getElementById('login-overlay').classList.add('hidden');
-  document.getElementById('app').classList.add('visible');
-  loadData();
+  sessionToken = sessionStorage.getItem('kh_token') || '';
+  if (sessionToken) {
+    document.getElementById('login-overlay').classList.add('hidden');
+    document.getElementById('app').classList.add('visible');
+    loadData();
+  } else {
+    // Token missing — force re-login
+    sessionStorage.removeItem('kh_auth');
+  }
 }
 
 // ===== CACHE =====
@@ -337,13 +343,14 @@ async function loadData(force = false) {
 
   document.getElementById('cache-badge').style.display = 'none';
   try {
+    // Use token header — not password
     const res = await fetch('/.netlify/functions/get-data', {
-      headers: { 'x-password': sessionPassword }
+      headers: { 'x-token': sessionToken }
     });
     if (res.status === 401) { doLogout(); return; }
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    processAndRender(data.csv, false);
+    processAndRender(data.csv);
     if (force) showToast('✅ 資料已同步完成！');
   } catch(e) {
     const cached = getCached();
@@ -354,13 +361,23 @@ async function loadData(force = false) {
       render();
       showToast('⚠️ 使用快取資料');
     } else {
-      document.getElementById('error-banner').textContent = '⚠️ 無法載入資料：' + e.message;
-      document.getElementById('error-banner').style.display = 'block';
+      // Problem 7 fix: show error with retry button
+      const banner = document.getElementById('error-banner');
+      banner.innerHTML = '';
+      const msg = document.createElement('span');
+      msg.textContent = '⚠️ 無法載入資料，請檢查網路連線。';
+      const retryBtn = document.createElement('button');
+      retryBtn.textContent = '🔄 重試';
+      retryBtn.style.cssText = 'margin-left:12px;padding:4px 12px;border:1px solid #e17055;border-radius:6px;background:white;color:#e17055;cursor:pointer;font-size:13px;font-family:inherit;';
+      retryBtn.onclick = () => { banner.style.display = 'none'; loadData(true); };
+      banner.appendChild(msg);
+      banner.appendChild(retryBtn);
+      banner.style.display = 'block';
     }
   }
 }
 
-function processAndRender(csv, fromLogin) {
+function processAndRender(csv) {
   allData = parseCSV(csv);
   setCache(allData);
   updateLastUpdated(Date.now());
