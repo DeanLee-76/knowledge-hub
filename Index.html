@@ -198,6 +198,7 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
 .inbox-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
 .inbox-item-info{flex:1;min-width:0}
 .inbox-item-title{font-size:14px;color:#fff;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inbox-item-excerpt{font-size:12px;color:rgba(255,255,255,.55);font-style:italic;line-height:1.55;margin:4px 0 2px;border-left:2px solid rgba(201,150,58,.5);padding-left:8px}
 .inbox-item-url{font-size:11px;color:rgba(255,255,255,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .inbox-item-date{font-size:10px;color:rgba(255,255,255,.3);margin-top:3px}
 .inbox-item-actions{display:flex;gap:6px;flex-shrink:0;margin-top:2px}
@@ -461,7 +462,7 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
 <div class="bm-banner" id="bm-banner">
   <button class="bm-close" onclick="document.getElementById('bm-banner').style.display='none'">✕</button>
   <strong><i class="ti ti-bookmark" style="font-size:13px"></i> 快速收藏</strong>
-  拖曳下方書籤到瀏覽器書籤列，任何網頁一鍵存入！
+  先選取網頁文字（可選），再點書籤 → 自動存入暫存區
   <a class="bm-link" id="bm-link" title="拖曳到書籤列">🔖 拖曳此書籤</a>
 </div>
 
@@ -923,7 +924,14 @@ function showToast(msg){
 /* ── Bookmarklet ── */
 function buildBookmarklet(){
   const base=window.location.href.split('?')[0].replace(/index\.html$/,'');
-  const code=`javascript:(function(){var t=document.title,u=window.location.href;window.open('${base}index.html?bm=1&title='+encodeURIComponent(t)+'&url='+encodeURIComponent(u),'_blank','width=520,height=640');}())`;
+  const code=`javascript:(function(){
+    var t=document.title,
+        u=window.location.href,
+        sel=window.getSelection?window.getSelection().toString().trim():'';
+    var params='?bm=1&title='+encodeURIComponent(t)+'&url='+encodeURIComponent(u);
+    if(sel) params+='&sel='+encodeURIComponent(sel.slice(0,1000));
+    window.open('${base}index.html'+params,'_blank','width=560,height=680');
+  }())`;
   const a=document.getElementById('bm-link');
   a.href=code;a.setAttribute('draggable','true');
 }
@@ -979,6 +987,7 @@ function renderInbox(){
     div.innerHTML=`
       <div class="inbox-item-info">
         <div class="inbox-item-title" title="${item.title}">${item.title}</div>
+        ${item.excerpt?`<div class="inbox-item-excerpt">"${item.excerpt.slice(0,120)}${item.excerpt.length>120?'…':''}"</div>`:''}
         ${item.url?`<div class="inbox-item-url">${item.url}</div>`:''}
         <div class="inbox-item-date">${d}</div>
       </div>
@@ -1001,7 +1010,7 @@ function openFileModal(id){
   fileTargetId=id;
   const item=inbox.find(x=>x.id===id);if(!item) return;
   document.getElementById('file-item-title').textContent='「'+item.title+'」';
-  document.getElementById('file-summary').value=item.summary||'';
+  document.getElementById('file-summary').value=item.summary||item.excerpt||'';
   document.getElementById('file-tags').value='';
   const sel=document.getElementById('file-cat');
   sel.innerHTML='<option value="">選擇分類…</option>';
@@ -1045,12 +1054,12 @@ function handleBookmarklet(){
   if(p.get('bm')==='1'){
     const title=decodeURIComponent(p.get('title')||'');
     const url=decodeURIComponent(p.get('url')||'');
-    // add to inbox instead of opening add modal
-    const item={id:'bm'+Date.now(),title,url,summary:'',date:new Date().toISOString()};
+    const sel=decodeURIComponent(p.get('sel')||'');
+    const item={id:'bm'+Date.now(),title,url,excerpt:sel,summary:'',date:new Date().toISOString()};
     inbox.unshift(item);saveInbox();updateInboxBadge();
     window.history.replaceState({},'',window.location.pathname);
-    showToast('📥 已加入暫存區！記得回來整理');
-    // open inbox drawer so user sees it
+    const msg=sel?'📥 已加入暫存區（含選取文字）！':'📥 已加入暫存區！記得回來整理';
+    showToast(msg);
     setTimeout(()=>{
       document.getElementById('inbox-drawer').classList.add('open');
       renderInbox();
