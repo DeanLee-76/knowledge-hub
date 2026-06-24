@@ -636,7 +636,12 @@ let slides=[];
 
 function loadDB(){
   const raw=localStorage.getItem(DATA_KEY);
-  if(raw){db=JSON.parse(raw);}
+  if(raw){
+    db=JSON.parse(raw);
+    if(!db.categories.find(c=>c.id==='mfg')){db.categories.push({id:'mfg',label:'製程技術',icon:'ti-circuit-board',color:'#26C6DA',sub:['SMT','DIP','測試','設備','其他']});}
+    if(!db.entries.find(e=>e.id==='smt001')){db.entries.push({id:'smt001',title:'SMT 製程培訓課程',url:'',summary:'SMT完整培訓：8站製程 Input/Output/品質管控、Reflow模擬器、缺陷圖庫、Stencil設計、Nozzle指南、AOI原理、PFMEA Fault Tree、測驗',category:'mfg',sub:'SMT',tags:['SMT','PCBA','品質','製程','Reflow','AOI','PFMEA'],date:'2026-06-25',smtCourse:true});}
+    saveDB();
+  }
   else{
     db={
       categories:[
