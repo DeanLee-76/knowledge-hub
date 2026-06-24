@@ -645,13 +645,15 @@ function loadDB(){
         {id:'health',label:'健康',icon:'ti-heart',color:'#E57373',sub:['運動','醫療','心理','飲食營養','其他']},
         {id:'travel',label:'旅行',icon:'ti-map-pin',color:'#64B5F6',sub:['台灣','日本','歐洲','其他海外','攻略工具']},
         {id:'invest',label:'投資',icon:'ti-chart-line',color:'#CE93D8',sub:['股票','基金','ETF','財經新聞','其他']},
-        {id:'ai',label:'AI 工具',icon:'ti-robot',color:'#80CBC4',sub:['Prompt 技巧','工具評測','學習資源','應用案例','其他']}
+        {id:'ai',label:'AI 工具',icon:'ti-robot',color:'#80CBC4',sub:['Prompt 技巧','工具評測','學習資源','應用案例','其他']},
+        {id:'mfg',label:'製程技術',icon:'ti-circuit-board',color:'#26C6DA',sub:['SMT','DIP','測試','設備','其他']}
       ],
       entries:[
         {id:'e001',title:'Tier 2 供應商品質管理策略',url:'',summary:'包含 DFX、TDM、QPA、供應商健康儀表板四大支柱的完整策略框架',category:'work',sub:'品質管理',tags:['SQM','策略','Tier2'],date:'2026-06-01'},
         {id:'e002',title:'8D Problem Solving 完整流程',url:'',summary:'從 D0 緊急應對到 D8 恭賀團隊的完整 8D 步驟說明與模板',category:'work',sub:'品質管理',tags:['8D','RCCA'],date:'2026-05-15'},
         {id:'e003',title:'Claude PTCF 提示詞框架',url:'',summary:'Persona / Task / Context / Format 四要素結構化提示詞，適用品質管理工作',category:'ai',sub:'Prompt 技巧',tags:['Claude','PTCF'],date:'2026-06-10'},
-        {id:'e004',title:'Power Automate 流程指南',url:'',summary:'29 個供應商 KPI 收集流程的建置方式，從主模板複製與設定',category:'work',sub:'專案管理',tags:['Power Automate','KPI'],date:'2026-04-20'}
+        {id:'e004',title:'Power Automate 流程指南',url:'',summary:'29 個供應商 KPI 收集流程的建置方式，從主模板複製與設定',category:'work',sub:'專案管理',tags:['Power Automate','KPI'],date:'2026-04-20'},
+        {id:'smt001',title:'SMT 製程培訓課程',url:'',summary:'Surface Mount Technology 完整培訓：8大製程站台 Input/Output/品質管控、Reflow Profile模擬器、缺陷圖庫、Stencil設計原則、Nozzle選擇指南、AOI光學原理、PFMEA Fault Tree、測驗',category:'mfg',sub:'SMT',tags:['SMT','PCBA','品質','製程','Reflow','AOI','PFMEA'],date:'2026-06-24',smtCourse:true}
       ]
     };
     saveDB();
@@ -1414,6 +1416,600 @@ applySeason(s);
 document.querySelectorAll('.s-btn').forEach(b=>b.onclick=()=>applySeason(b.dataset.s));
 renderCats();renderSubcats();renderShelves();
 buildBookmarklet();handleBookmarklet();
+
+/* ── SMT Course hook ── */
+const _origOpen=openPanel;
+openPanel=function(entry){
+  if(entry.smtCourse){openSMT();return;}
+  _origOpen(entry);
+};
+</script>
+
+<!-- ══════════════════════════════════════════════
+     SMT COURSE OVERLAY — v1.0
+     ══════════════════════════════════════════════ -->
+<div id="smt-overlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,10,10,.97);overflow-y:auto;font-family:'Noto Serif TC',sans-serif">
+<style>
+#smt-overlay *{box-sizing:border-box;margin:0;padding:0}
+.smt-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);position:sticky;top:0;z-index:10;backdrop-filter:blur(10px)}
+.smt-hdr-left{display:flex;align-items:center;gap:12px}
+.smt-logo{font-size:15px;font-weight:600;color:#fff}
+.smt-logo span{color:#1D9E75}
+.smt-close{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:5px 14px;font-size:12px;color:#fff;cursor:pointer;font-family:inherit;transition:all .2s}
+.smt-close:hover{background:rgba(255,255,255,.2)}
+.smt-body{max-width:720px;margin:0 auto;padding:16px 16px 60px}
+.smt-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.smt-tb{font-size:11px;padding:4px 11px;border:1px solid rgba(255,255,255,.15);border-radius:20px;background:transparent;color:rgba(255,255,255,.5);cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit}
+.smt-tb.on{background:rgba(29,158,117,.2);border-color:#1D9E75;color:#1D9E75;font-weight:600}
+.smt-sec{display:none}.smt-sec.vis{display:block}
+.smt-card{border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;background:rgba(255,255,255,.04);margin-bottom:10px}
+.smt-lbl{font-size:10px;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;margin:10px 0 5px}
+.smt-row2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.smt-ibox{border-radius:8px;padding:9px}
+.smt-ibox.in{background:rgba(56,138,221,.12);border:1px solid rgba(56,138,221,.25)}
+.smt-ibox.out{background:rgba(29,158,117,.12);border:1px solid rgba(29,158,117,.25)}
+.smt-ibox-lbl{font-size:11px;font-weight:600;margin-bottom:5px}
+.smt-ibox.in .smt-ibox-lbl{color:#64B5F6}.smt-ibox.out .smt-ibox-lbl{color:#4CAF50}
+.smt-item{font-size:12px;color:rgba(255,255,255,.75);padding:2px 0;display:flex;gap:5px;align-items:flex-start;line-height:1.5}
+.smt-item::before{content:"▸";font-size:9px;flex-shrink:0;margin-top:3px;color:rgba(255,255,255,.35)}
+.smt-krow{display:flex;align-items:flex-start;gap:7px;padding:6px 9px;border-radius:7px;background:rgba(255,255,255,.05);margin-bottom:4px;font-size:12px;color:rgba(255,255,255,.78);line-height:1.5}
+.smt-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.smt-pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:6px;margin-bottom:12px}
+.smt-pcard{border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px;cursor:pointer;text-align:center;transition:all .2s;background:rgba(255,255,255,.03)}
+.smt-pcard:hover{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.07)}
+.smt-pcard.sel{border-color:#1D9E75;border-width:1.5px;background:rgba(29,158,117,.12)}
+.smt-pcard.done{border-color:rgba(29,158,117,.4)}
+.smt-picon{font-size:18px;margin-bottom:3px}
+.smt-pname{font-size:11px;font-weight:600;color:rgba(255,255,255,.85)}
+.smt-pnum{font-size:10px;color:rgba(255,255,255,.35);margin-top:1px}
+.smt-pcheck{font-size:10px;color:#1D9E75;margin-top:2px}
+.smt-navrow{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08)}
+.smt-nbtn{font-size:12px;padding:5px 14px;border:1px solid rgba(255,255,255,.2);border-radius:20px;background:transparent;color:rgba(255,255,255,.7);cursor:pointer;transition:all .2s;font-family:inherit}
+.smt-nbtn:hover{background:rgba(255,255,255,.1)}
+.smt-nbtn.pr{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.smt-nbtn.pr:hover{background:#0F6E56}
+.smt-badge{display:inline-flex;align-items:center;font-size:10px;padding:1px 7px;border-radius:10px;font-weight:600}
+.smt-badge.r{background:rgba(226,75,74,.2);color:#F09595}
+.smt-badge.a{background:rgba(239,159,39,.2);color:#FAC775}
+.smt-badge.g{background:rgba(29,158,117,.2);color:#5DCAA5}
+.smt-fhdr{display:flex;align-items:center;gap:7px;padding:7px 10px;border-radius:7px;background:rgba(226,75,74,.1);border:1px solid rgba(226,75,74,.2);cursor:pointer;font-size:12px;font-weight:600;color:#F09595;font-family:inherit;width:100%;text-align:left;transition:all .2s}
+.smt-fhdr:hover{background:rgba(226,75,74,.15)}
+.smt-farr{margin-left:auto;transition:transform .2s;font-style:normal;font-weight:400}
+.smt-fhdr.open .smt-farr{transform:rotate(90deg)}
+.smt-fcauses{display:none;padding:5px 0 0 10px}
+.smt-fcauses.vis{display:block}
+.smt-fcause{font-size:12px;padding:3px 8px;border-left:2px solid rgba(226,75,74,.5);margin-bottom:3px;color:rgba(255,255,255,.7);background:rgba(255,255,255,.04);border-radius:0 4px 4px 0}
+.smt-fact{font-size:11px;color:#64B5F6;background:rgba(56,138,221,.1);border-radius:3px;padding:2px 7px;margin-top:4px;display:block}
+.smt-dfbtn{font-size:11px;padding:3px 9px;border:1px solid rgba(255,255,255,.15);border-radius:20px;cursor:pointer;background:transparent;color:rgba(255,255,255,.45);transition:all .2s;font-family:inherit}
+.smt-dfbtn.on{background:rgba(29,158,117,.2);border-color:#1D9E75;color:#1D9E75;font-weight:600}
+.smt-dcard{border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:12px;margin-bottom:8px;background:rgba(255,255,255,.03)}
+.smt-ctrl{display:flex;align-items:center;gap:10px;margin:5px 0;font-size:12px;color:rgba(255,255,255,.5)}
+.smt-ctrl input[type=range]{flex:1;accent-color:#1D9E75}
+.smt-val{min-width:45px;text-align:right;font-size:12px;color:#fff;font-weight:500}
+.smt-tbl{width:100%;font-size:12px;border-collapse:collapse}
+.smt-tbl th{font-size:10px;font-weight:600;color:rgba(255,255,255,.35);text-align:left;padding:5px 7px;border-bottom:1px solid rgba(255,255,255,.08);text-transform:uppercase;letter-spacing:.05em}
+.smt-tbl td{padding:5px 7px;border-bottom:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.75)}
+.smt-tbl tr:last-child td{border-bottom:none}
+.smt-ok{color:#4CAF50;font-weight:500}.smt-warn{color:#EF9F27;font-weight:500}.smt-bad{color:#E57373;font-weight:500}
+.smt-qopt{display:block;width:100%;text-align:left;font-size:12px;padding:8px 12px;border:1px solid rgba(255,255,255,.15);border-radius:8px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.8);cursor:pointer;margin-bottom:6px;transition:all .2s;font-family:inherit}
+.smt-qopt:hover{background:rgba(255,255,255,.09)}
+.smt-qopt.cor{background:rgba(29,158,117,.15);border-color:#1D9E75;color:#4CAF50}
+.smt-qopt.wrg{background:rgba(226,75,74,.12);border-color:#E24B4A;color:#F09595}
+.smt-progress{height:3px;border-radius:2px;background:rgba(255,255,255,.08);margin-bottom:14px;overflow:hidden}
+.smt-progress-fill{height:100%;background:#1D9E75;border-radius:2px;transition:width .4s}
+.smt-note-area{width:100%;min-height:100px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 12px;color:#fff;font-size:13px;font-family:inherit;resize:vertical;line-height:1.7;outline:none}
+.smt-note-area:focus{border-color:rgba(29,158,117,.5)}
+.smt-export-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.35);border-radius:20px;color:#4CAF50;font-size:12px;cursor:pointer;font-family:inherit;transition:all .2s;margin-top:8px}
+.smt-export-btn:hover{background:rgba(29,158,117,.25)}
+</style>
+
+<div class="smt-hdr">
+  <div class="smt-hdr-left">
+    <div class="smt-logo">⚡ SMT <span>製程培訓課程</span></div>
+    <div id="smt-prog-txt" style="font-size:11px;color:rgba(255,255,255,.35)"></div>
+  </div>
+  <button class="smt-close" onclick="closeSMT()">✕ 離開課程</button>
+</div>
+
+<div class="smt-body">
+  <div class="smt-progress"><div class="smt-progress-fill" id="smt-prog-bar" style="width:0%"></div></div>
+  <div class="smt-tabs">
+    <button class="smt-tb on" onclick="smtTab('stations',this)">⚙️ 製程站台</button>
+    <button class="smt-tb" onclick="smtTab('reflow',this)">🔥 Reflow Profile</button>
+    <button class="smt-tb" onclick="smtTab('defects',this)">🔬 缺陷圖庫</button>
+    <button class="smt-tb" onclick="smtTab('stencil',this)">📐 Stencil設計</button>
+    <button class="smt-tb" onclick="smtTab('nozzle',this)">🤖 Nozzle指南</button>
+    <button class="smt-tb" onclick="smtTab('aoi',this)">👁️ AOI原理</button>
+    <button class="smt-tb" onclick="smtTab('notes',this)">📓 我的筆記</button>
+    <button class="smt-tb" onclick="smtTab('quiz',this)">📝 測驗</button>
+  </div>
+
+  <!-- STATIONS -->
+  <div class="smt-sec vis" id="smtsec-stations">
+    <div class="smt-pgrid" id="smt-pgrid"></div>
+    <div id="smt-det"></div>
+    <div class="smt-navrow">
+      <button class="smt-nbtn" onclick="smtPrev()">← 上一站</button>
+      <span id="smt-sctr" style="font-size:12px;color:rgba(255,255,255,.35)">1/8</span>
+      <button class="smt-nbtn pr" onclick="smtNext()">下一站 →</button>
+    </div>
+  </div>
+
+  <!-- REFLOW -->
+  <div class="smt-sec" id="smtsec-reflow">
+    <div class="smt-card">
+      <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">🔥 Reflow Profile 互動模擬器</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:10px">調整參數，即時看到Profile變化與風險警示</div>
+      <canvas id="smt-canvas" style="width:100%;height:200px;display:block;border-radius:8px;background:rgba(0,0,0,.3)"></canvas>
+      <div id="smt-zone-legend" style="display:flex;gap:5px;flex-wrap:wrap;margin:7px 0"></div>
+      <div class="smt-ctrl"><span style="min-width:110px;color:rgba(255,255,255,.6)">Ramp (°C/s)</span><input type="range" id="smt-ramp" min="0.5" max="4" value="2" step="0.1" oninput="smtDrawReflow()"><span class="smt-val" id="smt-rampV">2.0</span></div>
+      <div class="smt-ctrl"><span style="min-width:110px;color:rgba(255,255,255,.6)">Soak temp (°C)</span><input type="range" id="smt-soak" min="140" max="180" value="160" step="1" oninput="smtDrawReflow()"><span class="smt-val" id="smt-soakV">160</span></div>
+      <div class="smt-ctrl"><span style="min-width:110px;color:rgba(255,255,255,.6)">Peak temp (°C)</span><input type="range" id="smt-peak" min="220" max="265" value="245" step="1" oninput="smtDrawReflow()"><span class="smt-val" id="smt-peakV">245</span></div>
+      <div class="smt-ctrl"><span style="min-width:110px;color:rgba(255,255,255,.6)">Cooling (°C/s)</span><input type="range" id="smt-cool" min="1" max="6" value="3" step="0.1" oninput="smtDrawReflow()"><span class="smt-val" id="smt-coolV">3.0</span></div>
+      <div id="smt-reflow-alerts" style="margin-top:8px"></div>
+    </div>
+    <div class="smt-card">
+      <div class="smt-lbl">溫區說明</div>
+      <div id="smt-zone-cards"></div>
+    </div>
+  </div>
+
+  <!-- DEFECTS -->
+  <div class="smt-sec" id="smtsec-defects">
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px" id="smt-dfilt"></div>
+    <div id="smt-defect-list"></div>
+  </div>
+
+  <!-- STENCIL -->
+  <div class="smt-sec" id="smtsec-stencil">
+    <div class="smt-card">
+      <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">📐 Stencil Area Ratio 計算器</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:10px">AR = (L×W) ÷ (2×T×(L+W))　最低要求：AR ≥ 0.66</div>
+      <div class="smt-ctrl"><span style="min-width:90px;color:rgba(255,255,255,.6)">長 L (mm)</span><input type="range" id="smt-stL" min="0.2" max="3" value="1.2" step="0.05" oninput="smtCalcST()"><span class="smt-val" id="smt-stLv">1.20</span></div>
+      <div class="smt-ctrl"><span style="min-width:90px;color:rgba(255,255,255,.6)">寬 W (mm)</span><input type="range" id="smt-stW" min="0.2" max="3" value="0.8" step="0.05" oninput="smtCalcST()"><span class="smt-val" id="smt-stWv">0.80</span></div>
+      <div class="smt-ctrl"><span style="min-width:90px;color:rgba(255,255,255,.6)">厚 T (mm)</span><input type="range" id="smt-stT" min="0.08" max="0.2" value="0.12" step="0.01" oninput="smtCalcST()"><span class="smt-val" id="smt-stTv">0.12</span></div>
+      <div id="smt-st-result" style="margin-top:10px;padding:10px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)"></div>
+      <div class="smt-lbl" style="margin-top:12px">AR判準</div>
+      <table class="smt-tbl"><tr><th>AR值</th><th>轉移率</th><th>判定</th></tr>
+        <tr><td class="smt-ok">&gt; 0.66</td><td>&gt;80%</td><td class="smt-ok">合格</td></tr>
+        <tr><td class="smt-warn">0.55–0.66</td><td>65–80%</td><td class="smt-warn">邊緣，加強監控</td></tr>
+        <tr><td class="smt-bad">&lt; 0.55</td><td>&lt;65%</td><td class="smt-bad">不合格，重新設計</td></tr>
+      </table>
+      <div class="smt-lbl" style="margin-top:12px">常見設計規則</div>
+      <table class="smt-tbl"><tr><th>參數</th><th>規則</th><th>原因</th></tr>
+        <tr><td>開孔尺寸</td><td>≤ PAD尺寸</td><td>避免錫膏溢出橋接</td></tr>
+        <tr><td>Fine pitch (&lt;0.5mm)</td><td>Home plate開孔</td><td>減少Toe位錫量</td></tr>
+        <tr><td>BGA開孔</td><td>球徑的80–90%</td><td>球高一致性</td></tr>
+        <tr><td>Via-in-pad</td><td>塞孔或蓋油</td><td>防止錫膏吸入Via</td></tr>
+        <tr><td>鋼板材質</td><td>Fine pitch用電鑄板</td><td>壁面光滑脫模佳</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- NOZZLE -->
+  <div class="smt-sec" id="smtsec-nozzle">
+    <div style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:10px">吸嘴選擇直接影響Pick準確率和真空完整性。錯誤吸嘴 = Missing component。</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px" id="smt-noz-grid"></div>
+    <div class="smt-card">
+      <div class="smt-lbl">吸嘴維護要點</div>
+      <div class="smt-krow"><div class="smt-dot" style="background:#E57373"></div>尖端缺損、彎曲或殘留物 &gt;0.1mm → 立即更換</div>
+      <div class="smt-krow"><div class="smt-dot" style="background:#EF9F27"></div>每班確認真空壓力，偏差 &gt;5kPa 記錄並追查</div>
+      <div class="smt-krow"><div class="smt-dot" style="background:#EF9F27"></div>每日用IPA清潔吸嘴尖端，禁用研磨物</div>
+      <div class="smt-krow"><div class="smt-dot" style="background:#4CAF50"></div>PM後執行吸嘴視覺校正，確認中心偏移</div>
+      <div class="smt-krow"><div class="smt-dot" style="background:#4CAF50"></div>記錄Pick次數，達廠商壽命上限前預防性更換</div>
+      <div class="smt-lbl" style="margin-top:10px">PFMEA吸嘴失效模式</div>
+      <div style="margin-bottom:7px"><button class="smt-fhdr" onclick="smtTogF(this)"><span>吸嘴堵塞 → 真空不足 → 元件掉落</span><i class="smt-farr">▶</i></button><div class="smt-fcauses"><div class="smt-fcause">助焊劑殘留堆積於吸嘴孔道</div><div class="smt-fcause">置件過程錫膏污染</div><span class="smt-fact">管控：每日清潔 + 真空SPC監控</span></div></div>
+      <div style="margin-bottom:7px"><button class="smt-fhdr" onclick="smtTogF(this)"><span>吸嘴彎曲 → 偏心Pick → 立碑</span><i class="smt-farr">▶</i></button><div class="smt-fcauses"><div class="smt-fcause">機械碰撞（撞到Feeder蓋或元件）</div><div class="smt-fcause">程式高度設定錯誤</div><span class="smt-fact">管控：開工視覺校正；高度學習後Lock</span></div></div>
+      <div><button class="smt-fhdr" onclick="smtTogF(this)"><span>錯誤吸嘴尺寸 → 元件損傷/掉落</span><i class="smt-farr">▶</i></button><div class="smt-fcauses"><div class="smt-fcause">換料後吸嘴未同步更換</div><div class="smt-fcause">同一Lane多種元件尺寸</div><span class="smt-fact">管控：程式吸嘴-元件綁定驗證，開工Check</span></div></div>
+    </div>
+  </div>
+
+  <!-- AOI -->
+  <div class="smt-sec" id="smtsec-aoi">
+    <div class="smt-card">
+      <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">👁️ AOI光學檢測原理</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:10px">多角度彩色LED + 攝影機，分析反射光型來判斷焊點形狀與元件狀態</div>
+      <div class="smt-lbl">四角度光源系統</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        <div style="border-radius:8px;padding:9px;background:rgba(226,75,74,.1);border:1px solid rgba(226,75,74,.2)"><div style="font-size:11px;font-weight:600;color:#F09595;margin-bottom:4px">🔴 低角度 (10–20°)</div><div style="font-size:12px;color:rgba(255,255,255,.7)">焊點斜面/Fillet形狀。橋接偵測。錫量不足高度。</div></div>
+        <div style="border-radius:8px;padding:9px;background:rgba(76,175,80,.1);border:1px solid rgba(76,175,80,.2)"><div style="font-size:11px;font-weight:600;color:#81C784;margin-bottom:4px">🟢 中角度 (40–50°)</div><div style="font-size:12px;color:rgba(255,255,255,.7)">元件本體存在。立碑（缺件）。元件浮起。</div></div>
+        <div style="border-radius:8px;padding:9px;background:rgba(56,138,221,.1);border:1px solid rgba(56,138,221,.2)"><div style="font-size:11px;font-weight:600;color:#64B5F6;margin-bottom:4px">🔵 高角度 (60–75°)</div><div style="font-size:12px;color:rgba(255,255,255,.7)">元件本體標記/極性。封裝方向（180°反向）。</div></div>
+        <div style="border-radius:8px;padding:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)"><div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.6);margin-bottom:4px">⚪ 漫射頂光</div><div style="font-size:12px;color:rgba(255,255,255,.7)">PCB表面對比。Pad存在確認。共面度基線。</div></div>
+      </div>
+      <div class="smt-lbl">False Call vs Escape 平衡</div>
+      <div class="smt-krow"><div class="smt-dot" style="background:#E57373"></div><strong style="margin-right:4px;color:#F09595">Escape（漏判）：</strong>不良板通過AOI → 流到客戶。最嚴重後果。</div>
+      <div class="smt-krow"><div class="smt-dot" style="background:#EF9F27"></div><strong style="margin-right:4px;color:#FAC775">False Call（誤判）：</strong>良品被攔下 → 浪費時間、增加人工搬運損傷風險。</div>
+      <div class="smt-krow"><div class="smt-dot" style="background:#4CAF50"></div>目標：False call率 &lt;5%，同時對CTQ焊點Escape=0</div>
+      <div class="smt-krow"><div class="smt-dot" style="background:#64B5F6"></div>每日用Golden Board驗證AOI靈敏度沒有漂移</div>
+      <div class="smt-krow"><div class="smt-dot" style="background:#64B5F6"></div>新PCB設計必須重新建立並驗證AOI程式，不可直接複製</div>
+    </div>
+  </div>
+
+  <!-- NOTES -->
+  <div class="smt-sec" id="smtsec-notes">
+    <div class="smt-card">
+      <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px">📓 我的學習筆記</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.45);margin-bottom:10px">筆記存在本機（localStorage），隨時可匯出複製到Google Doc</div>
+      <textarea class="smt-note-area" id="smt-notes-ta" placeholder="在這裡記下你的學習心得、現場案例、問題清單…&#10;&#10;例如：&#10;- 今天學到Reflow冷焊的判斷：灰暗、粗糙表面，無光澤凹弧&#10;- 現場問題：Line 3 AOI False call率偏高，需要調程式&#10;- 待確認：Wistron B-side reflow peak temp spec"></textarea>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <button class="smt-nbtn pr" onclick="smtSaveNotes()" style="border-radius:20px">💾 儲存筆記</button>
+        <button class="smt-export-btn" onclick="smtExportNotes()">📋 複製到剪貼簿（貼到Google Doc）</button>
+      </div>
+      <div style="margin-top:16px;padding-top:12px;border-top:1px solid rgba(255,255,255,.08)">
+        <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">學習進度</div>
+        <div id="smt-progress-summary"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="smt-sec" id="smtsec-quiz">
+    <div id="smt-quiz-panel"></div>
+  </div>
+</div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   SMT COURSE ENGINE
+   ═══════════════════════════════════════ */
+const SMT_KEY='dean_smt_v1';
+let smtState={cur:0,visited:new Set(),qIdx:0,qAns:false,qScore:{c:0,t:0},defFilter:'全部'};
+
+function smtLoad(){
+  const raw=localStorage.getItem(SMT_KEY);
+  if(raw){const d=JSON.parse(raw);smtState.visited=new Set(d.visited||[]);smtState.notes=d.notes||'';}
+}
+function smtSave(){
+  localStorage.setItem(SMT_KEY,JSON.stringify({visited:[...smtState.visited],notes:smtState.notes||''}));
+}
+
+const SMT_ST=[
+  {id:0,num:'①',icon:'📋',name:'PCB Loading',desc:'準備並載入裸板，貼Barcode，載入Carrier進行B面製程。',
+   inp:['裸PCB（正確料號、無翹曲）','Carrier/Magazine','雷射條碼標籤','生產工單'],
+   out:['已掃描Barcode的PCB','PCB已入Carrier','B面備妥，可進印刷'],
+   kpis:[{t:'PCB翹曲 < 對角線0.75%',c:'#4CAF50'},{t:'料號經Barcode掃描確認（SFCS）',c:'#64B5F6'},{t:'Carrier支撐Pin對齊，無元件損傷',c:'#4CAF50'},{t:'標籤一次掃描成功率追蹤',c:'#EF9F27'}],
+   faults:[{m:'錯誤PCB料號',rpn:80,cs:['未強制Barcode掃描','類似料號混放倉庫'],a:'RF/SFCS掃描防呆 — 不符不放行'},{m:'PCB翹曲無法入Carrier',rpn:60,cs:['儲存環境（潮濕/高溫）不當','PCB疊放過高'],a:'IQC進料翹曲量測；規格化堆疊方式'}]},
+  {id:1,num:'②',icon:'🖨️',name:'Solder Printing',desc:'錫膏透過鋼板（Stencil）用刮刀印到PCB Pad上。這站是SMT品質的源頭，約60%缺陷來自此站。',
+   inp:['已定位的PCB','鋼板（Stencil）','錫膏（正確料號、未過期）','前後刮刀'],
+   out:['所有Pad有錫膏沉積','錫量/面積在規格內','送SPI確認'],
+   kpis:[{t:'錫量：標準值的80–120%（SPI量測）',c:'#E57373'},{t:'錫膏料號：每次換料RF掃描確認',c:'#64B5F6'},{t:'保存期限：未開封<6個月；開封<12小時',c:'#EF9F27'},{t:'鋼板開孔無阻塞、無錫膏滲漏',c:'#4CAF50'},{t:'PCB對位偏移在鋼板規格內',c:'#64B5F6'}],
+   faults:[{m:'使用錯誤錫膏',rpn:36,cs:['料號混放','換料未掃描'],a:'RF掃描+SFCS比對防呆'},{m:'漏印/錫量不足',rpn:72,cs:['鋼板上錫膏用盡','開孔阻塞','刮刀壓力太低'],a:'SPI 100%檢查；鋼板定期清洗'},{m:'過期錫膏',rpn:60,cs:['未確認開封期限','超過12小時繼續使用'],a:'強制標示開封時間；FIFO管控'},{m:'橋接/錫量過多',rpn:64,cs:['刮刀壓力過高','鋼板提早抬起','Gasket/框架磨損'],a:'SPI橋接偵測；壓力SPC管控'}]},
+  {id:2,num:'③',icon:'🔍',name:'SPI',desc:'錫膏印刷後的3D自動量測，第一個自動化品質關卡，攔截不良板進入置件。',
+   inp:['已印錫膏的PCB','SPI機台+正確程式','Pad座標與錫量規格資料'],
+   out:['Pass：送P&P','Fail：退回重印或報廢','SPC回饋給印刷機'],
+   kpis:[{t:'體積覆蓋率 ≥80%（<70%為紅燈）',c:'#E57373'},{t:'高度均一性 — 無橋接偵測',c:'#EF9F27'},{t:'面積覆蓋率每Pad ≥規格',c:'#4CAF50'},{t:'XY偏移在公差內',c:'#64B5F6'},{t:'False call率 <2%，超標需調程式',c:'#EF9F27'}],
+   faults:[{m:'SPI警報被繞過',rpn:48,cs:['作業員未獲授權就Override','錯誤程式載入'],a:'SPI與輸送帶Interlock — 不過不送'},{m:'False call率偏高',rpn:30,cs:['程式未調校','Pad資料不準','燈光漂移'],a:'每月程式Review；Cpk逐Pad追蹤'}]},
+  {id:3,num:'④',icon:'🤖',name:'Pick & Place',desc:'高速機台從Feeder取元件放到錫膏Pad上，Fine pitch元件精度需 <50µm。',
+   inp:['已確認錫膏的PCB','Feeder（已載正確料卷）','P&P程式（正確版本）','吸嘴（正確型號，已清潔）'],
+   out:['所有元件已置放的PCB','等待過爐','機台Log（Pick數、拋料數）'],
+   kpis:[{t:'置件偏移 <Pad寬的50%（IPC Class 2/3）',c:'#E57373'},{t:'無缺件、無錯件、無極性反向',c:'#E57373'},{t:'吸嘴真空壓力每cycle監控',c:'#EF9F27'},{t:'Feeder校正與料帶進給精度',c:'#64B5F6'},{t:'首件確認 + AOI下站驗證',c:'#4CAF50'}],
+   faults:[{m:'置件位置錯誤（程式問題）',rpn:64,cs:['未綁定工單自動選程式','程式版本錯誤'],a:'工單自動對應程式；首件Buy-off'},{m:'缺件（吸嘴掉料）',rpn:72,cs:['吸嘴堵塞→真空不足','吸嘴彎曲→偏心','真空系統壓力不足','吸嘴尺寸不符'],a:'吸嘴PM計畫；真空SPC；AOI下站偵測'},{m:'錯誤元件（Feeder問題）',rpn:80,cs:['上錯料卷','Feeder標示錯誤','未執行掃描確認'],a:'進料掃描+Feeder ID綁定'},{m:'立碑（Reflow後）',rpn:48,cs:['兩端錫量不均','置件偏心','Reflow熱平衡差'],a:'SPI預先確認；P&P偏移調整'}]},
+  {id:4,num:'⑤',icon:'🔥',name:'Reflow Oven',desc:'PCB通過多溫區爐，控制溫度使錫膏熔化後凝固，形成可靠焊點。Profile是最關鍵的製程參數。',
+   inp:['已置件的PCB','Reflow Profile Recipe（符合錫膏規格）','N₂氣供應（O₂ <3000ppm）','傳送帶速度設定'],
+   out:['焊接完成的PCBA（符合IPC J-STD-001）','Profile量測記錄','送AOI'],
+   kpis:[{t:'峰值溫度在錫膏規格內（SAC305: 245±5°C）',c:'#E57373'},{t:'液相以上時間（TAL）：60–90秒',c:'#E57373'},{t:'升溫速率：<3°C/s（防熱衝擊）',c:'#EF9F27'},{t:'O₂濃度 <3000ppm（N₂焊接）',c:'#EF9F27'},{t:'每12小時做一次Profile量測',c:'#4CAF50'}],
+   faults:[{m:'冷焊（冷焊/Cold Solder）',rpn:168,cs:['峰值溫度未達規格','TAL不足60秒','PM後未重新量測Profile'],a:'Profile SPC；換線後強制重測'},{m:'錫珠（Solder Ball）',rpn:84,cs:['升溫太快 — 水分爆出','SPI錫量過多','N₂流量過大'],a:'升溫速率管控；SPI量檢前置'},{m:'錫洞（Void）',rpn:60,cs:['助焊劑/PCB outgassing','Via-in-pad吸錫（HIP效應）','Profile不當'],a:'X-ray量測Void%；DFM設計改善'},{m:'焊點氧化',rpn:48,cs:['N₂供應中斷','O₂感測器未校正'],a:'O₂連續監控+斷氣警報'}]},
+  {id:5,num:'⑥',icon:'👁️',name:'AOI',desc:'100%自動光學檢測，確認焊點品質、元件存在性、極性、橋接。所有板子都過，不可跳過。',
+   inp:['焊接後的PCBA','AOI程式（版本正確）','已校正的機台（燈光、攝影機）'],
+   out:['Pass：送目視確認','Fail：標示缺陷位置','數據輸入TDM追蹤'],
+   kpis:[{t:'CTQ焊點逃出率（Escape）目標=0',c:'#E57373'},{t:'False call率 <5%，超標調程式',c:'#EF9F27'},{t:'程式版本綁定工單',c:'#64B5F6'},{t:'覆蓋率：所有CTQ焊點+極性件',c:'#4CAF50'}],
+   faults:[{m:'載入錯誤程式',rpn:28,cs:['人工選程式','ECN後程式未更新'],a:'每個機種一個程式；工單自動連結'},{m:'影像不清晰造成逃出',rpn:56,cs:['鏡頭污染','燈光漂移/燈泡老化','PCB表面處理差異'],a:'每週校正；每日Golden Board Run'},{m:'作業員放行AOI不良品',rpn:48,cs:['誤判警報','無第二人確認規定'],a:'雙人確認制；強制記錄處置原因'}]},
+  {id:6,num:'⑦',icon:'🧑‍🔬',name:'目視/IPQC',desc:'人員確認AOI警報，並按IPC-A-610執行抽樣目視。半成品流到下站（翻板/選焊/測試）前的最後防線。',
+   inp:['AOI標示不良的PCBA','IPC-A-610標準','檢查表','黃金樣本（Boundary Sample）'],
+   out:['Pass/Fail判定','維修板退回重工','IPQC抽樣數據'],
+   kpis:[{t:'IPC-A-610 Class 2或Class 3工藝標準',c:'#64B5F6'},{t:'AOI警報100%確認，不可跳過',c:'#E57373'},{t:'IPQC AQL抽樣（CTQ: AQL 0.65）',c:'#EF9F27'},{t:'檢驗員需IPC-A-610 CIS認證',c:'#4CAF50'}],
+   faults:[{m:'目視漏過缺陷',rpn:56,cs:['檢驗員疲勞/人體工學','照明不足','判準不明確'],a:'輪崗制；照度量測；更新Boundary Sample'},{m:'過度拒退（不必要重工）',rpn:30,cs:['判準與客戶不一致','樣本過時'],a:'季度Inspector相關性研究'}]},
+  {id:7,num:'⑧',icon:'📊',name:'IPQC批放行',desc:'最終品質關卡。統計抽樣、RFTY/PPM計算、批次放行、供應商回饋。',
+   inp:['完成的PCBA批次','抽樣計畫','AOI/目視缺陷記錄','SPC/PPM歷史趨勢'],
+   out:['批次放行授權','RFTY & PPM指標','TDM輸入資料','Tier 2供應商回饋'],
+   kpis:[{t:'RFTY（Rolled First Time Yield）vs目標',c:'#E57373'},{t:'OOB PPM — 客戶端品質先行指標',c:'#E57373'},{t:'缺陷分類（橋接/缺件/冷焊）比例',c:'#EF9F27'},{t:'完整Lot追溯 — 所有材料連結工單',c:'#4CAF50'}],
+   faults:[{m:'不良批次放行',rpn:90,cs:['未遵循抽樣計畫','資料記錄錯誤','出貨壓力'],a:'系統Lock — 無IPQC簽核不得放行'},{m:'RFTY數據不準確',rpn:40,cs:['重工未記入缺陷Log','多次維修未追蹤'],a:'MES自動計數所有維修操作'}]}
+];
+
+const SMT_DEFECTS=[
+  {name:'錫橋（Solder Bridge）',station:'印刷/回焊',sev:'r',ipc:'不合格',
+   appear:'相鄰兩個應絕緣的Pad或導體間被錫膏連通。',
+   causes:['SPI錫量過多（超印）','鋼板開孔過大','刮刀壓力過高','立碑元件推擠錫膏'],
+   detect:'AOI（低角度光偵測高度異常）；SPI（體積超標）',action:'確認SPI數據；檢查鋼板AR；調整刮刀壓力'},
+  {name:'錫量不足',station:'印刷/回焊',sev:'a',ipc:'條件接受',
+   appear:'Fillet薄、凹面或缺失。元件腳透過錫膏可見。Heel Fillet缺失。',
+   causes:['SPI體積偏低（欠印）','鋼板開孔阻塞','錫膏過期或乾燥','峰值溫度不足'],
+   detect:'AOI；SPI預防；目視',action:'確認SPI體積vs規格；確認錫膏新鮮度；驗證Reflow峰溫'},
+  {name:'冷焊（Cold Solder / 冷焊）',station:'回焊',sev:'r',ipc:'不合格',
+   appear:'表面暗沉、顆粒狀或霧化。圓形非潤濕fillet。無光亮凹弧。',
+   causes:['峰值溫度未達最低規格','液相以上時間不足（<60s）','冷卻過程板子移動','PM後Profile未重測'],
+   detect:'目視（暗沉外觀）；X-ray（不完整潤濕）',action:'用熱電偶板驗證Profile；確認峰溫SPC趨勢'},
+  {name:'立碑（Tombstone）',station:'回焊',sev:'r',ipc:'不合格',
+   appear:'小型晶片元件（0402、0201）在回焊中豎立於單一Pad上。',
+   causes:['兩個Pad錫膏量不均','元件置件偏心','不對稱熱質量（一邊先熱）','兩Pad錫膏新鮮度不一'],
+   detect:'AOI（元件非水平）；SPI（兩Pad體積差）',action:'確認SPI兩端體積平衡；P&P對中確認；鋼板兩端開孔一致'},
+  {name:'缺件',station:'置件',sev:'r',ipc:'不合格',
+   appear:'Pad有錫（已回焊）但元件缺失，設計位置空無一物。',
+   causes:['吸嘴真空不足→元件掉落','Feeder空料無警報','視覺系統遺漏拋料','元件困在料帶口袋'],
+   detect:'AOI（Pad存在但無本體）；AOI本體確認演算法',action:'查機台拋料Log；確認吸嘴真空趨勢；Feeder料帶檢查'},
+  {name:'極性反向',station:'置件',sev:'r',ipc:'不合格',
+   appear:'極性元件（電容、二極體、LED、IC）旋轉180°放置。',
+   causes:['Feeder上料方向錯誤','P&P視覺校正漂移','元件本體無極性標記','程式θ角錯誤'],
+   detect:'AOI（本體標記方向確認）；FCT（功能失效）',action:'AOI極性確認演算法；確認Feeder上料方向'},
+  {name:'錫洞（Void）',station:'回焊',sev:'a',ipc:'依Void%定',
+   appear:'焊點內部氣泡空腔，X-ray可見。外觀可能正常。',
+   causes:['助焊劑/Flux outgassing','Via-in-pad吸錫（HIP效應）','PCB/元件吸濕','升溫太快'],
+   detect:'X-ray（2D或3D CT）；IPC-7095 Void% <25%',action:'DFM：Via-in-pad塞孔；放慢升溫速率；PCB烘烤'},
+  {name:'錫珠（Solder Ball）',station:'回焊',sev:'a',ipc:'活動錫珠不合格',
+   appear:'元件本體旁或下方有小球狀錫粒。',
+   causes:['升溫太快→水分爆出','錫膏印到防焊漆上（鋼板偏位）','N₂流量太大','錫膏過期'],
+   detect:'AOI；目視；SPI對位確認',action:'放慢預熱升溫；確認鋼板對位；驗證N₂流量'}
+];
+
+const SMT_NOZZLES=[
+  {name:'CN065/CN040',shape:'○',bg:'rgba(56,138,221,.15)',col:'#64B5F6',size:'0.4–0.65mm孔徑',pkg:'0201, 01005',vac:'≥45 kPa',note:'最小吸嘴，超細間距。需頻繁PM。'},
+  {name:'CN100/CN140',shape:'○',bg:'rgba(29,158,117,.15)',col:'#4CAF50',size:'1.0–1.4mm孔徑',pkg:'0402, 0603, SOT23',vac:'≥35 kPa',note:'SMT最常用，被動元件主力吸嘴。'},
+  {name:'CN220/CN300',shape:'○',bg:'rgba(239,159,39,.15)',col:'#EF9F27',size:'2.2–3.0mm孔徑',pkg:'0805, 1206, SOD, SOP8',vac:'≥28 kPa',note:'中型IC和較大被動元件。'},
+  {name:'平板/Paddle',shape:'▭',bg:'rgba(206,147,216,.15)',col:'#CE93D8',size:'依元件定',pkg:'QFP, SOIC, 扁平IC',vac:'≥22 kPa',note:'平面型尖端，避免損傷IC腳。'},
+  {name:'BGA吸嘴',shape:'⬡',bg:'rgba(226,75,74,.15)',col:'#F09595',size:'客製',pkg:'BGA, CSP, LGA',vac:'≥18 kPa',note:'大面積低真空。Ball對位關鍵。'},
+  {name:'異形/Cup',shape:'⬭',bg:'rgba(128,203,196,.15)',col:'#80CBC4',size:'客製',pkg:'連接器、屏蔽罩',vac:'≥15 kPa',note:'客製形狀，低量，特殊Feeder。'}
+];
+
+const SMT_ZONES=[
+  {name:'預熱區 Preheat',range:'25→150°C',time:'60–90s',color:'rgba(56,138,221,.15)',tcol:'#64B5F6',why:'蒸發錫膏溶劑。活化Flux。防止熱衝擊。升溫速率控制<3°C/s。'},
+  {name:'均溫區 Soak',range:'150–180°C',time:'60–120s',color:'rgba(239,159,39,.15)',tcol:'#EF9F27',why:'Flux完全活化。去除Pad和元件腳氧化層。板面溫度均一化。'},
+  {name:'回焊區 Reflow',range:'183–250°C',time:'TAL 60–90s',color:'rgba(226,75,74,.15)',tcol:'#F09595',why:'錫膏熔化（SAC305液相點183°C）。潤濕Pad和元件腳。形成Cu₆Sn₅金屬間化合物（IMC）。'},
+  {name:'冷卻區 Cooling',range:'250→25°C',time:'<4°C/s',color:'rgba(29,158,117,.15)',tcol:'#4CAF50',why:'凝固。晶粒結構形成。太快→熱應力裂縫。太慢→晶粒粗大/暗沉焊點。'}
+];
+
+const SMT_QUIZ=[
+  {q:'某Pad的鋼板Area Ratio（AR）計算結果為0.52，預期會發生什麼？',opts:['錫膏轉移率>80%，屬合格','邊緣區間，需密切監控','轉移率<65%，很可能錫量不足，需重新設計或降低鋼板厚度','AR不影響錫量，可以忽略'],ans:2,exp:'AR<0.55表示開孔壁面對錫膏的附著力大於Pad的拉力，轉移率跌至65%以下。解法：降低鋼板厚度T，或加大開孔L/W尺寸。'},
+  {q:'Reflow後，PCB角落的大型連接器出現冷焊，但板子中央焊點正常。最可能的根因是？',opts:['使用了錯誤料號的錫膏','角落連接器熱質量大，實際峰溫未達標 — 需Profile量測驗證','AOI程式誤判','N₂供應中斷'],ans:1,exp:'角落大型連接器熱質量大，即使板中央峰溫達標，連接器端子可能未達液相點。解法：在連接器端子放熱電偶重新量測Profile，調整溫區設定。'},
+  {q:'AOI對0402電容的False call率達8%，正確處理順序是？',opts:['忽略，8%可接受','提高偵測靈敏度攔更多缺陷','調整該元件/Pad組合的AOI程式門檻，用Golden Board驗證，每週追蹤','把0402換成0603改善AOI可偵測性'],ans:2,exp:'8% False call率浪費大量確認時間，並增加人工搬運損傷風險。正確步驟：(1)調整該元件的偵測門檻 → (2)用Golden Board確認沒有引入新的逃出 → (3)每週追蹤趨勢。'},
+  {q:'某Feeder Lane的缺件率達0.3%，應優先查哪三項根因？',opts:['吸嘴真空、Feeder料帶進給、料卷纏繞','Reflow溫度、AOI程式、PCB翹曲','鋼板開孔、錫膏體積、刮刀壓力','PCB載入方向、Barcode掃描、工單'],ans:0,exp:'特定Feeder Lane的缺件率指向該Lane問題。優先查：(1)吸嘴真空 — 堵塞的吸嘴會掉料；(2)Feeder料帶進給 — Pitch不準造成空袋Pick；(3)料卷 — 料帶纏繞或口袋黏連造成拋料。'},
+  {q:'冷焊和灰暗焊點的差別是什麼？哪個更嚴重？',opts:['兩者相同，都是不合格品','冷焊=錫未完全潤濕（功能失效）；灰暗=表面氧化（可能僅外觀），冷焊更嚴重','灰暗焊點是機械失效；冷焊是外觀問題，灰暗更嚴重','兩者原因相同，都是AOI程式錯誤造成'],ans:1,exp:'冷焊（冷焊/Cold Solder）表示錫膏未完整熔化潤濕，焊點機械強度和導電性不足，會在現場失效。灰暗焊點可能只是N₂平衡影響表面氧化，潤濕本身可能完整，需進一步確認。冷焊是功能性拒收；灰暗需調查但可能是外觀問題。'},
+  {q:'IPC-A-610 Class 2 vs Class 3，對你的IPQC工作有什麼不同？',opts:['Class 3有更嚴格標準 — 軍事/醫療/航太。Fillet高度、橋接容差、Void%限制都更嚴。','Class 3只適用BGA檢查','Class 2比Class 3更嚴，消費品需要更嚴格控制','無差異，IPC等級只適用PCB製造，不適用組裝'],ans:0,exp:'IPC-A-610 Class 2=商業電子（多數消費/工業品）。Class 3=高可靠度（醫療、軍事、航太）。Class 3對許多在Class 2「條件接受」的缺陷採零容忍，包括Void%、Fillet高度、元件偏移等。作為QM，需先確認Zebra各產品線適用哪個等級。'}
+];
+
+function openSMT(){
+  smtLoad();
+  document.getElementById('smt-overlay').style.display='block';
+  document.body.style.overflow='hidden';
+  smtUpdateProgress();
+  smtRenderStations();
+  setTimeout(()=>{smtDrawReflow();smtRenderZones();smtRenderDefects();smtRenderStencil();smtRenderNozzles();smtRenderNotes();smtRenderQuiz();},100);
+}
+
+function closeSMT(){
+  document.getElementById('smt-overlay').style.display='none';
+  document.body.style.overflow='';
+}
+
+function smtTab(t,btn){
+  document.querySelectorAll('.smt-sec').forEach(s=>s.classList.remove('vis'));
+  document.getElementById('smtsec-'+t).classList.add('vis');
+  document.querySelectorAll('.smt-tb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(t==='reflow')smtDrawReflow();
+  if(t==='notes')smtRenderNotes();
+  if(t==='quiz')smtRenderQuiz();
+}
+
+function smtUpdateProgress(){
+  const pct=Math.round(smtState.visited.size/SMT_ST.length*100);
+  document.getElementById('smt-prog-bar').style.width=pct+'%';
+  document.getElementById('smt-prog-txt').textContent=`已完成 ${smtState.visited.size}/${SMT_ST.length} 站`;
+}
+
+function smtRenderStations(){
+  document.getElementById('smt-pgrid').innerHTML=SMT_ST.map(s=>`
+    <div class="smt-pcard ${s.id===smtState.cur?'sel':''} ${smtState.visited.has(s.id)?'done':''}" onclick="smtSelS(${s.id})">
+      <div class="smt-picon">${s.icon}</div>
+      <div class="smt-pname">${s.name}</div>
+      <div class="smt-pnum">${s.num}</div>
+      ${smtState.visited.has(s.id)?'<div class="smt-pcheck">✓ 已讀</div>':''}
+    </div>`).join('');
+  document.getElementById('smt-sctr').textContent=`${smtState.cur+1}/8`;
+  smtRenderDet();
+}
+
+function smtRenderDet(){
+  const s=SMT_ST[smtState.cur];
+  document.getElementById('smt-det').innerHTML=`
+    <div class="smt-card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <span style="font-size:24px">${s.icon}</span>
+        <div><div style="font-size:14px;font-weight:600;color:#fff">${s.num} ${s.name}</div><div style="font-size:12px;color:rgba(255,255,255,.45);margin-top:2px">${s.desc}</div></div>
+      </div>
+      <div class="smt-row2">
+        <div class="smt-ibox in"><div class="smt-ibox-lbl">Inputs</div>${s.inp.map(i=>`<div class="smt-item">${i}</div>`).join('')}</div>
+        <div class="smt-ibox out"><div class="smt-ibox-lbl">Outputs</div>${s.out.map(o=>`<div class="smt-item">${o}</div>`).join('')}</div>
+      </div>
+      <div class="smt-lbl">品質管控重點</div>
+      ${s.kpis.map(k=>`<div class="smt-krow"><div class="smt-dot" style="background:${k.c}"></div>${k.t}</div>`).join('')}
+      <div class="smt-lbl">失效模式（PFMEA）</div>
+      ${s.faults.map((f,fi)=>`
+        <div style="margin-bottom:7px">
+          <button class="smt-fhdr" onclick="smtTogF(this)">
+            <span>${f.m}</span>
+            <span class="smt-badge ${f.rpn>=100?'r':f.rpn>=60?'a':'g'}">RPN ${f.rpn}</span>
+            <i class="smt-farr">▶</i>
+          </button>
+          <div class="smt-fcauses">
+            ${f.cs.map(c=>`<div class="smt-fcause">${c}</div>`).join('')}
+            <span class="smt-fact">管控措施：${f.a}</span>
+          </div>
+        </div>`).join('')}
+      <div style="margin-top:12px;text-align:right">
+        <button class="smt-nbtn pr" onclick="smtMarkDone(${s.id})" style="font-size:11px">${smtState.visited.has(s.id)?'✓ 已讀完':'✓ 標記此站已讀'}</button>
+      </div>
+    </div>`;
+}
+
+function smtSelS(id){smtState.cur=id;smtRenderStations();}
+function smtPrev(){if(smtState.cur>0){smtState.cur--;smtRenderStations();}}
+function smtNext(){if(smtState.cur<7){smtMarkDone(smtState.cur);smtState.cur++;smtRenderStations();}else{smtMarkDone(smtState.cur);}}
+function smtMarkDone(id){smtState.visited.add(id);smtSave();smtUpdateProgress();smtRenderStations();}
+function smtTogF(el){el.classList.toggle('open');el.nextElementSibling.classList.toggle('vis');}
+
+function smtDrawReflow(){
+  const canvas=document.getElementById('smt-canvas');
+  if(!canvas)return;
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.offsetWidth||600,H=200;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+  const ramp=parseFloat(document.getElementById('smt-ramp').value);
+  const soak=parseFloat(document.getElementById('smt-soak').value);
+  const peak=parseFloat(document.getElementById('smt-peak').value);
+  const coolR=parseFloat(document.getElementById('smt-cool').value);
+  document.getElementById('smt-rampV').textContent=ramp.toFixed(1);
+  document.getElementById('smt-soakV').textContent=Math.round(soak);
+  document.getElementById('smt-peakV').textContent=Math.round(peak);
+  document.getElementById('smt-coolV').textContent=coolR.toFixed(1);
+  const toT=t=>H-8-(t-20)/(peak-20+20)*(H-24);
+  const preT=soak/ramp,soakT=90,reflowT=60,coolT=(peak-40)/coolR;
+  const total=preT+soakT+reflowT+coolT;
+  const toX=sec=>36+sec/total*(W-52);
+  const zoneColors=['rgba(56,138,221,.15)','rgba(239,159,39,.15)','rgba(226,75,74,.15)','rgba(29,158,117,.15)'];
+  const zoneEdges=[0,preT,preT+soakT,preT+soakT+reflowT,total];
+  zoneEdges.forEach((e,i)=>{if(i===0)return;ctx.fillStyle=zoneColors[i-1];ctx.fillRect(toX(zoneEdges[i-1]),0,toX(e)-toX(zoneEdges[i-1]),H);});
+  ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=0.5;ctx.setLineDash([3,3]);
+  [100,150,183,peak].forEach(t=>{ctx.beginPath();ctx.moveTo(36,toT(t));ctx.lineTo(W-16,toT(t));ctx.stroke();ctx.fillStyle='rgba(255,255,255,.3)';ctx.font=`9px sans-serif`;ctx.fillText(t+'°',2,toT(t)+3);});
+  ctx.setLineDash([]);
+  const pts=[[0,25],[preT*.3,105],[preT,soak],[preT+soakT,soak+22],[preT+soakT+reflowT*.5,peak],[preT+soakT+reflowT,peak-5],[total,42]];
+  ctx.strokeStyle='#1D9E75';ctx.lineWidth=2;ctx.beginPath();
+  pts.forEach(([x,y],i)=>{i===0?ctx.moveTo(toX(x),toT(y)):ctx.lineTo(toX(x),toT(y));});ctx.stroke();
+  const alerts=[];
+  if(ramp>3)alerts.push('⚠️ 升溫速率>3°C/s — 錫珠/熱衝擊風險');
+  if(peak<235)alerts.push('⚠️ 峰值溫度<235°C — SAC305冷焊風險');
+  if(peak>260)alerts.push('⚠️ 峰值溫度>260°C — 元件損傷風險');
+  if(coolR>4)alerts.push('⚠️ 冷卻速率>4°C/s — 熱應力裂縫風險');
+  const al=document.getElementById('smt-reflow-alerts');
+  al.innerHTML=alerts.length?alerts.map(a=>`<div style="font-size:11px;padding:4px 9px;background:rgba(226,75,74,.15);border:1px solid rgba(226,75,74,.25);border-radius:6px;color:#F09595;margin-bottom:3px">${a}</div>`).join(''):'<div style="font-size:11px;padding:4px 9px;background:rgba(29,158,117,.1);border:1px solid rgba(29,158,117,.2);border-radius:6px;color:#4CAF50">✓ 參數在正常範圍內</div>';
+  const zl=document.getElementById('smt-zone-legend');
+  zl.innerHTML=['預熱','均溫','回焊','冷卻'].map((n,i)=>`<span style="font-size:10px;padding:2px 8px;border-radius:10px;font-weight:600;background:${zoneColors[i]};color:${['#64B5F6','#EF9F27','#F09595','#4CAF50'][i]}">${n}</span>`).join('');
+}
+
+function smtRenderZones(){
+  document.getElementById('smt-zone-cards').innerHTML=SMT_ZONES.map(z=>`
+    <div style="display:flex;gap:10px;margin-bottom:7px;padding:9px;border-radius:8px;background:${z.color};border:1px solid rgba(255,255,255,.08)">
+      <div style="min-width:80px"><div style="font-size:11px;font-weight:600;color:${z.tcol}">${z.name}</div><div style="font-size:10px;color:${z.tcol};opacity:.75">${z.range}</div><div style="font-size:10px;color:${z.tcol};opacity:.6">${z.time}</div></div>
+      <div style="font-size:12px;color:rgba(255,255,255,.7);line-height:1.5">${z.why}</div>
+    </div>`).join('');
+}
+
+function smtRenderDefects(){
+  const cats=['全部',...new Set(SMT_DEFECTS.map(d=>d.station))];
+  document.getElementById('smt-dfilt').innerHTML=cats.map(c=>`<button class="smt-dfbtn ${smtState.defFilter===c?'on':''}" onclick="smtSetDF('${c}',this)">${c}</button>`).join('');
+  const list=smtState.defFilter==='全部'?SMT_DEFECTS:SMT_DEFECTS.filter(d=>d.station===smtState.defFilter);
+  document.getElementById('smt-defect-list').innerHTML=list.map(d=>`
+    <div class="smt-dcard">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+        <div style="font-size:13px;font-weight:600;color:#fff">${d.name}</div>
+        <span class="smt-badge ${d.sev}" style="margin-left:auto">IPC: ${d.ipc}</span>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:5px">站台：${d.station}</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.6);margin-bottom:7px">${d.appear}</div>
+      <div class="smt-lbl">根本原因</div>
+      ${d.causes.map(c=>`<div class="smt-fcause" style="margin-bottom:3px">${c}</div>`).join('')}
+      <div class="smt-lbl" style="margin-top:6px">偵測方式</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.7);background:rgba(56,138,221,.08);border-radius:6px;padding:5px 8px;margin-bottom:4px">${d.detect}</div>
+      <div class="smt-lbl">對策</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.7)">${d.action}</div>
+    </div>`).join('');
+}
+function smtSetDF(f,btn){smtState.defFilter=f;document.querySelectorAll('.smt-dfbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');smtRenderDefects();}
+
+function smtRenderStencil(){smtCalcST();}
+function smtCalcST(){
+  const L=parseFloat(document.getElementById('smt-stL').value);
+  const W=parseFloat(document.getElementById('smt-stW').value);
+  const T=parseFloat(document.getElementById('smt-stT').value);
+  document.getElementById('smt-stLv').textContent=L.toFixed(2);
+  document.getElementById('smt-stWv').textContent=W.toFixed(2);
+  document.getElementById('smt-stTv').textContent=T.toFixed(2);
+  const ar=(L*W)/(2*T*(L+W));
+  const asp=W/T;
+  const arCls=ar>=0.66?'smt-ok':ar>=0.55?'smt-warn':'smt-bad';
+  const aspCls=asp>=1.5?'smt-ok':'smt-bad';
+  document.getElementById('smt-st-result').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div><div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:2px">Area Ratio (AR)</div><div style="font-size:22px;font-weight:600" class="${arCls}">${ar.toFixed(3)}</div><div style="font-size:11px;color:rgba(255,255,255,.4)">${ar>=0.66?'轉移率 >80% ✓':ar>=0.55?'邊緣，需監控':'轉移率 <65% ✗'}</div></div>
+      <div><div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:2px">Aspect Ratio (W/T)</div><div style="font-size:22px;font-weight:600" class="${aspCls}">${asp.toFixed(2)}</div><div style="font-size:11px;color:rgba(255,255,255,.4)">${asp>=1.5?'≥1.5 合格 ✓':'<1.5 開孔易殘膏 ✗'}</div></div>
+    </div>`;
+}
+
+function smtRenderNozzles(){
+  document.getElementById('smt-noz-grid').innerHTML=SMT_NOZZLES.map(n=>`
+    <div style="border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:10px;background:rgba(255,255,255,.03)">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px">
+        <div style="width:26px;height:26px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:14px;background:${n.bg};color:${n.col}">${n.shape}</div>
+        <div><div style="font-size:11px;font-weight:600;color:#fff">${n.name}</div><div style="font-size:10px;color:rgba(255,255,255,.35)">${n.size}</div></div>
+      </div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px">封裝：<span style="color:rgba(255,255,255,.8)">${n.pkg}</span></div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5)">真空：<span style="color:rgba(255,255,255,.8)">${n.vac}</span></div>
+      <div style="font-size:10px;color:rgba(255,255,255,.35);margin-top:4px">${n.note}</div>
+    </div>`).join('');
+}
+
+function smtRenderNotes(){
+  const ta=document.getElementById('smt-notes-ta');
+  if(ta)ta.value=smtState.notes||'';
+  const ps=document.getElementById('smt-progress-summary');
+  if(ps)ps.innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:6px">
+      <div style="padding:8px;border-radius:8px;background:rgba(29,158,117,.1);border:1px solid rgba(29,158,117,.2);text-align:center"><div style="font-size:18px;font-weight:600;color:#4CAF50">${smtState.visited.size}</div><div style="font-size:10px;color:rgba(255,255,255,.4)">已讀站台</div></div>
+      <div style="padding:8px;border-radius:8px;background:rgba(56,138,221,.1);border:1px solid rgba(56,138,221,.2);text-align:center"><div style="font-size:18px;font-weight:600;color:#64B5F6">${smtState.qScore.c}</div><div style="font-size:10px;color:rgba(255,255,255,.4)">測驗答對</div></div>
+      <div style="padding:8px;border-radius:8px;background:rgba(255,255,255,.05);text-align:center"><div style="font-size:18px;font-weight:600;color:#fff">${Math.round(smtState.visited.size/SMT_ST.length*100)}%</div><div style="font-size:10px;color:rgba(255,255,255,.4)">完成度</div></div>
+    </div>`;
+}
+
+function smtSaveNotes(){
+  smtState.notes=document.getElementById('smt-notes-ta').value;
+  smtSave();
+  const btn=event.target;btn.textContent='✓ 已儲存！';setTimeout(()=>btn.textContent='💾 儲存筆記',1500);
+}
+
+function smtExportNotes(){
+  const notes=document.getElementById('smt-notes-ta').value;
+  const progress=[...smtState.visited].map(i=>SMT_ST[i]?.name).join(', ');
+  const text=`=== SMT 製程培訓學習筆記 ===\n匯出時間：${new Date().toLocaleString('zh-TW')}\n已完成站台：${progress||'（尚未讀任何站台）'}\n測驗：${smtState.qScore.c}/${smtState.qScore.t}題答對\n\n--- 我的筆記 ---\n${notes||'（尚無筆記）'}`;
+  const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+  const btn=event.target;const orig=btn.innerHTML;btn.innerHTML='✓ 已複製！';setTimeout(()=>btn.innerHTML=orig,2000);
+}
+
+function smtRenderQuiz(){
+  const panel=document.getElementById('smt-quiz-panel');
+  if(!panel)return;
+  if(smtState.qIdx>=SMT_QUIZ.length){
+    panel.innerHTML=`<div class="smt-card" style="text-align:center;padding:24px">
+      <div style="font-size:28px;margin-bottom:8px">${smtState.qScore.c===smtState.qScore.t?'🏆':'📊'}</div>
+      <div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:4px">測驗完成！</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:12px">得分：${smtState.qScore.c}/${smtState.qScore.t} 題正確</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.7);padding:9px;background:rgba(255,255,255,.05);border-radius:8px;margin-bottom:14px">${smtState.qScore.c===smtState.qScore.t?'完美！SMT品質基礎課程全部掌握。':smtState.qScore.c>=4?'很好的基礎！回顧站台說明補強弱點。':'繼續複習各站台和缺陷圖庫，重新測驗看看。'}</div>
+      <button class="smt-nbtn pr" onclick="smtResetQuiz()" style="border-radius:20px">重新測驗</button>
+    </div>`;return;
+  }
+  const q=SMT_QUIZ[smtState.qIdx];
+  panel.innerHTML=`
+    <div class="smt-card">
+      <div style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:8px">Q${smtState.qIdx+1}/${SMT_QUIZ.length} · 已答對 ${smtState.qScore.c} 題</div>
+      <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:12px;line-height:1.6">${q.q}</div>
+      ${q.opts.map((o,i)=>`<button class="smt-qopt" id="sqo${i}" onclick="smtAnsQ(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+      <div id="smt-qfb"></div>
+    </div>`;
+  smtState.qAns=false;
+}
+function smtAnsQ(ch){
+  if(smtState.qAns)return;smtState.qAns=true;
+  const q=SMT_QUIZ[smtState.qIdx];smtState.qScore.t++;
+  const ok=ch===q.ans;if(ok)smtState.qScore.c++;
+  document.querySelectorAll('.smt-qopt').forEach((b,i)=>{b.disabled=true;if(i===q.ans)b.classList.add('cor');else if(i===ch&&!ok)b.classList.add('wrg');});
+  document.getElementById('smt-qfb').innerHTML=`
+    <div style="font-size:12px;padding:8px 10px;border-radius:7px;margin-top:8px;line-height:1.6;${ok?'background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.25);color:#4CAF50':'background:rgba(226,75,74,.12);border:1px solid rgba(226,75,74,.2);color:#F09595'}">${ok?'✅ 正確！':'❌ 不對。'}${q.exp}</div>
+    <button class="smt-nbtn pr" style="margin-top:10px;float:right;border-radius:20px" onclick="smtNextQ()">${smtState.qIdx<SMT_QUIZ.length-1?'下一題 →':'查看結果 →'}</button>`;
+  smtSave();
+}
+function smtNextQ(){smtState.qIdx++;smtRenderQuiz();}
+function smtResetQuiz(){smtState.qIdx=0;smtState.qScore={c:0,t:0};smtState.qAns=false;smtRenderQuiz();}
 </script>
 </body>
 </html>
