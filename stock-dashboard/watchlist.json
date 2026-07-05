@@ -1,0 +1,70 @@
+{
+  "TW": [
+    {
+      "symbol": "2330.TW",
+      "name": "台積電"
+    },
+    {
+      "symbol": "2317.TW",
+      "name": "鴻海"
+    },
+    {
+      "symbol": "2886.TW",
+      "name": "兆豐金"
+    },
+    {
+      "symbol": "0050.TW",
+      "name": "元大台灣50"
+    },
+    {
+      "symbol": "0056.TW",
+      "name": "元大高股息"
+    },
+    {
+      "symbol": "8462.TW",
+      "name": "8462.TW"
+    },
+    {
+      "symbol": "00885.TW",
+      "name": "00885.TW"
+    },
+    {
+      "symbol": "009816.TW",
+      "name": "009816.TW"
+    }
+  ],
+  "US": [
+    {
+      "symbol": "AAPL",
+      "name": "Apple"
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA"
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla"
+    },
+    {
+      "symbol": "TSM",
+      "name": "TSMC ADR"
+    },
+    {
+      "symbol": "LABU",
+      "name": "LABU"
+    },
+    {
+      "symbol": "VTI",
+      "name": "VTI"
+    },
+    {
+      "symbol": "VXUS",
+      "name": "VXUS"
+    },
+    {
+      "symbol": "COHR",
+      "name": "COHR"
+    }
+  ]
+}
