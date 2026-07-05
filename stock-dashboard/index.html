@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Dashboard · Dean</title>
+<style>
+:root{
+  --bg:#F0F2F5;--surface:#fff;--surface2:#F7F8FA;--border:#DDE1E9;
+  --text:#1A1D23;--muted:#7A8299;
+  --up:#1A8A4A;--up-bg:#E6F5ED;--down:#C0392B;--down-bg:#FDECEA;
+  --accent:#2563EB;--accent-bg:#EFF4FF;
+  --tw:#C0392B;--us:#2563EB;
+  --r:10px;--sh:0 1px 4px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.04);
+  --mono:"SF Mono","Fira Code",monospace;
+  --sans:"Inter","Helvetica Neue",Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased}
+.app{max-width:1280px;margin:0 auto;padding:28px 20px 60px}
+
+/* Header */
+.hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.hdr h1{font-size:1.5rem;font-weight:700}
+.hdr .sub{font-size:.78rem;color:var(--muted);margin-top:3px}
+.hdr-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.82rem;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;font-family:var(--sans)}
+.btn:hover{background:var(--surface2);border-color:var(--accent);color:var(--accent)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{background:#1d4ed8;color:#fff;border-color:#1d4ed8}
+.btn-success{background:#059669;border-color:#059669;color:#fff}
+.btn-success:hover{background:#047857;color:#fff}
+.btn-danger{color:var(--down);border-color:#f5c6c3}
+.btn-danger:hover{background:var(--down-bg)}
+.btn-sm{padding:4px 10px;font-size:.75rem}
+
+/* Add Panel */
+.add-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;margin-bottom:20px;display:none;box-shadow:var(--sh)}
+.add-panel.open{display:block}
+.add-panel h3{font-size:.9rem;font-weight:600;margin-bottom:16px;color:var(--text)}
+.add-form{display:grid;grid-template-columns:160px 1fr 1fr;gap:12px;align-items:start;margin-bottom:12px}
+@media(max-width:640px){.add-form{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:5px}
+.field label{font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.field input,.field select{background:var(--surface2);border:1.5px solid var(--border);border-radius:7px;padding:9px 12px;color:var(--text);font-size:.88rem;font-family:var(--sans);transition:border-color .15s;width:100%}
+.field input:focus,.field select:focus{outline:none;border-color:var(--accent);background:#fff}
+.field input::placeholder{color:#B0B8CC}
+.field-note{font-size:.7rem;color:var(--muted);margin-top:3px}
+
+/* Search dropdown */
+.search-wrap{position:relative}
+.sdrop{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface);border:1.5px solid var(--accent);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;max-height:220px;overflow-y:auto;display:none}
+.sdrop.open{display:block}
+.sitem{padding:9px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);transition:background .1s}
+.sitem:last-child{border-bottom:none}
+.sitem:hover,.sitem.active{background:var(--accent-bg)}
+.sitem .code{font-family:var(--mono);font-size:.8rem;font-weight:700;color:var(--accent);min-width:55px}
+.sitem .sname{font-size:.85rem;color:var(--text);font-weight:500}
+.sitem .stag{font-size:.65rem;color:var(--muted);margin-left:auto}
+.sno{padding:12px 14px;text-align:center;color:var(--muted);font-size:.82rem}
+.hint-box{background:var(--accent-bg);border:1px solid #BFCFEE;border-radius:7px;padding:10px 14px;font-size:.75rem;color:#374571;line-height:1.7;margin-top:12px}
+
+/* Status */
+.status-bar{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--muted);margin-bottom:18px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex-shrink:0}
+.dot.live{background:var(--up)}.dot.warn{background:#F59E0B}.dot.error{background:var(--down)}
+
+/* Tabs */
+.tabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:18px}
+.tab{padding:10px 20px;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s;font-family:var(--sans)}
+.tab:hover{color:var(--text)}
+.tab.active[data-m=TW]{color:var(--tw);border-bottom-color:var(--tw)}
+.tab.active[data-m=US]{color:var(--us);border-bottom-color:var(--us)}
+.badge{display:inline-block;min-width:18px;height:18px;padding:0 5px;border-radius:9px;font-size:.68rem;font-weight:700;line-height:18px;text-align:center;margin-left:6px;background:var(--surface2);color:var(--muted)}
+.tab.active .badge{background:var(--border);color:var(--text)}
+
+/* Summary */
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;box-shadow:var(--sh)}
+.sc .lbl{font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.sc .val{font-size:1.5rem;font-weight:700}
+.val.up{color:var(--up)}.val.dn{color:var(--down)}
+
+/* Table */
+.tbl-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--surface2);padding:10px 14px;font-size:.72rem;font-weight:700;color:var(--muted);text-align:right;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;white-space:nowrap;font-family:var(--sans)}
+thead th:first-child{text-align:left}thead th:hover{color:var(--accent)}
+thead th.asc::after{content:" ↑";color:var(--accent)}
+thead th.desc::after{content:" ↓";color:var(--accent)}
+tbody tr{border-bottom:1px solid var(--border);transition:.1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--surface2)}
+tbody td{padding:12px 14px;font-size:.85rem;text-align:right;vertical-align:middle}
+tbody td:first-child{text-align:left}
+.sname{font-weight:600;font-size:.9rem}
+.ssym{font-size:.72rem;color:var(--muted);font-family:var(--mono);margin-top:2px}
+.price{font-family:var(--mono);font-weight:700;font-size:.92rem}
+.ctag{font-size:.65rem;color:var(--muted);margin-left:2px}
+.chg{font-family:var(--mono);font-size:.82rem;font-weight:600}
+.chg.up{color:var(--up)}.chg.dn{color:var(--down)}.chg.fl{color:var(--muted)}
+
+/* Signal */
+.sig{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:.72rem;font-weight:700;white-space:nowrap}
+.sig.BUY{background:var(--up-bg);color:var(--up);border:1px solid #A8DCC0}
+.sig.HOLD{background:var(--accent-bg);color:var(--accent);border:1px solid #BFCFEE}
+.sig.SELL{background:var(--down-bg);color:var(--down);border:1px solid #f5c6c3}
+.sig.WATCH{background:#FFF8E6;color:#B7791F;border:1px solid #F6D860}
+.sdot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.rsn{font-size:.7rem;color:var(--muted);display:block;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+.lnks{display:flex;gap:6px;margin-top:3px}
+.lnk{font-size:.7rem;color:var(--accent);text-decoration:none}
+.lnk:hover{text-decoration:underline}
+
+/* Empty */
+.empty{text-align:center;padding:60px 20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r)}
+.empty .ico{font-size:2.5rem;margin-bottom:12px}
+.empty p{color:var(--muted);font-size:.85rem;line-height:1.8}
+
+/* Sync banner */
+.sync-bar{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:var(--r);padding:12px 18px;margin-bottom:20px;display:none;align-items:center;gap:12px;font-size:.82rem;color:#166534}
+.sync-bar.show{display:flex}
+.sync-bar strong{font-weight:600}
+
+.footer{margin-top:24px;font-size:.72rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media(max-width:640px){.summary{grid-template-columns:repeat(2,1fr)}.hsm{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- Header -->
+<div class="hdr">
+  <div>
+    <h1>📈 Stock Dashboard</h1>
+    <div class="sub">Dean's personal market tracker · 本機管理版</div>
+  </div>
+  <div class="hdr-right">
+    <span id="fetchTime" style="font-size:.75rem;color:var(--muted)"></span>
+    <button class="btn btn-primary" onclick="toggleAdd()">＋ 新增股票</button>
+    <button class="btn" onclick="runFetch()">↻ 更新數據</button>
+    <button class="btn btn-success" onclick="syncToGitHub()">⬆ 同步 GitHub</button>
+  </div>
+</div>
+
+<!-- Sync banner -->
+<div class="sync-bar" id="syncBar">
+  <span>✅</span>
+  <div><strong>同步成功！</strong> GitHub Pages 約 1 分鐘後更新。<span id="syncUrl"></span></div>
+</div>
+
+<!-- Add panel -->
+<div class="add-panel" id="addPanel">
+  <h3>➕ 新增追蹤股票</h3>
+  <div class="add-form">
+    <div class="field">
+      <label>市場</label>
+      <select id="mkt" onchange="onMktChange()">
+        <option value="TW">🇹🇼 台灣 (TWSE)</option>
+        <option value="US">🇺🇸 美國 (NYSE/NASDAQ)</option>
+      </select>
+      <span class="field-note" id="mktNote">輸入代號或中文名稱</span>
+    </div>
+    <div class="field">
+      <label>搜尋股票 <span style="color:var(--down)">*</span></label>
+      <div class="search-wrap">
+        <input id="searchInp" placeholder="如：2886 或 兆豐" oninput="onSearch()" onkeydown="onKey(event)" autocomplete="off"/>
+        <div class="sdrop" id="sdrop"></div>
+      </div>
+      <span class="field-note">支援代號和中文名稱</span>
+    </div>
+    <div class="field">
+      <label>顯示名稱（選填）</label>
+      <input id="dispName" placeholder="留空使用股票原名" onkeydown="if(event.key==='Enter')doAdd()"/>
+      <span class="field-note">可用中文</span>
+    </div>
+  </div>
+  <div id="selPreview" style="display:none;margin-bottom:12px;padding:8px 14px;background:var(--up-bg);border:1px solid #A8DCC0;border-radius:8px;font-size:.82rem;color:var(--up)"></div>
+  <div style="display:flex;gap:8px">
+    <button class="btn btn-primary" onclick="doAdd()">✓ 新增</button>
+    <button class="btn" onclick="toggleAdd()">取消</button>
+  </div>
+  <div class="hint-box">
+    🇹🇼 <b>台股</b>：輸入數字代號（如 <b>2886</b>）或中文名稱（如 <b>兆豐</b>）<br>
+    🇺🇸 <b>美股</b>：輸入英文代號（如 <b>AAPL</b>）或公司名稱（如 <b>Apple</b>）<br>
+    📝 找不到時，直接輸入代號按 Enter 可強制新增
+  </div>
+</div>
+
+<!-- Status -->
+<div class="status-bar">
+  <div class="dot" id="dot"></div>
+  <span id="stxt">載入中...</span>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab active" data-m="TW" onclick="switchTab('TW')">🇹🇼 台灣 <span class="badge" id="b-TW">0</span></button>
+  <button class="tab" data-m="US" onclick="switchTab('US')">🇺🇸 美國 <span class="badge" id="b-US">0</span></button>
+</div>
+
+<!-- Summary -->
+<div class="summary">
+  <div class="sc"><div class="lbl">追蹤股票</div><div class="val" id="s-cnt">—</div></div>
+  <div class="sc"><div class="lbl">今日上漲</div><div class="val up" id="s-up">—</div></div>
+  <div class="sc"><div class="lbl">今日下跌</div><div class="val dn" id="s-dn">—</div></div>
+</div>
+
+<!-- Table -->
+<div id="tbl"></div>
+
+<div class="footer">
+  <span>資料來源：Yahoo Finance (yfinance) · 訊號僅供參考，非投資建議</span>
+  <span id="ftime"></span>
+</div>
+</div>
+
+<script>
+// ── Stock DB for search ──────────────────────────────────────────────────────
+const TW_DB=[
+  ['2330','台積電','半導體'],['2317','鴻海','電子'],['2454','聯發科','半導體'],
+  ['2382','廣達','電腦'],['2308','台達電','電子'],['2303','聯電','半導體'],
+  ['2881','富邦金','金融'],['2882','國泰金','金融'],['2886','兆豐金','金融'],
+  ['2891','中信金','金融'],['2884','玉山金','金融'],['2885','元大金','金融'],
+  ['2892','第一金','金融'],['2880','華南金','金融'],['2887','台新金','金融'],
+  ['2883','開發金','金融'],['2888','新光金','金融'],['2890','永豐金','金融'],
+  ['2801','彰銀','金融'],['5880','合庫金','金融'],
+  ['2002','中鋼','鋼鐵'],['1301','台塑','塑化'],['1303','南亞','塑化'],
+  ['1326','台化','塑化'],['6505','台塑化','石化'],
+  ['2412','中華電','電信'],['4904','遠傳','電信'],['3045','台灣大','電信'],
+  ['2357','華碩','電腦'],['2353','宏碁','電腦'],['3231','緯創','電腦'],
+  ['2376','技嘉','電腦'],['2379','瑞昱','半導體'],['3034','聯詠','半導體'],
+  ['2408','南亞科','記憶體'],['3008','大立光','光學'],['2395','研華','工業電腦'],
+  ['6669','緯穎','伺服器'],['4938','和碩','組裝'],['3711','日月光投控','封測'],
+  ['5871','中租-KY','租賃'],['2609','陽明','航運'],['2615','萬海','航運'],
+  ['2603','長榮','航運'],['2618','長榮航','航空'],['2610','華航','航空'],
+  ['1101','台泥','水泥'],['1102','亞泥','水泥'],['6415','矽力-KY','IC設計'],
+  ['3661','世芯-KY','IC設計'],['2337','旺宏','記憶體'],['2344','華邦電','記憶體'],
+  ['5483','中美晶','矽晶圓'],['6239','力成','封測'],['2449','京元電子','封測'],
+  ['1216','統一','食品'],['2912','統一超','零售'],['2207','和泰車','汽車'],
+  ['0050','元大台灣50','ETF'],['0056','元大高股息','ETF'],
+  ['00878','國泰永續高股息','ETF'],['00929','復華台灣科技優息','ETF'],
+  ['00919','群益台灣精選高息','ETF'],['006208','富邦台50','ETF'],
+];
+const US_DB=[
+  ['AAPL','Apple','科技'],['MSFT','Microsoft','科技'],['NVDA','NVIDIA','半導體'],
+  ['GOOGL','Alphabet','科技'],['AMZN','Amazon','電商'],['META','Meta','社群'],
+  ['TSLA','Tesla','電動車'],['TSM','TSMC ADR','半導體'],['AVGO','Broadcom','半導體'],
+  ['AMD','AMD','半導體'],['INTC','Intel','半導體'],['QCOM','Qualcomm','半導體'],
+  ['ASML','ASML','半導體設備'],['AMAT','Applied Materials','半導體設備'],
+  ['JPM','JPMorgan','金融'],['BAC','Bank of America','金融'],['GS','Goldman Sachs','金融'],
+  ['V','Visa','支付'],['MA','Mastercard','支付'],
+  ['JNJ','Johnson & Johnson','醫療'],['PFE','Pfizer','製藥'],['LLY','Eli Lilly','製藥'],
+  ['UNH','UnitedHealth','醫療'],['ABBV','AbbVie','製藥'],
+  ['XOM','ExxonMobil','能源'],['CVX','Chevron','能源'],
+  ['WMT','Walmart','零售'],['COST','Costco','零售'],
+  ['DIS','Disney','娛樂'],['NFLX','Netflix','串流'],
+  ['SPY','S&P500 ETF','ETF'],['QQQ','Nasdaq 100 ETF','ETF'],['VOO','Vanguard S&P500','ETF'],
+  ['SOXX','iShares半導體ETF','ETF'],['PLTR','Palantir','AI'],
+  ['ORCL','Oracle','企業軟體'],['CRM','Salesforce','雲端'],['NOW','ServiceNow','雲端'],
+  ['SHOP','Shopify','電商'],['UBER','Uber','共乘'],
+  ['BA','Boeing','航太'],['CAT','Caterpillar','工業'],
+];
+
+// ── State ────────────────────────────────────────────────────────────────────
+let watchlist = {TW:[], US:[]};  // loaded from watchlist.json
+let marketData = {};
+let curTab = 'TW';
+let sk = 'changePct', sd = -1;
+let selStock = null, sidx = -1;
+
+// ── Load watchlist.json ───────────────────────────────────────────────────────
+async function loadWatchlist() {
+  try {
+    const r = await fetch('watchlist.json?t=' + Date.now());
+    if (r.ok) watchlist = await r.json();
+  } catch(e) {
+    console.warn('watchlist.json not found, using defaults');
+  }
+}
+
+// ── Save watchlist.json (via download) ───────────────────────────────────────
+function saveWatchlist() {
+  // Write to localStorage as backup
+  localStorage.setItem('dean_wl_v1', JSON.stringify(watchlist));
+  // Trigger download so user can replace the file
+  // (file:// or localhost:8080 can't write files directly)
+  // Instead, we expose a manual save button
+  renderTable();
+  updateBadges();
+}
+
+// ── Persist watchlist via download ───────────────────────────────────────────
+function downloadWatchlist() {
+  const blob = new Blob([JSON.stringify(watchlist, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'watchlist.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showStatus('live', '✅ watchlist.json 已下載 — 請覆蓋到 stock-dashboard 資料夾');
+}
+
+// ── Search ───────────────────────────────────────────────────────────────────
+function getDB() { return document.getElementById('mkt').value === 'TW' ? TW_DB : US_DB; }
+
+function onMktChange() {
+  document.getElementById('searchInp').value = '';
+  document.getElementById('mktNote').textContent =
+    document.getElementById('mkt').value === 'TW'
+      ? '輸入代號（2886）或名稱（兆豐）' : 'Enter ticker or company name';
+  closeDrop(); selStock = null; updatePreview();
+}
+
+function onSearch() {
+  const q = document.getElementById('searchInp').value.trim();
+  selStock = null; updatePreview();
+  if (!q) { closeDrop(); return; }
+  const mkt = document.getElementById('mkt').value;
+  const ql = q.toLowerCase();
+  const res = getDB().filter(([code, name]) =>
+    code.startsWith(q) || code.toLowerCase().includes(ql) ||
+    name.includes(q) || name.toLowerCase().includes(ql)
+  ).slice(0, 8);
+  renderDrop(res, mkt, q);
+}
+
+function renderDrop(res, mkt, q) {
+  const dd = document.getElementById('sdrop');
+  sidx = -1;
+  if (!res.length) {
+    dd.innerHTML = `<div class="sno">🔍 找不到「${q}」— 可直接輸入代號按 Enter 強制新增</div>`;
+  } else {
+    dd.innerHTML = res.map(([code, name, cat], i) => {
+      const sym = mkt === 'TW' ? code + '.TW' : code;
+      return `<div class="sitem" data-sym="${sym}" data-name="${name}" onclick="selectStock('${sym}','${name}')" onmouseenter="sidx=${i};hiItem()">
+        <span class="code">${code}</span><span class="sname">${name}</span><span class="stag">${cat}</span>
+      </div>`;
+    }).join('');
+  }
+  dd.classList.add('open');
+}
+
+function hiItem() {
+  document.querySelectorAll('.sitem').forEach((el, i) => el.classList.toggle('active', i === sidx));
+}
+
+function onKey(e) {
+  const dd = document.getElementById('sdrop');
+  const items = dd.querySelectorAll('.sitem');
+  if (!dd.classList.contains('open')) return;
+  if (e.key === 'ArrowDown') { e.preventDefault(); sidx = Math.min(sidx+1, items.length-1); hiItem(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); sidx = Math.max(sidx-1, 0); hiItem(); }
+  else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (sidx >= 0 && items[sidx]) {
+      const el = items[sidx];
+      selectStock(el.dataset.sym, el.dataset.name);
+    } else { forceAdd(); }
+  }
+  else if (e.key === 'Escape') closeDrop();
+}
+
+function selectStock(sym, name) {
+  selStock = {symbol: sym, name};
+  document.getElementById('searchInp').value = `${sym.replace('.TW','')}  ${name}`;
+  document.getElementById('dispName').placeholder = name;
+  closeDrop(); updatePreview();
+  document.getElementById('dispName').focus();
+}
+
+function closeDrop() { document.getElementById('sdrop').classList.remove('open'); }
+function updatePreview() {
+  const el = document.getElementById('selPreview');
+  if (selStock) { el.style.display='block'; el.innerHTML=`✓ 已選取：<b>${selStock.symbol}</b> ${selStock.name}`; }
+  else el.style.display='none';
+}
+
+// ── Add / Remove ─────────────────────────────────────────────────────────────
+function toggleAdd() {
+  const p = document.getElementById('addPanel');
+  p.classList.toggle('open');
+  if (p.classList.contains('open')) setTimeout(() => document.getElementById('searchInp').focus(), 100);
+}
+
+function doAdd() {
+  const customName = document.getElementById('dispName').value.trim();
+  if (!selStock) { forceAdd(); return; }
+  const mkt = document.getElementById('mkt').value;
+  const {symbol, name} = selStock;
+  const exists = [...watchlist.TW, ...watchlist.US].find(s => s.symbol === symbol);
+  if (exists) { alert(`${symbol}（${name}）已在清單中`); return; }
+  watchlist[mkt].push({symbol, name: customName || name});
+  saveWatchlist();
+  resetAddForm();
+  loadDataAndRender();
+}
+
+function forceAdd() {
+  const mkt = document.getElementById('mkt').value;
+  const raw = document.getElementById('searchInp').value.trim().split(/\s/)[0];
+  if (!raw) { document.getElementById('searchInp').focus(); return; }
+  const sym = mkt === 'TW'
+    ? raw.replace(/\.TW$/i,'').replace(/[^0-9]/g,'') + '.TW'
+    : raw.toUpperCase().replace(/[^A-Z0-9.\-]/g,'');
+  const cname = document.getElementById('dispName').value.trim();
+  if ([...watchlist.TW, ...watchlist.US].find(s => s.symbol === sym)) { alert(`${sym} 已在清單中`); return; }
+  watchlist[mkt].push({symbol: sym, name: cname || sym});
+  saveWatchlist();
+  resetAddForm();
+  loadDataAndRender();
+}
+
+function removeStock(sym) {
+  if (!confirm(`確認移除 ${sym}？`)) return;
+  watchlist.TW = watchlist.TW.filter(s => s.symbol !== sym);
+  watchlist.US = watchlist.US.filter(s => s.symbol !== sym);
+  saveWatchlist();
+  renderTable();
+  updateBadges();
+}
+
+function resetAddForm() {
+  document.getElementById('searchInp').value = '';
+  document.getElementById('dispName').value = '';
+  document.getElementById('addPanel').classList.remove('open');
+  selStock = null; closeDrop(); updatePreview();
+}
+
+// ── Fetch data ────────────────────────────────────────────────────────────────
+async function loadDataAndRender() {
+  showStatus('', '載入數據中...');
+  try {
+    const r = await fetch('data.json?t=' + Date.now());
+    if (!r.ok) throw new Error('data.json not found');
+    const j = await r.json();
+    marketData = j.data || {};
+    const t = new Date(j.fetchedAt);
+    document.getElementById('fetchTime').textContent = '數據：' + t.toLocaleString('zh-TW');
+    document.getElementById('ftime').textContent = '抓取於：' + t.toLocaleString('zh-TW');
+    const age = (Date.now() - t.getTime()) / 3600000;
+    showStatus(age > 24 ? 'warn' : 'live',
+      age > 24 ? `數據已 ${Math.round(age)} 小時未更新 — 點「更新數據」` : `已載入 ${Object.keys(marketData).length} 支股票`);
+  } catch(e) {
+    showStatus('error', '找不到 data.json — 請先執行 python3 fetch.py');
+  }
+  renderTable();
+  updateBadges();
+}
+
+function runFetch() {
+  showStatus('', '⏳ 請在 Terminal 執行：python3 fetch.py，完成後按更新...');
+  setTimeout(() => loadDataAndRender(), 3000);
+}
+
+// ── Sync to GitHub ────────────────────────────────────────────────────────────
+function syncToGitHub() {
+  // Download watchlist.json for user to manually place in repo
+  // Then show instructions
+  downloadWatchlist();
+  const bar = document.getElementById('syncBar');
+  document.getElementById('syncUrl').innerHTML =
+    ' → <a href="https://deanlee-76.github.io/knowledge-hub/stock-dashboard/" target="_blank" style="color:#166534">開啟線上版確認</a>';
+  bar.classList.add('show');
+  setTimeout(() => bar.classList.remove('show'), 8000);
+}
+
+// ── Status ────────────────────────────────────────────────────────────────────
+function showStatus(c, t) {
+  document.getElementById('dot').className = 'dot' + (c ? ' ' + c : '');
+  document.getElementById('stxt').textContent = t;
+}
+
+// ── Tab ───────────────────────────────────────────────────────────────────────
+function switchTab(m) {
+  curTab = m;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.tab[data-m=${m}]`).classList.add('active');
+  renderTable();
+}
+
+function updateBadges() {
+  document.getElementById('b-TW').textContent = watchlist.TW.length;
+  document.getElementById('b-US').textContent = watchlist.US.length;
+}
+
+// ── Signal ────────────────────────────────────────────────────────────────────
+function calcSig(d) {
+  if (!d || d.price == null) return {s:'WATCH', r:'等待數據'};
+  const {changePct:c=0, weekChange:w=0, monthChange:mo=0, price:p, week52High:h, week52Low:l} = d;
+  let sc = 0;
+  if (c>2) sc+=2; else if (c>0) sc+=1; else if (c<-2) sc-=2; else if (c<0) sc-=1;
+  if (w>5) sc+=2; else if (w>1) sc+=1; else if (w<-5) sc-=2; else if (w<-1) sc-=1;
+  if (mo>10) sc+=2; else if (mo>3) sc+=1; else if (mo<-10) sc-=2; else if (mo<-3) sc-=1;
+  if (p&&h&&l){const pos=(p-l)/(h-l||1);if(pos<.25)sc+=1;if(pos>.9)sc-=1;}
+  if (sc>=3) return {s:'BUY',  r:`強勢 · 日漲 ${c>0?'+':''}${c}%`};
+  if (sc>=1) return {s:'BUY',  r:'偏多 · 短期動能正向'};
+  if (sc===0) return {s:'HOLD', r:'中性 · 觀察趨勢'};
+  if (sc>=-2) return {s:'HOLD', r:'偏弱 · 等待訊號'};
+  return {s:'SELL', r:`下跌趨勢 · 月跌 ${Math.abs(mo)}%`};
+}
+
+// ── Sparkline ─────────────────────────────────────────────────────────────────
+function spark(cv, history, isUp) {
+  const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  const pr=history.map(h=>h.close).filter(Boolean);
+  if(pr.length<2){ctx.fillStyle='#DDE1E9';ctx.fillRect(0,H/2-1,W,2);return;}
+  const mn=Math.min(...pr),mx=Math.max(...pr),rng=mx-mn||1;
+  const pts=pr.map((v,i)=>({x:i*(W/(pr.length-1)),y:H-((v-mn)/rng)*(H-4)-2}));
+  const col=isUp?'#1A8A4A':'#C0392B';
+  const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,col+'33');g.addColorStop(1,col+'00');
+  ctx.beginPath();ctx.moveTo(pts[0].x,H);pts.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.lineTo(pts[pts.length-1].x,H);ctx.closePath();ctx.fillStyle=g;ctx.fill();
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.lineJoin='round';ctx.stroke();
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+const fmt=(n,d=2)=>n==null?'—':n.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtPct=n=>n==null?'—':(n>=0?'+':'')+n.toFixed(2)+'%';
+const cc=n=>!n&&n!==0?'fl':n>0?'up':n<0?'dn':'fl';
+function lnks(sym){const e=encodeURIComponent(sym);return`<div class="lnks"><a class="lnk" href="https://finance.yahoo.com/quote/${e}/" target="_blank">Yahoo ↗</a><a class="lnk" href="https://www.tradingview.com/symbols/${sym.replace('.TW','')}/" target="_blank">Chart ↗</a></div>`;}
+
+// ── Sort ──────────────────────────────────────────────────────────────────────
+function setSort(k){sd=sk===k?sd*-1:-1;sk=k;renderTable();}
+function sorted(arr){return[...arr].sort((a,b)=>{const da=marketData[a.symbol]||{},db=marketData[b.symbol]||{};const va=da[sk]??(-Infinity*sd),vb=db[sk]??(-Infinity*sd);return(va-vb)*sd;});}
+function thS(k,l,c=''){return`<th class="${c}${sk===k?(sd===1?' asc':' desc'):''}" onclick="setSort('${k}')">${l}</th>`;}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderTable() {
+  const stocks = watchlist[curTab] || [];
+  document.getElementById('s-cnt').textContent = stocks.length;
+  const data = stocks.map(s=>marketData[s.symbol]).filter(Boolean);
+  document.getElementById('s-up').textContent = data.filter(d=>d.changePct>0).length;
+  document.getElementById('s-dn').textContent = data.filter(d=>d.changePct<0).length;
+
+  if (!stocks.length) {
+    document.getElementById('tbl').innerHTML = `<div class="empty"><div class="ico">📋</div><p>此市場尚無追蹤股票<br>點右上「＋ 新增股票」開始追蹤</p></div>`;
+    return;
+  }
+
+  let h = `<div class="tbl-wrap"><table><thead><tr>
+    <th style="text-align:left">股票</th>
+    ${thS('price','價格')}${thS('changePct','當日 %')}
+    ${thS('weekChange','1週 %','hsm')}${thS('monthChange','1月 %','hsm')}
+    <th class="hsm">走勢</th><th>訊號</th>
+    <th style="text-align:center">操作</th>
+  </tr></thead><tbody>`;
+
+  for (const s of sorted(stocks)) {
+    const d = marketData[s.symbol];
+    const {s:sg, r:rs} = calcSig(d);
+    const dec = s.symbol.endsWith('.TW') ? 1 : 2;
+    const rid = s.symbol.replace(/[^a-zA-Z0-9]/g,'_');
+    h += `<tr>
+      <td><div class="sname">${s.name}</div><div class="ssym">${s.symbol}</div></td>
+      <td>${d?`<span class="price">${fmt(d.price,dec)}</span><span class="ctag">${d.currency}</span>`:'—'}</td>
+      <td><span class="chg ${cc(d?.changePct)}">${d?fmtPct(d.changePct):'—'}</span></td>
+      <td class="hsm"><span class="chg ${cc(d?.weekChange)}">${d?.weekChange!=null?fmtPct(d.weekChange):'—'}</span></td>
+      <td class="hsm"><span class="chg ${cc(d?.monthChange)}">${d?.monthChange!=null?fmtPct(d.monthChange):'—'}</span></td>
+      <td class="hsm"><canvas id="sp_${rid}" width="80" height="28"></canvas></td>
+      <td>
+        <span class="sig ${sg}"><span class="sdot"></span>${sg}</span>
+        <span class="rsn" title="${rs}">${rs}</span>
+        ${lnks(s.symbol)}
+      </td>
+      <td style="text-align:center">
+        <button class="btn btn-danger btn-sm" onclick="removeStock('${s.symbol}')">✕ 移除</button>
+      </td>
+    </tr>`;
+  }
+  h += `</tbody></table></div>`;
+  document.getElementById('tbl').innerHTML = h;
+
+  requestAnimationFrame(() => {
+    for (const s of sorted(stocks)) {
+      const d = marketData[s.symbol];
+      if (!d?.history?.length) continue;
+      const cv = document.getElementById(`sp_${s.symbol.replace(/[^a-zA-Z0-9]/g,'_')}`);
+      if (cv) spark(cv, d.history, (d.monthChange||0) >= 0);
+    }
+  });
+}
+
+// ── Close dropdown on outside click ──────────────────────────────────────────
+document.addEventListener('click', e => { if (!e.target.closest('.search-wrap')) closeDrop(); });
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init() {
+  // Load watchlist: try file first, then localStorage backup
+  await loadWatchlist();
+  const lsBak = localStorage.getItem('dean_wl_v1');
+  if (lsBak) {
+    const bak = JSON.parse(lsBak);
+    // Merge: use file as base, add any localStorage additions
+    if (bak.TW?.length > watchlist.TW.length || bak.US?.length > watchlist.US.length) {
+      watchlist = bak;
+    }
+  }
+  updateBadges();
+  await loadDataAndRender();
+}
+
+init();
+</script>
+</body>
+</html>
