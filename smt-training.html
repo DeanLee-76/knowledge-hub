@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMT 製程培訓課程 | Dean's Knowledge Hub</title>
+<style>
+/* ── Reset & tokens ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #F7F5F0;
+  --bg2: #EEEAE2;
+  --bg3: #E4DFD4;
+  --surface: #FFFFFF;
+  --border: #D8D2C6;
+  --border2: #C8C0B0;
+  --text: #1C1A16;
+  --text2: #4A4540;
+  --text3: #8A8278;
+  --green: #1A7A5A;
+  --green-bg: #EAF5EE;
+  --green-border: #B8DFC8;
+  --blue: #1A55A0;
+  --blue-bg: #EBF2FC;
+  --blue-border: #B8CEEC;
+  --amber: #8A5A00;
+  --amber-bg: #FEF5E4;
+  --amber-border: #F0D898;
+  --red: #A02020;
+  --red-bg: #FDECEA;
+  --red-border: #F0B8B8;
+  --teal: #0E6E7A;
+  --teal-bg: #E6F6F8;
+  --teal-border: #A8DCE4;
+  --purple: #5A2A90;
+  --purple-bg: #F2EAFA;
+  --purple-border: #C8ACEC;
+  --gold: #C9963A;
+  --shadow: 0 1px 4px rgba(0,0,0,.08), 0 2px 12px rgba(0,0,0,.05);
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Noto Serif TC', 'PingFang TC', 'Microsoft JhengHei', Georgia, serif;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Layout ── */
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  max-width: 100%;
+}
+
+/* ── Header ── */
+.hdr {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 10px clamp(12px, 4vw, 32px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+.hdr-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.hdr-title { font-size: clamp(14px, 2.5vw, 17px); font-weight: 700; color: var(--text); }
+.hdr-title span { color: var(--green); }
+.prog-wrap { display: flex; align-items: center; gap: 8px; }
+.prog-bar { width: clamp(80px, 15vw, 160px); height: 5px; background: var(--bg3); border-radius: 3px; overflow: hidden; }
+.prog-fill { height: 100%; background: var(--green); border-radius: 3px; transition: width .4s; }
+.prog-txt { font-size: 11px; color: var(--text3); white-space: nowrap; }
+
+/* ── Tab bar ── */
+.tabbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 clamp(12px, 4vw, 32px);
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabbar::-webkit-scrollbar { display: none; }
+.tab {
+  flex-shrink: 0;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-family: inherit;
+  color: var(--text3);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--text); background: var(--bg); }
+.tab.on { color: var(--green); border-bottom-color: var(--green); font-weight: 600; }
+
+/* ── Main content ── */
+.main {
+  padding: clamp(12px, 3vw, 24px) clamp(12px, 4vw, 32px);
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── Section ── */
+.sec { display: none; }
+.sec.vis { display: block; }
+
+/* ── Cards ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: clamp(12px, 3vw, 18px);
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+}
+.card-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; display: flex; align-items: center; gap: 7px; }
+.card-sub { font-size: 12px; color: var(--text3); margin-bottom: 10px; }
+
+/* ── Station grid ── */
+.pgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 7px;
+  margin-bottom: 14px;
+}
+.pcard {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 7px;
+  cursor: pointer;
+  text-align: center;
+  transition: all .18s;
+}
+.pcard:hover { border-color: var(--green); background: var(--green-bg); }
+.pcard.sel { border-color: var(--green); border-width: 2px; background: var(--green-bg); }
+.pcard.done { border-color: var(--green-border); }
+.pcard .pi { font-size: 18px; margin-bottom: 3px; }
+.pcard .pn { font-size: 11px; font-weight: 600; color: var(--text); }
+.pcard .pk { font-size: 10px; color: var(--text3); margin-top: 1px; }
+.pcard .pck { font-size: 10px; color: var(--green); margin-top: 2px; font-weight: 600; }
+
+/* ── IO grid ── */
+.io-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+@media (max-width: 480px) { .io-grid { grid-template-columns: 1fr; } }
+.io-box { border-radius: var(--radius-sm); padding: 10px; }
+.io-box.in { background: var(--blue-bg); border: 1px solid var(--blue-border); }
+.io-box.out { background: var(--green-bg); border: 1px solid var(--green-border); }
+.io-lbl { font-size: 11px; font-weight: 700; margin-bottom: 5px; letter-spacing: .03em; }
+.io-box.in .io-lbl { color: var(--blue); }
+.io-box.out .io-lbl { color: var(--green); }
+.io-item { font-size: 12px; color: var(--text2); padding: 2px 0; display: flex; gap: 5px; align-items: flex-start; }
+.io-item::before { content: "▸"; font-size: 9px; flex-shrink: 0; margin-top: 3px; color: var(--text3); }
+
+/* ── KPI rows ── */
+.lbl { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; margin: 10px 0 5px; }
+.krow { display: flex; align-items: flex-start; gap: 7px; padding: 6px 9px; border-radius: var(--radius-sm); background: var(--bg); border: 1px solid var(--border); margin-bottom: 4px; font-size: 12px; color: var(--text2); line-height: 1.5; }
+.dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+
+/* ── Fault tree ── */
+.fmode { margin-bottom: 6px; }
+.fhdr {
+  display: flex; align-items: center; gap: 7px;
+  padding: 7px 10px; border-radius: var(--radius-sm);
+  background: var(--red-bg); border: 1px solid var(--red-border);
+  cursor: pointer; font-size: 12px; font-weight: 600; color: var(--red);
+  font-family: inherit; width: 100%; text-align: left; transition: all .18s;
+}
+.fhdr:hover { filter: brightness(.96); }
+.farr { margin-left: auto; transition: transform .2s; font-style: normal; font-weight: 400; }
+.fhdr.open .farr { transform: rotate(90deg); }
+.fcauses { display: none; padding: 5px 0 0 10px; }
+.fcauses.vis { display: block; }
+.fcause { font-size: 12px; padding: 3px 8px; border-left: 2px solid var(--red-border); margin-bottom: 3px; color: var(--text2); background: var(--bg); border-radius: 0 4px 4px 0; }
+.fact { font-size: 11px; color: var(--blue); background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: 3px; padding: 3px 8px; margin-top: 4px; display: block; }
+
+/* ── Badges ── */
+.badge { display: inline-flex; align-items: center; font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 700; }
+.badge.r { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+.badge.a { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+.badge.g { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+
+/* ── Nav row ── */
+.navrow { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+.nbtn { font-size: 12px; padding: 6px 16px; border: 1.5px solid var(--border2); border-radius: 20px; background: var(--surface); color: var(--text2); cursor: pointer; transition: all .18s; font-family: inherit; }
+.nbtn:hover { background: var(--bg2); border-color: var(--text3); }
+.nbtn.pr { background: var(--green); color: #fff; border-color: var(--green); }
+.nbtn.pr:hover { background: #136048; }
+
+/* ── Reflow canvas ── */
+#smt-cv {
+  width: 100%; height: clamp(160px, 25vw, 220px);
+  display: block; border-radius: var(--radius-sm);
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+.ctrl { display: flex; align-items: center; gap: 8px; margin: 5px 0; font-size: 12px; color: var(--text3); }
+.ctrl span.lbx { min-width: clamp(70px, 15vw, 110px); color: var(--text2); font-size: 12px; }
+.ctrl input[type=range] { flex: 1; accent-color: var(--green); }
+.valx { min-width: 40px; text-align: right; font-size: 12px; font-weight: 600; color: var(--text); }
+.zone-tags { display: flex; gap: 5px; flex-wrap: wrap; margin: 6px 0; }
+.ztag { font-size: 11px; padding: 2px 9px; border-radius: 10px; font-weight: 600; }
+
+/* ── Defect cards ── */
+.dfilt { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 10px; }
+.dfbtn { font-size: 11px; padding: 4px 10px; border: 1.5px solid var(--border); border-radius: 20px; cursor: pointer; background: var(--surface); color: var(--text3); transition: all .18s; font-family: inherit; }
+.dfbtn.on { background: var(--green-bg); border-color: var(--green); color: var(--green); font-weight: 600; }
+.dcard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; margin-bottom: 9px; box-shadow: var(--shadow); }
+.dcard-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.dcard-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.dcard-st { font-size: 11px; color: var(--text3); margin-bottom: 5px; }
+.dcard-ap { font-size: 12px; color: var(--text2); margin-bottom: 7px; line-height: 1.55; }
+.dinfo-box { font-size: 12px; color: var(--text2); padding: 5px 8px; border-radius: var(--radius-sm); margin-bottom: 4px; line-height: 1.5; }
+.dinfo-box.detect { background: var(--blue-bg); border: 1px solid var(--blue-border); }
+.dinfo-box.action { background: var(--green-bg); border: 1px solid var(--green-border); }
+
+/* ── Tables ── */
+.tbl { width: 100%; font-size: 12px; border-collapse: collapse; }
+.tbl th { font-size: 10px; font-weight: 700; color: var(--text3); text-align: left; padding: 5px 8px; border-bottom: 1.5px solid var(--border2); text-transform: uppercase; letter-spacing: .05em; }
+.tbl td { padding: 5px 8px; border-bottom: 1px solid var(--border); color: var(--text2); }
+.tbl tr:last-child td { border-bottom: none; }
+.tok { color: var(--green); font-weight: 600; }
+.twn { color: var(--amber); font-weight: 600; }
+.tbd { color: var(--red); font-weight: 600; }
+
+/* ── Nozzle grid ── */
+.noz-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.ncard { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; box-shadow: var(--shadow); }
+.ncard-top { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+.nshape { width: 26px; height: 26px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.ntitle { font-size: 11px; font-weight: 700; color: var(--text); }
+.nsub-txt { font-size: 10px; color: var(--text3); }
+.nrow { font-size: 11px; color: var(--text3); margin-top: 3px; }
+.nrow span { color: var(--text2); font-weight: 600; }
+
+/* ── New sections: Edge Bonding, Water Cooling, SCP, Vertical Power ── */
+.process-flow { display: flex; flex-direction: column; gap: 6px; margin: 10px 0; }
+.pf-step {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 12px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.pf-num { width: 22px; height: 22px; background: var(--green); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.pf-body { flex: 1; }
+.pf-title { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.pf-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
+.pf-warn { font-size: 11px; color: var(--amber); background: var(--amber-bg); border: 1px solid var(--amber-border); border-radius: 4px; padding: 2px 7px; margin-top: 3px; display: inline-block; }
+
+.spec-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin: 8px 0; }
+.spec-box { padding: 9px 11px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); }
+.spec-label { font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
+.spec-value { font-size: 13px; font-weight: 700; color: var(--text); }
+.spec-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+.concept-box {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0;
+}
+@media (max-width: 480px) { .concept-box { grid-template-columns: 1fr; } }
+.concept-item { padding: 9px 11px; border-radius: var(--radius-sm); }
+
+/* ── Notes ── */
+.notes-ta {
+  width: 100%; min-height: 110px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm); padding: 10px 12px;
+  color: var(--text); font-size: 13px; font-family: inherit;
+  resize: vertical; line-height: 1.7; outline: none;
+  transition: border-color .18s;
+}
+.notes-ta:focus { border-color: var(--green); }
+.export-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 14px; background: var(--green-bg);
+  border: 1.5px solid var(--green-border); border-radius: 20px;
+  color: var(--green); font-size: 12px; cursor: pointer;
+  font-family: inherit; transition: all .18s; margin-top: 8px;
+}
+.export-btn:hover { background: var(--green); color: #fff; }
+
+/* ── Quiz ── */
+.qq { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; line-height: 1.6; }
+.qopt {
+  display: block; width: 100%; text-align: left;
+  font-size: 12px; padding: 8px 12px; margin-bottom: 5px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+  background: var(--surface); color: var(--text2);
+  cursor: pointer; transition: all .18s; font-family: inherit;
+}
+.qopt:hover { background: var(--bg2); border-color: var(--border2); }
+.qopt.cor { background: var(--green-bg); border-color: var(--green); color: var(--green); }
+.qopt.wrg { background: var(--red-bg); border-color: var(--red-border); color: var(--red); }
+.qfb { font-size: 12px; padding: 8px 11px; border-radius: var(--radius-sm); margin-top: 8px; line-height: 1.6; }
+.qfb.ok { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green); }
+.qfb.fail { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red); }
+
+/* ── Progress summary ── */
+.prog-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-top: 8px; }
+.ps-box { padding: 9px; border-radius: var(--radius-sm); border: 1px solid var(--border); text-align: center; background: var(--bg); }
+.ps-num { font-size: 18px; font-weight: 700; color: var(--text); }
+.ps-label { font-size: 10px; color: var(--text3); margin-top: 2px; }
+
+/* ── AOI diagram boxes ── */
+.aoi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin: 8px 0; }
+@media (max-width: 420px) { .aoi-grid { grid-template-columns: 1fr; } }
+.aoi-box { border-radius: var(--radius-sm); padding: 9px 10px; }
+
+/* ── Stencil result ── */
+.st-result { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; background: var(--bg); border-radius: var(--radius-sm); border: 1px solid var(--border); margin: 10px 0; }
+.st-val-label { font-size: 10px; color: var(--text3); margin-bottom: 2px; }
+.st-val { font-size: 22px; font-weight: 700; }
+.st-sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+</style>
+  <meta name="description" content="SMT製程完整培訓課程：8大製程站台、Reflow模擬器、缺陷圖庫、IPC-A-610允收標準、ICT/FCT測試、散熱製程、GPU/TPU供應鏈">
+  <meta property="og:title" content="SMT製程培訓課程">
+  <meta property="og:description" content="從PCB Loading到IPQC批放行的完整SMT製程品質培訓">
+</head>
+<body>
+<div class="app">
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-left">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <a href="./index.html" style="font-size:11px;padding:4px 10px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;color:var(--text3);text-decoration:none;white-space:nowrap;transition:all .2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">← Knowledge Hub</a>
+    <div class="hdr-title">⚡ SMT <span>製程培訓課程</span></div>
+  </div>
+    <div class="prog-wrap">
+      <div class="prog-bar"><div class="prog-fill" id="smt-pb" style="width:0%"></div></div>
+      <span class="prog-txt" id="smt-prog-txt">0/8 站</span>
+    </div>
+  </div>
+</header>
+
+<!-- TAB BAR -->
+<nav class="tabbar">
+  <button class="tab on" onclick="smtTab('stations',this)">⚙️ 製程站台</button>
+  <button class="tab" onclick="smtTab('reflow',this)">🔥 Reflow</button>
+  <button class="tab" onclick="smtTab('defects',this)">🔬 缺陷圖庫</button>
+  <button class="tab" onclick="smtTab('stencil',this)">📐 Stencil</button>
+  <button class="tab" onclick="smtTab('nozzle',this)">🤖 Nozzle</button>
+  <button class="tab" onclick="smtTab('aoi',this)">👁️ AOI</button>
+  <button class="tab" onclick="smtTab('thermal',this)">🌡️ 散熱製程</button>
+  <button class="tab" onclick="smtTab('stencil-care',this)">🪣 鋼板管理</button>
+  <button class="tab" onclick="smtTab('aoi-compare',this)">📷 2D/3D AOI</button>
+  <button class="tab" onclick="smtTab('profile-guide',this)">📈 Profile選擇</button>
+  <button class="tab" onclick="smtTab('stencil-detail',this)">📏 開孔設計</button>
+  <button class="tab" onclick="smtTab('paste-select',this)">🧪 錫膏選擇</button>
+  <button class="tab" onclick="smtTab('ipc-accept',this)">✅ IPC允收</button>
+  <button class="tab" onclick="smtTab('test-methods',this)">🔌 功能測試</button>
+  <button class="tab" onclick="smtTab('gpu-tpu',this)">🖥️ GPU/TPU供應鏈</button>
+  <button class="tab" onclick="smtTab('notes',this)">📓 筆記</button>
+  <button class="tab" onclick="smtTab('quiz',this)">📝 測驗</button>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<!-- STATIONS -->
+<div class="sec vis" id="smtsec-stations">
+  <div class="pgrid" id="smt-pgrid"></div>
+  <div id="smt-det"></div>
+  <div class="navrow">
+    <button class="nbtn" onclick="smtPrev()">← 上一站</button>
+    <span id="smt-sctr" style="font-size:12px;color:var(--text3)">1/8</span>
+    <button class="nbtn pr" onclick="smtNext()">下一站 →</button>
+  </div>
+</div>
+
+<!-- REFLOW -->
+<div class="sec" id="smtsec-reflow">
+  <div class="card">
+    <div class="card-title">🔥 Reflow Profile 互動模擬器</div>
+    <div class="card-sub">調整參數即時看Profile變化與風險警示（SAC305 Lead-free）</div>
+    <canvas id="smt-cv"></canvas>
+    <div class="zone-tags" id="smt-zl"></div>
+    <div class="ctrl"><span class="lbx">Ramp (°C/s)</span><input type="range" id="smt-ramp" min="0.5" max="4" value="2" step="0.1" oninput="smtDR()"><span class="valx" id="smt-rv">2.0</span></div>
+    <div class="ctrl"><span class="lbx">Soak (°C)</span><input type="range" id="smt-soak" min="140" max="180" value="160" step="1" oninput="smtDR()"><span class="valx" id="smt-sv">160</span></div>
+    <div class="ctrl"><span class="lbx">Peak (°C)</span><input type="range" id="smt-peak" min="220" max="265" value="245" step="1" oninput="smtDR()"><span class="valx" id="smt-pv">245</span></div>
+    <div class="ctrl"><span class="lbx">Cooling (°C/s)</span><input type="range" id="smt-cool" min="1" max="6" value="3" step="0.1" oninput="smtDR()"><span class="valx" id="smt-cv2">3.0</span></div>
+    <div id="smt-ra" style="margin-top:8px"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">溫區說明</div>
+    <div id="smt-zc"></div>
+  </div>
+</div>
+
+<!-- DEFECTS -->
+<div class="sec" id="smtsec-defects">
+  <div class="dfilt" id="smt-df"></div>
+  <div id="smt-dl"></div>
+</div>
+
+<!-- STENCIL -->
+<div class="sec" id="smtsec-stencil">
+  <div class="card">
+    <div class="card-title">📐 Stencil Area Ratio 計算器</div>
+    <div class="card-sub">AR = (L×W) ÷ (2×T×(L+W)) ── 最低要求 AR ≥ 0.66</div>
+    <div class="ctrl"><span class="lbx">長 L (mm)</span><input type="range" id="smt-sl" min="0.2" max="3" value="1.2" step="0.05" oninput="smtCS()"><span class="valx" id="smt-slv">1.20</span></div>
+    <div class="ctrl"><span class="lbx">寬 W (mm)</span><input type="range" id="smt-sw" min="0.2" max="3" value="0.8" step="0.05" oninput="smtCS()"><span class="valx" id="smt-swv">0.80</span></div>
+    <div class="ctrl"><span class="lbx">厚 T (mm)</span><input type="range" id="smt-st" min="0.08" max="0.2" value="0.12" step="0.01" oninput="smtCS()"><span class="valx" id="smt-stv">0.12</span></div>
+    <div class="st-result" id="smt-sr"></div>
+    <div class="lbl">AR 判準</div>
+    <table class="tbl">
+      <tr><th>AR值</th><th>轉移率</th><th>判定</th></tr>
+      <tr><td class="tok">&gt; 0.66</td><td>&gt;80%</td><td class="tok">合格</td></tr>
+      <tr><td class="twn">0.55–0.66</td><td>65–80%</td><td class="twn">邊緣，加強監控</td></tr>
+      <tr><td class="tbd">&lt; 0.55</td><td>&lt;65%</td><td class="tbd">不合格，重新設計</td></tr>
+    </table>
+    <div class="lbl" style="margin-top:12px">常見設計規則</div>
+    <table class="tbl">
+      <tr><th>參數</th><th>規則</th><th>原因</th></tr>
+      <tr><td>開孔尺寸</td><td>≤ PAD尺寸</td><td>避免溢錫橋接</td></tr>
+      <tr><td>Fine pitch &lt;0.5mm</td><td>Home plate開孔</td><td>減少Toe位錫量</td></tr>
+      <tr><td>BGA開孔</td><td>球徑80–90%</td><td>球高一致性</td></tr>
+      <tr><td>Via-in-pad</td><td>塞孔或蓋油</td><td>防錫膏吸入Via</td></tr>
+      <tr><td>鋼板材質</td><td>Fine pitch用電鑄板</td><td>壁面光滑脫模佳</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- NOZZLE -->
+<div class="sec" id="smtsec-nozzle">
+  <div class="card">
+    <div class="card-title">🤖 吸嘴選擇指南</div>
+    <div class="card-sub">錯誤的吸嘴尺寸或狀態是Missing component最主要的機台因素</div>
+    <div class="noz-grid" id="smt-ng"></div>
+    <div class="lbl" style="margin-top:12px">維護要點</div>
+    <div class="krow"><div class="dot" style="background:var(--red)"></div>尖端缺損、彎曲或殘留物 &gt;0.1mm → 立即更換</div>
+    <div class="krow"><div class="dot" style="background:var(--amber)"></div>每班確認真空壓力，偏差 &gt;5kPa 記錄並追查</div>
+    <div class="krow"><div class="dot" style="background:var(--amber)"></div>每日用IPA清潔尖端，禁用研磨物</div>
+    <div class="krow"><div class="dot" style="background:var(--green)"></div>PM後執行視覺校正，確認中心偏移歸零</div>
+    <div class="krow"><div class="dot" style="background:var(--green)"></div>記錄Pick次數，達廠商壽命上限前預防性更換</div>
+    <div class="lbl" style="margin-top:10px">PFMEA吸嘴失效模式</div>
+    <div class="fmode"><button class="fhdr" onclick="smtTF(this)"><span>吸嘴堵塞 → 真空不足 → 元件掉落</span><i class="farr">▶</i></button><div class="fcauses"><div class="fcause">助焊劑殘留堆積於吸嘴孔道</div><div class="fcause">置件過程錫膏污染</div><span class="fact">管控：每日清潔 + 真空SPC監控</span></div></div>
+    <div class="fmode"><button class="fhdr" onclick="smtTF(this)"><span>吸嘴彎曲 → 偏心Pick → 立碑</span><i class="farr">▶</i></button><div class="fcauses"><div class="fcause">機械碰撞（撞到Feeder蓋或元件）</div><div class="fcause">程式高度設定錯誤</div><span class="fact">管控：開工視覺校正；高度學習後Lock</span></div></div>
+    <div class="fmode"><button class="fhdr" onclick="smtTF(this)"><span>錯誤吸嘴尺寸 → 元件損傷/掉落</span><i class="farr">▶</i></button><div class="fcauses"><div class="fcause">換料後吸嘴未同步更換</div><div class="fcause">同一Lane多種元件尺寸</div><span class="fact">管控：程式吸嘴-元件綁定驗證</span></div></div>
+  </div>
+</div>
+
+<!-- AOI -->
+<div class="sec" id="smtsec-aoi">
+  <div class="card">
+    <div class="card-title">👁️ AOI 光學檢測原理</div>
+    <div class="card-sub">多角度彩色LED + 攝影機，分析反射光型判斷焊點形狀與元件狀態</div>
+    <div class="lbl">四角度光源系統</div>
+    <div class="aoi-grid">
+      <div class="aoi-box" style="background:var(--red-bg);border:1px solid var(--red-border)"><div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:3px">🔴 低角度 10–20°</div><div style="font-size:12px;color:var(--text2)">焊點斜面/Fillet形狀。橋接偵測。錫量不足高度。</div></div>
+      <div class="aoi-box" style="background:var(--green-bg);border:1px solid var(--green-border)"><div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:3px">🟢 中角度 40–50°</div><div style="font-size:12px;color:var(--text2)">元件本體存在。立碑（缺件）。元件浮起。</div></div>
+      <div class="aoi-box" style="background:var(--blue-bg);border:1px solid var(--blue-border)"><div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:3px">🔵 高角度 60–75°</div><div style="font-size:12px;color:var(--text2)">元件本體標記/極性。封裝方向（180°反向）。</div></div>
+      <div class="aoi-box" style="background:var(--bg2);border:1px solid var(--border)"><div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:3px">⚪ 漫射頂光</div><div style="font-size:12px;color:var(--text2)">PCB表面對比。Pad存在確認。共面度基線。</div></div>
+    </div>
+    <div class="lbl" style="margin-top:12px">False Call vs Escape 平衡</div>
+    <div class="krow"><div class="dot" style="background:var(--red)"></div><strong style="color:var(--red);margin-right:4px">Escape（漏判）：</strong>不良板通過AOI → 流到客戶。最嚴重。</div>
+    <div class="krow"><div class="dot" style="background:var(--amber)"></div><strong style="color:var(--amber);margin-right:4px">False Call（誤判）：</strong>良品被攔下 → 浪費時間、增加搬運損傷風險。</div>
+    <div class="krow"><div class="dot" style="background:var(--green)"></div>目標：False call率 &lt;5%，CTQ焊點Escape=0</div>
+    <div class="krow"><div class="dot" style="background:var(--blue)"></div>每日用Golden Board驗證AOI靈敏度沒有漂移</div>
+    <div class="krow"><div class="dot" style="background:var(--blue)"></div>新PCB設計必須重新建立並驗證AOI程式，不可複製舊程式</div>
+  </div>
+</div>
+
+<!-- THERMAL PROCESSES (NEW) -->
+<div class="sec" id="smtsec-thermal">
+  <div id="thermal-content"></div>
+</div>
+
+
+<!-- STENCIL APERTURE DETAIL -->
+<div class="sec" id="smtsec-stencil-detail">
+  <div id="stencil-detail-content"></div>
+</div>
+
+<!-- PASTE SELECTION -->
+<div class="sec" id="smtsec-paste-select">
+  <div id="paste-select-content"></div>
+</div>
+
+<!-- IPC ACCEPTABILITY -->
+<div class="sec" id="smtsec-ipc-accept">
+  <div id="ipc-accept-content"></div>
+</div>
+
+
+<!-- STENCIL CARE -->
+<div class="sec" id="smtsec-stencil-care">
+  <div id="stencil-care-content"></div>
+</div>
+
+<!-- AOI COMPARE -->
+<div class="sec" id="smtsec-aoi-compare">
+  <div id="aoi-compare-content"></div>
+</div>
+
+<!-- PROFILE GUIDE -->
+<div class="sec" id="smtsec-profile-guide">
+  <div id="profile-guide-content"></div>
+</div>
+
+
+<!-- TEST METHODS -->
+<div class="sec" id="smtsec-test-methods">
+  <div id="test-methods-content"></div>
+</div>
+
+<!-- GPU TPU SUPPLY CHAIN -->
+<div class="sec" id="smtsec-gpu-tpu">
+  <div id="gpu-tpu-content"></div>
+</div>
+
+<!-- NOTES -->
+<div class="sec" id="smtsec-notes">
+  <div class="card">
+    <div class="card-title">📓 學習筆記</div>
+    <div class="card-sub">筆記存在本機（localStorage），可一鍵匯出複製到 Google Doc</div>
+    <textarea class="notes-ta" id="smt-nta" placeholder="記下學習心得、現場案例、問題清單…&#10;&#10;例如：&#10;- 冷焊特徵：灰暗顆粒狀表面，無光澤凹弧&#10;- SCP Flux Bonding要注意Void% — X-ray確認&#10;- Vertical Power: VRM在ASIC正下方，IR drop最小"></textarea>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <button class="nbtn pr" onclick="smtSN()" style="border-radius:20px">💾 儲存筆記</button>
+      <button class="export-btn" onclick="smtEN()">📋 複製到剪貼簿</button>
+    </div>
+    <div class="lbl" style="margin-top:14px">學習進度</div>
+    <div class="prog-summary" id="smt-ps"></div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="sec" id="smtsec-quiz">
+  <div id="smt-qp"></div>
+</div>
+
+</main>
+</div>
+
+<script>
+/* ══════════════════════════════════════
+   SMT COURSE ENGINE v2
+   淺色系 + RWD + 四新term
+   ══════════════════════════════════════ */
+const SMT_KEY = 'dean_smt_v2';
+let SS = { cur:0, visited:new Set(), qIdx:0, qAns:false, qScore:{c:0,t:0}, defFilter:'全部', notes:'' };
+
+/* ── Data ── */
+const SMTST = [
+  {id:0,num:'①',icon:'📋',name:'PCB Loading',desc:'準備並載入裸板，貼Barcode，載入Carrier進行B面製程。',
+   inp:['裸PCB（正確料號、無翹曲）','Carrier/Magazine','雷射條碼標籤','生產工單'],
+   out:['已掃描Barcode的PCB','PCB已入Carrier','B面備妥可進印刷'],
+   kpis:[{t:'PCB翹曲 < 對角線0.75%',c:'var(--green)'},{t:'料號經Barcode掃描確認（SFCS）',c:'var(--blue)'},{t:'Carrier Pin對齊，無元件損傷',c:'var(--green)'},{t:'標籤一次掃描成功率追蹤',c:'var(--amber)'}],
+   faults:[{m:'錯誤PCB料號',rpn:80,cs:['未強制Barcode掃描','類似料號混放'],a:'RF/SFCS掃描防呆'},{m:'PCB翹曲無法入Carrier',rpn:60,cs:['儲存環境不當（潮濕/高溫）','PCB疊放過高'],a:'IQC進料翹曲量測'}]},
+  {id:1,num:'②',icon:'🖨️',name:'Solder Printing',desc:'錫膏透過鋼板用刮刀印到PCB Pad上。約60%缺陷來自此站。',
+   inp:['已定位的PCB','鋼板（Stencil）','錫膏（正確料號、未過期）','前後刮刀'],
+   out:['所有Pad有錫膏沉積','錫量/面積在規格內','送SPI確認'],
+   kpis:[{t:'錫量：標準值的80–120%（SPI量測）',c:'var(--red)'},{t:'錫膏料號：每次換料RF掃描確認',c:'var(--blue)'},{t:'保存期限：未開封<6個月；開封<12小時',c:'var(--amber)'},{t:'鋼板開孔無阻塞、無錫膏滲漏',c:'var(--green)'},{t:'PCB對位偏移在鋼板規格內',c:'var(--blue)'}],
+   faults:[{m:'使用錯誤錫膏',rpn:36,cs:['料號混放','換料未掃描'],a:'RF掃描+SFCS比對防呆'},{m:'漏印/錫量不足',rpn:72,cs:['鋼板上錫膏用盡','開孔阻塞','刮刀壓力太低'],a:'SPI 100%檢查；鋼板定期清洗'},{m:'過期錫膏',rpn:60,cs:['未確認開封期限','超過12小時繼續使用'],a:'強制標示開封時間；FIFO管控'},{m:'橋接/錫量過多',rpn:64,cs:['刮刀壓力過高','鋼板提早抬起','框架磨損'],a:'SPI橋接偵測；壓力SPC管控'}]},
+  {id:2,num:'③',icon:'🔍',name:'SPI',desc:'錫膏印刷後的3D自動量測，第一個自動化品質關卡。',
+   inp:['已印錫膏的PCB','SPI機台+正確程式','Pad座標與錫量規格'],
+   out:['Pass：送P&P','Fail：退回重印','SPC回饋給印刷機'],
+   kpis:[{t:'體積覆蓋率 ≥80%（<70%為紅燈）',c:'var(--red)'},{t:'高度均一性 — 無橋接偵測',c:'var(--amber)'},{t:'面積覆蓋率每Pad ≥規格',c:'var(--green)'},{t:'XY偏移在公差內',c:'var(--blue)'},{t:'False call率 <2%，超標需調程式',c:'var(--amber)'}],
+   faults:[{m:'SPI警報被繞過',rpn:48,cs:['作業員未獲授權Override','錯誤程式載入'],a:'SPI與輸送帶Interlock — 不過不送'},{m:'False call率偏高',rpn:30,cs:['程式未調校','Pad資料不準','燈光漂移'],a:'每月程式Review；Cpk逐Pad追蹤'}]},
+  {id:3,num:'④',icon:'🤖',name:'Pick & Place',desc:'高速機台從Feeder取元件放到錫膏Pad上，Fine pitch精度需 <50µm。',
+   inp:['已確認錫膏的PCB','Feeder（已載正確料卷）','P&P程式（正確版本）','吸嘴（正確型號，已清潔）'],
+   out:['所有元件已置放的PCB','等待過爐','機台Log（Pick數、拋料數）'],
+   kpis:[{t:'置件偏移 <Pad寬的50%（IPC Class 2/3）',c:'var(--red)'},{t:'無缺件、無錯件、無極性反向',c:'var(--red)'},{t:'吸嘴真空壓力每cycle監控',c:'var(--amber)'},{t:'Feeder校正與料帶進給精度',c:'var(--blue)'},{t:'首件確認 + AOI下站驗證',c:'var(--green)'}],
+   faults:[{m:'置件位置錯誤（程式問題）',rpn:64,cs:['未綁定工單自動選程式','程式版本錯誤'],a:'工單自動對應程式；首件Buy-off'},{m:'缺件（吸嘴掉料）',rpn:72,cs:['吸嘴堵塞→真空不足','吸嘴彎曲→偏心','真空壓力不足','吸嘴尺寸不符'],a:'吸嘴PM計畫；真空SPC；AOI偵測'},{m:'錯誤元件（Feeder問題）',rpn:80,cs:['上錯料卷','Feeder標示錯誤','未執行掃描確認'],a:'進料掃描+Feeder ID綁定'},{m:'立碑（Reflow後）',rpn:48,cs:['兩端錫量不均','置件偏心','Reflow熱平衡差'],a:'SPI預先確認；P&P偏移調整'}]},
+  {id:4,num:'⑤',icon:'🔥',name:'Reflow Oven',desc:'PCB通過多溫區爐，控制溫度使錫膏熔化後凝固，形成可靠焊點。Profile是最關鍵參數。',
+   inp:['已置件的PCB','Reflow Profile Recipe','N₂氣供應（O₂ <3000ppm）','傳送帶速度設定'],
+   out:['焊接完成的PCBA（IPC J-STD-001）','Profile量測記錄','送AOI'],
+   kpis:[{t:'峰值溫度在錫膏規格內（SAC305: 245±5°C）',c:'var(--red)'},{t:'液相以上時間（TAL）：60–90秒',c:'var(--red)'},{t:'升溫速率：<3°C/s（防熱衝擊）',c:'var(--amber)'},{t:'O₂濃度 <3000ppm（N₂焊接）',c:'var(--amber)'},{t:'每12小時做一次Profile量測',c:'var(--green)'}],
+   faults:[{m:'冷焊 Cold Solder',rpn:168,cs:['峰值溫度未達規格','TAL不足60秒','PM後未重新量測Profile'],a:'Profile SPC；換線後強制重測'},{m:'錫珠 Solder Ball',rpn:84,cs:['升溫太快—水分爆出','SPI錫量過多','N₂流量過大'],a:'升溫速率管控；SPI量檢前置'},{m:'錫洞 Void',rpn:60,cs:['助焊劑outgassing','Via-in-pad吸錫（HIP效應）','Profile不當'],a:'X-ray量測Void%；DFM設計改善'},{m:'焊點氧化',rpn:48,cs:['N₂供應中斷','O₂感測器未校正'],a:'O₂連續監控+斷氣警報'}]},
+  {id:5,num:'⑥',icon:'👁️',name:'AOI',desc:'100%自動光學檢測，確認焊點品質、元件存在性、極性、橋接。所有板子都過。',
+   inp:['焊接後的PCBA','AOI程式（版本正確）','已校正的機台'],
+   out:['Pass：送目視確認','Fail：標示缺陷位置','數據輸入TDM追蹤'],
+   kpis:[{t:'CTQ焊點Escape目標=0',c:'var(--red)'},{t:'False call率 <5%，超標調程式',c:'var(--amber)'},{t:'程式版本綁定工單',c:'var(--blue)'},{t:'覆蓋率：所有CTQ焊點+極性件',c:'var(--green)'}],
+   faults:[{m:'載入錯誤程式',rpn:28,cs:['人工選程式','ECN後程式未更新'],a:'每機種一個程式；工單自動連結'},{m:'影像不清晰造成逃出',rpn:56,cs:['鏡頭污染','燈光漂移/燈泡老化','PCB表面處理差異'],a:'每週校正；每日Golden Board Run'},{m:'作業員放行AOI不良品',rpn:48,cs:['誤判警報','無第二人確認規定'],a:'雙人確認制；強制記錄處置原因'}]},
+  {id:6,num:'⑦',icon:'🧑‍🔬',name:'目視/IPQC',desc:'人員確認AOI警報，按IPC-A-610執行抽樣目視。半成品流到下站前的最後防線。',
+   inp:['AOI標示不良的PCBA','IPC-A-610標準','檢查表','黃金樣本（Boundary Sample）'],
+   out:['Pass/Fail判定','維修板退回重工','IPQC抽樣數據'],
+   kpis:[{t:'IPC-A-610 Class 2或Class 3工藝標準',c:'var(--blue)'},{t:'AOI警報100%確認，不可跳過',c:'var(--red)'},{t:'IPQC AQL抽樣（CTQ: AQL 0.65）',c:'var(--amber)'},{t:'檢驗員需IPC-A-610 CIS認證',c:'var(--green)'}],
+   faults:[{m:'目視漏過缺陷',rpn:56,cs:['檢驗員疲勞/人體工學','照明不足','判準不明確'],a:'輪崗制；照度量測；更新Boundary Sample'},{m:'過度拒退（不必要重工）',rpn:30,cs:['判準與客戶不一致','樣本過時'],a:'季度Inspector相關性研究'}]},
+  {id:7,num:'⑧',icon:'📊',name:'IPQC批放行',desc:'最終品質關卡。統計抽樣、RFTY/PPM計算、批次放行、供應商回饋。',
+   inp:['完成的PCBA批次','抽樣計畫','AOI/目視缺陷記錄','SPC/PPM歷史趨勢'],
+   out:['批次放行授權','RFTY & PPM指標','TDM輸入資料','Tier 2供應商回饋'],
+   kpis:[{t:'RFTY（Rolled First Time Yield）vs目標',c:'var(--red)'},{t:'OOB PPM — 客戶端品質先行指標',c:'var(--red)'},{t:'缺陷分類（橋接/缺件/冷焊）比例',c:'var(--amber)'},{t:'完整Lot追溯 — 所有材料連結工單',c:'var(--green)'}],
+   faults:[{m:'不良批次放行',rpn:90,cs:['未遵循抽樣計畫','資料記錄錯誤','出貨壓力'],a:'系統Lock — 無IPQC簽核不得放行'},{m:'RFTY數據不準確',rpn:40,cs:['重工未記入缺陷Log','多次維修未追蹤'],a:'MES自動計數所有維修操作'}]}
+];
+
+const SMTDEF = [
+  {name:'錫橋 Solder Bridge',st:'印刷/回焊',sv:'r',ipc:'不合格',ap:'相鄰兩個應絕緣的Pad被錫膏連通。',cs:['SPI錫量過多（超印）','鋼板開孔過大','刮刀壓力過高','立碑元件推擠錫膏'],dt:'AOI（低角度光）；SPI（體積超標）',ac:'確認SPI數據；檢查鋼板AR；調整刮刀壓力'},
+  {name:'錫量不足',st:'印刷/回焊',sv:'a',ipc:'條件接受',ap:'Fillet薄、凹面或缺失。元件腳透過錫膏可見。',cs:['SPI體積偏低（欠印）','鋼板開孔阻塞','錫膏過期','峰值溫度不足'],dt:'AOI；SPI預防；目視',ac:'確認SPI體積vs規格；確認錫膏新鮮度；驗證Reflow峰溫'},
+  {name:'冷焊 Cold Solder',st:'回焊',sv:'r',ipc:'不合格',ap:'表面暗沉、顆粒狀或霧化。無光亮凹弧。圓形非潤濕fillet。',cs:['峰值溫度未達最低規格','液相以上時間不足（<60s）','冷卻過程板子移動','PM後Profile未重測'],dt:'目視（暗沉外觀）；X-ray（不完整潤濕）',ac:'用熱電偶板驗證Profile；確認峰溫SPC趨勢'},
+  {name:'立碑 Tombstone',st:'回焊',sv:'r',ipc:'不合格',ap:'小型晶片元件（0402、0201）在回焊中豎立於單一Pad上。',cs:['兩個Pad錫膏量不均','元件置件偏心','不對稱熱質量','兩Pad錫膏新鮮度不一'],dt:'AOI（元件非水平）；SPI（兩Pad體積差）',ac:'確認SPI兩端體積平衡；P&P對中確認'},
+  {name:'缺件 Missing',st:'置件',sv:'r',ipc:'不合格',ap:'Pad有錫（已回焊）但元件缺失，設計位置空無一物。',cs:['吸嘴真空不足→元件掉落','Feeder空料無警報','視覺系統遺漏拋料','元件困在料帶口袋'],dt:'AOI（Pad存在但無本體）',ac:'查機台拋料Log；確認吸嘴真空趨勢；Feeder料帶檢查'},
+  {name:'極性反向',st:'置件',sv:'r',ipc:'不合格',ap:'極性元件（電容、二極體、LED、IC）旋轉180°放置。',cs:['Feeder上料方向錯誤','P&P視覺校正漂移','程式θ角錯誤'],dt:'AOI（本體標記方向確認）；FCT（功能失效）',ac:'AOI極性確認演算法；確認Feeder上料方向'},
+  {name:'錫洞 Void',st:'回焊',sv:'a',ipc:'依Void%定',ap:'焊點內部氣泡空腔，X-ray可見。外觀可能正常。',cs:['助焊劑outgassing','Via-in-pad吸錫（HIP效應）','PCB/元件吸濕','升溫太快'],dt:'X-ray（2D或3D CT）；IPC-7095 Void% <25%',ac:'DFM：Via-in-pad塞孔；放慢升溫速率；PCB烘烤'},
+  {name:'錫珠 Solder Ball',st:'回焊',sv:'a',ipc:'活動錫珠不合格',ap:'元件本體旁或下方有小球狀錫粒。',cs:['升溫太快→水分爆出','錫膏印到防焊漆（鋼板偏位）','N₂流量太大','錫膏過期'],dt:'AOI；目視；SPI對位確認',ac:'放慢預熱升溫；確認鋼板對位；驗證N₂流量'},
+  {name:'HIP — Head-in-Pillow',st:'回焊',sv:'r',ipc:'不合格（BGA連接失效）',ap:'BGA焊球與PCB PAD各自形成獨立球形，兩者外觀緊靠但實際未熔合。X-ray看起來像正常焊點，但電性開路。',cs:['BGA翹曲（Board或Package warpage）——Reflow時BGA和PCB間距變化，焊球與PAD分離','錫膏體積不足，未能橋接BGA球與PAD','PCB Warpage + 熱不均：角落BGA先凝固，中間仍熔化，形成相對位移','PCB與BGA CTE（熱膨脹係數）不匹配'],dt:'X-ray（2D看不清楚，需3D CT X-ray）；電性測試開路；AOI無法偵測',ac:'3D CT X-ray 100%檢查BGA；Profile優化——降低冷卻速率；加支撐Pin防板彎；BGA underfill強化'},
+  {name:'Non-Wet Open (NWO)',st:'回焊',sv:'r',ipc:'不合格',ap:'焊料完全未潤濕PAD或元件腳，形成外觀可見的開路。不同於HIP（HIP外觀無異狀）。',cs:['PAD或元件腳嚴重氧化','Flux活性不足（過期或低活性No-clean用於重度氧化表面）','峰值溫度嚴重不足','PCB儲存時間過長（超MSL）'],dt:'AOI；電性測試；目視',ac:'確認PAD/腳氧化程度；更換高活性Flux；PCB/元件烘烤（Bake）後再生產'}
+];
+
+const SMTNOZ = [
+  {n:'CN065/CN040',sh:'○',bg:'var(--blue-bg)',cl:'var(--blue)',sz:'0.4–0.65mm孔徑',pk:'0201, 01005',vc:'≥45 kPa',nt:'最小吸嘴，超細間距，需頻繁PM。'},
+  {n:'CN100/CN140',sh:'○',bg:'var(--green-bg)',cl:'var(--green)',sz:'1.0–1.4mm孔徑',pk:'0402, 0603, SOT23',vc:'≥35 kPa',nt:'SMT最常用，被動元件主力。'},
+  {n:'CN220/CN300',sh:'○',bg:'var(--amber-bg)',cl:'var(--amber)',sz:'2.2–3.0mm孔徑',pk:'0805, 1206, SOP8',vc:'≥28 kPa',nt:'中型IC和較大被動元件。'},
+  {n:'平板/Paddle',sh:'▭',bg:'var(--purple-bg)',cl:'var(--purple)',sz:'依元件定',pk:'QFP, SOIC, 扁平IC',vc:'≥22 kPa',nt:'平面型尖端，避免損傷IC腳。'},
+  {n:'BGA吸嘴',sh:'⬡',bg:'var(--red-bg)',cl:'var(--red)',sz:'客製',pk:'BGA, CSP, LGA',vc:'≥18 kPa',nt:'大面積低真空，Ball對位關鍵。'},
+  {n:'異形/Cup',sh:'⬭',bg:'var(--teal-bg)',cl:'var(--teal)',sz:'客製',pk:'連接器、屏蔽罩',vc:'≥15 kPa',nt:'客製形狀，低量，特殊Feeder。'}
+];
+
+const SMTZON = [
+  {n:'預熱 Preheat',r:'25→150°C',t:'60–90s',c:'var(--blue-bg)',tc:'var(--blue)',w:'蒸發錫膏溶劑。活化Flux。防止熱衝擊。升溫速率控制<3°C/s。'},
+  {n:'均溫 Soak',r:'150–180°C',t:'60–120s',c:'var(--amber-bg)',tc:'var(--amber)',w:'Flux完全活化，去除Pad和元件腳氧化層。板面溫度均一化，大型元件也達到活化溫度。'},
+  {n:'回焊 Reflow',r:'183–250°C',t:'TAL 60–90s',c:'var(--red-bg)',tc:'var(--red)',w:'錫膏熔化（SAC305液相點183°C）。潤濕Pad和元件腳。形成Cu₆Sn₅金屬間化合物（IMC）。'},
+  {n:'冷卻 Cooling',r:'250→25°C',t:'<4°C/s',c:'var(--green-bg)',tc:'var(--green)',w:'凝固。晶粒結構形成。太快→熱應力裂縫。太慢→晶粒粗大/暗沉焊點。'}
+];
+
+const SMTQZ = [
+  {q:'某Pad的鋼板Area Ratio（AR）計算結果為0.52，預期會發生什麼？',opts:['錫膏轉移率>80%，屬合格','邊緣區間，需密切監控','轉移率<65%，很可能錫量不足，需重新設計或降低鋼板厚度','AR不影響錫量，可以忽略'],ans:2,exp:'AR<0.55表示開孔壁面對錫膏的附著力大於Pad的拉力，轉移率跌至65%以下。解法：降低鋼板厚度T，或加大開孔L/W尺寸。'},
+  {q:'Reflow後，PCB角落的大型連接器出現冷焊，但板子中央焊點正常。最可能的根因是？',opts:['使用了錯誤料號的錫膏','角落連接器熱質量大，實際峰溫未達標——需Profile量測驗證','AOI程式誤判','N₂供應中斷'],ans:1,exp:'角落大型連接器熱質量大，即使板中央峰溫達標，連接器端子可能未達液相點。解法：在連接器端子放熱電偶重新量測Profile，調整溫區設定。'},
+  {q:'Edge Bonding的主要目的是什麼？',opts:['取代錫膏印刷，成本更低','在BGA/大型元件四角點塗環氧樹脂，補強焊點機械強度，抵抗震動衝擊','提高導熱效率，取代SCP散熱板','防止AOI漏判焊點缺陷'],ans:1,exp:'Edge Bonding在BGA或大型元件的四角或邊緣塗布環氧樹脂（Epoxy），Reflow後固化。它不是電性連接，而是機械補強——讓焊點能承受震動、跌落、熱膨脹循環等機械應力。常見於車用電子、工業設備等高可靠度產品。'},
+  {q:'SCP（Solder Copper Plate）+ Flux Bonding的主要品質風險是什麼？',opts:['錫膏橋接（Solder Bridge）','銅板與元件之間的Void（空洞），降低導熱效率','PCB翹曲','AOI漏判'],ans:1,exp:'SCP Flux Bonding是把銅板（散熱板）用Flux或Solder TIM焊接到發熱元件上。最大品質風險是界面Void——氣泡空洞增加熱阻，讓元件散熱變差。需要用X-ray量測Void%，通常規格 <25%（視元件功率和客戶要求）。'},
+  {q:'Vertical Power（垂直供電）架構相比傳統側向供電的主要優點是什麼？',opts:['PCB層數更少，製作更簡單','VRM直接在ASIC正下方，電流路徑最短，IR drop最小，高電流ASIC效率最高','不需要Decoupling電容','Reflow製程更簡單'],ans:1,exp:'Vertical Power把VRM（電壓調節模組）安裝在PCB背面ASIC正下方，透過Via垂直傳遞電流到ASIC。傳統側向佈局電流需穿越大面積PCB銅層，IR drop大，還要浪費板面積。Vertical Power縮短電流路徑，減少寄生電感和電阻，特別適合需要1000A+的AI ASIC、GPU等高功率晶片。'},
+  {q:'IPC-A-610 Class 2 vs Class 3，對IPQC工作有什麼不同？',opts:['Class 3有更嚴格標準——軍事/醫療/航太。Fillet高度、橋接容差、Void%限制都更嚴。','Class 3只適用BGA檢查','Class 2比Class 3更嚴','無差異，IPC等級只適用PCB製造'],ans:0,exp:'IPC-A-610 Class 2=商業電子（多數消費/工業品）。Class 3=高可靠度（醫療、軍事、航太）。Class 3對許多在Class 2「條件接受」的缺陷採零容忍。Zebra產品需先確認各產品線適用等級。'},
+  {q:'IPC-A-610J（2024年版）新增了什麼判定等級？',opts:['新增Caution（注意）等級','新增Process Indicator（製程指標）——產品允收但製程需改善，介於Acceptable和Defect之間','新增Warning（警告）等級','新增Monitor（監控）等級'],ans:1,exp:'IPC-A-610J（2024最新版）新增Process Indicator（製程指標）作為第三個判定結果。它介於Acceptable和Defect之間：產品本身功能可靠可以放行，但這個特徵顯示製程需要改善以避免未來出現Defect。需記錄追蹤，但不需要立即維修。'},
+  {q:'BGA焊點出現HIP（Head-in-Pillow）缺陷，外觀看起來正常，電性開路。最有效的偵測方式是什麼？',opts:['目視檢查（放大鏡）','2D X-ray','3D CT X-ray + 電性測試','AOI多角度偵測'],ans:2,exp:'HIP最大的危險是外觀無異狀——BGA球和PAD各自形成球形但未熔合，2D X-ray也很難分辨。3D CT X-ray可以看到焊點的橫截面結構，清楚顯示未融合的界面。電性測試（ICT/FCT）會顯示開路。AOI和目視完全看不到BGA底部，無效。'},
+  {q:'依照5-Ball Rule，如果使用Type 4錫膏（最大粒徑38µm），最小鋼板開孔寬度應該是多少？',opts:['38µm','95µm（38×2.5）','190µm（38×5）','380µm（38×10）'],ans:2,exp:'5-Ball Rule規定開孔寬度至少要能容納5顆最大粉末並排：38µm × 5 = 190µm（=0.19mm）。這確保錫膏有足夠的流動空間，不會因粉末堵塞開孔而造成脫模不良和錫量不足。'},
+  {q:'ICT（In-Circuit Test）最大的限制是什麼，需要哪種測試補充？',opts:['ICT太慢，需要FCT加速','ICT無法偵測BGA底部焊點連接性，需要Boundary Scan（JTAG）補充','ICT只能測試數位IC，無法測試類比元件','ICT成本太高，無法大量生產使用'],ans:1,exp:'ICT使用針床（Bed of Nails）探針接觸PCB測試點，但BGA封裝底部焊球無法被針床直接接觸。這個「死角」必須由Boundary Scan（JTAG/IEEE 1149.1）補充——BS透過IC內建BSR暫存器軟體驅動驗證BGA焊球連接性，無需物理接觸。'},
+  {q:'NVIDIA GPU和Google TPU供應鏈最大的共同瓶頸是什麼？',opts:['都需要在台灣組裝PCBA','都需要台積電最先進製程產能（N3/N4），互相競爭有限的Wafer產能','都使用相同的EMS廠商','都需要相同的Reflow Profile'],ans:1,exp:'GPU和TPU雖然業務模型完全不同（Merchant Silicon vs Custom ASIC），但兩者都需要台積電最先進的製程節點（N3/N4）來製造晶片。這意味著兩者在台積電的產能分配上是競爭關係——這也是AI晶片供應緊張的核心原因之一。EMS/ODM如Wistron同時服務兩者的PCBA組裝。'}
+];
+
+/* ── Thermal section data ── */
+const THERMAL_SECTIONS = [
+  {
+    id:'edge',icon:'🔩',color:'var(--purple)',bg:'var(--purple-bg)',border:'var(--purple-border)',
+    title:'Edge Bonding（邊緣膠固化補強）',
+    what:'在BGA、大型連接器或功率元件的四角或邊緣，點塗環氧樹脂（Epoxy），Reflow後固化，補強焊點機械強度。Edge Bonding是機械連結，不是電性連接。',
+    why:'SMT焊點在震動、跌落、熱膨脹循環下可能疲勞斷裂。Edge Bonding把應力分散到膠材，延長焊點壽命，適合車用電子、工業設備、AI伺服器等高可靠度需求。',
+    process:[
+      {t:'表面清潔',d:'確認BGA/元件焊接完成並通過AOI後，PCB表面無殘留助焊劑、污染物。'},
+      {t:'點膠（Dispensing）',d:'用點膠機在元件四角精準點塗環氧樹脂，控制膠量（體積/重量），不能覆蓋到元件本體或焊點。'},
+      {t:'固化（Curing）',d:'通過UV固化爐或熱固化爐，完成環氧樹脂交聯。溫度/時間依膠材規格。'},
+      {t:'AOI/目視確認',d:'確認膠材位置正確、無空洞、無覆蓋焊點、無殘膠溢出至禁止區域。'},
+    ],
+    faults:[
+      {m:'膠量不足→補強效果差',rpn:64,cs:['點膠機針頭堵塞','膠量設定值漂移','溫度影響黏度'],a:'點膠機每班定量確認；SPC管控膠點重量'},
+      {m:'膠材覆蓋焊點→返修困難',rpn:80,cs:['點膠位置偏移','元件尺寸CAD資料錯誤','程式未更新'],a:'點膠程式依實際元件座標設定；首件目視確認'},
+      {m:'固化不完全→黏著力不足',rpn:56,cs:['固化溫度不足','爐速太快','膠材過期'],a:'定期Profile量測；膠材FIFO管控'},
+    ],
+    qc:['點膠重量SPC（每班抽查）','膠點AOI（位置、面積、高度）','剪切強度測試（Shear test）——每批首件驗證','膠材保存：依廠商規格冷藏，開封後計時使用']
+  },
+  {
+    id:'wcool',icon:'💧',color:'var(--blue)',bg:'var(--blue-bg)',border:'var(--blue-border)',
+    title:'Water Cooling（液冷系統組裝）',
+    what:'透過液冷板（Cold Plate）直接接觸高功率元件（ASIC、GPU、CPU），以液體循環帶走熱量。比風冷散熱效率高5–10倍，是AI伺服器、資料中心的主流散熱方案。',
+    why:'現代AI ASIC功耗已超過600W/顆，傳統風冷無法有效散熱。液冷把熱量從晶片直接帶走，維持元件在安全溫度範圍，確保效能和可靠度。',
+    process:[
+      {t:'元件安裝與TIM塗布',d:'PCBA完成後，在ASIC/CPU頂部均勻塗布TIM（Thermal Interface Material），填補元件頂部與Cold Plate之間的微小空隙。'},
+      {t:'Cold Plate安裝',d:'將Cold Plate精準對位到元件頂部，依規定扭矩（Torque）鎖螺絲。扭矩不足→接觸不良；過大→元件損傷。'},
+      {t:'管路連接（Fitting）',d:'連接進出水管路，確認接頭密封性。所有接頭需使用扭矩板手，依規格鎖緊。'},
+      {t:'洩漏測試（Leak Test）',d:'施加指定壓力（通常1.5倍工作壓力），保壓時間達標，無洩漏才放行。'},
+      {t:'功能驗證',d:'通電測試，確認冷卻液流量、元件溫度均在規格內。'},
+    ],
+    faults:[
+      {m:'TIM塗布不均→局部熱阻高',rpn:84,cs:['人工塗布量不一致','自動塗布機針頭堵塞','TIM黏度受溫度影響'],a:'自動化點塗+AOI確認面積覆蓋率；TIM厚度量測'},
+      {m:'Cold Plate螺絲扭矩不足→接觸熱阻高',rpn:72,cs:['人工鎖付未使用扭矩板手','扭矩設定值錯誤'],a:'強制使用電動扭矩板手；扭矩資料上傳MES'},
+      {m:'管路接頭洩漏→液體損壞PCB',rpn:200,cs:['接頭未鎖緊（扭矩不足）','O-ring損傷或缺失','管路彎折半徑過小'],a:'100% Leak Test（保壓≥2分鐘）；接頭確認清單'},
+    ],
+    qc:['100% Leak Test（壓力洩漏測試）——不過不放行','TIM塗布AOI或人工目視（面積、氣泡）','Cold Plate安裝扭矩100%記錄（MES）','液冷系統流量測試（Flow rate）']
+  },
+  {
+    id:'scp',icon:'🔶',color:'var(--amber)',bg:'var(--amber-bg)',border:'var(--amber-border)',
+    title:'SCP（Solder Copper Plate）+ Flux Bonding',
+    what:'SCP是一塊高導熱銅板（Solder Copper Plate），焊接在發熱元件（ASIC、Power IC）的Thermal Pad或Exposed Pad上，作為熱量的第一層導出路徑，再透過PCB熱Via或Cold Plate繼續散熱。Flux Bonding是把SCP和元件之間用含Flux的焊料或TIM（Thermal Interface Material）做冶金結合的製程。',
+    why:'高功率元件（如AI ASIC）產生大量熱，元件底部的Thermal Pad面積有限。SCP擴大有效散熱面積，降低元件封裝底部的熱阻，再結合Water Cooling或Heat Sink把熱量帶走。',
+    process:[
+      {t:'表面前處理（Surface Prep）',d:'清潔SCP銅板表面和元件Thermal Pad，去除氧化層。可用化學清潔或機械研磨，確保Flux能有效活化。'},
+      {t:'Flux塗布',d:'在SCP或元件Thermal Pad上均勻塗布Flux（助焊劑），去除殘余氧化，降低表面張力，促進焊料潤濕。Flux種類依製程選擇（No-clean / Water-soluble）。'},
+      {t:'SCP放置與加壓',d:'將SCP精準放置到元件Thermal Pad上，施加適當壓力（Weight或夾具），確保焊料BLT（Bond Line Thickness）均一，避免SCP傾斜。'},
+      {t:'Reflow焊接',d:'通過Reflow爐，溫度使焊料熔化，Flux活化去除氧化，SCP與元件Thermal Pad形成冶金結合。冷卻後固化。'},
+      {t:'Flux清洗（視Flux類型）',d:'若使用Water-soluble Flux，需DI水清洗；No-clean Flux則視規格決定是否清洗。未清除的活性殘留可能引起腐蝕。'},
+      {t:'X-ray Void檢查',d:'100%或抽樣X-ray，量測SCP與元件界面的Void%。Void過高→熱阻升高→元件過熱。'},
+    ],
+    faults:[
+      {m:'Void過高（>25%）→熱阻升高',rpn:168,cs:['Flux塗布不均（局部缺Flux）','升溫速率太快—Flux outgassing','SCP表面有氧化或污染','加壓不足—焊料未充分流動'],a:'X-ray 100%檢查；Reflow Profile優化；表面清潔SOP'},
+      {m:'SCP位置偏移→散熱面積減少',rpn:72,cs:['放置夾具精度不足','Reflow時SCP滑動（壓力不足）','PCB翹曲影響放置基準'],a:'夾具定位設計；加壓直到焊料固化'},
+      {m:'焊料潤濕不良（冷焊）',rpn:84,cs:['Flux不足或失效','表面氧化未處理','峰值溫度未達規格'],a:'Flux有效期管控；Profile量測驗證'},
+      {m:'Flux殘留腐蝕',rpn:60,cs:['Water-soluble Flux未清洗','清洗不完全'],a:'清洗製程驗證；殘留量測（SIR測試）'},
+    ],
+    qc:['X-ray Void% 量測（規格通常 <25%，依功率等級訂定）','SCP剪切強度測試（Shear test）','Flux殘留量測（SIR: Surface Insulation Resistance）','熱阻量測（Thermal Resistance Measurement）——驗證散熱效能']
+  },
+  {
+    id:'vpower',icon:'⚡',color:'var(--green)',bg:'var(--green-bg)',border:'var(--green-border)',
+    title:'Vertical Power（垂直供電架構）',
+    what:'Vertical Power是把VRM（Voltage Regulator Module，電壓調節模組）直接安裝在PCB背面（bottom side）ASIC正下方，電流透過Via垂直傳遞到ASIC，而不是傳統的「側向（Lateral）」佈局——VRM放在ASIC旁邊，電流需穿越大面積的PCB銅平面才能到達ASIC。',
+    why:'現代AI ASIC（如GPU、NPU）需要超過1000A的電流，工作電壓只有0.8–1.0V。傳統側向佈局電流路徑長，IR drop（電壓降 = 電流 × 電阻）大，讓VRM需要設定更高的輸出電壓補償損失，造成能源浪費和熱量增加。Vertical Power把路徑縮短到最短（只有PCB厚度），IR drop降到最低。',
+    concept:[
+      {title:'傳統側向（Lateral）',color:'var(--red-bg)',border:'var(--red-border)',tc:'var(--red)',desc:'VRM在ASIC旁邊 → 電流穿越PCB平面 → 路徑長 → IR drop大 → 能源損失高 → ASIC需要補償電壓'},
+      {title:'Vertical Power',color:'var(--green-bg)',border:'var(--green-border)',tc:'var(--green)',desc:'VRM在ASIC正下方 → 電流透過Via垂直上行 → 路徑極短 → IR drop最低 → 高效率 → 板面空間釋放給Signal routing'},
+    ],
+    process:[
+      {t:'PCB設計（DFM）',d:'ASIC正下方區域在背面留出VRM安裝空間。Via設計需承受高電流密度，Via數量/尺寸需Power Integrity分析確認。'},
+      {t:'VRM選型與安裝',d:'選擇高功率密度的VRM模組（如Vicor GCM、Infineon OptiMOS整合模組），安裝在PCB背面。P&P和Reflow製程與標準SMT相同。'},
+      {t:'電源完整性驗證（PI）',d:'模擬並實測IR drop分佈。使用VNA或電源分析儀量測PDN（Power Delivery Network）阻抗，確認在頻率範圍內都符合ASIC規格。'},
+      {t:'熱管理',d:'VRM和ASIC都在同一PCB兩側，散熱路徑需協同設計。通常搭配Water Cooling和SCP，確保兩側都有有效散熱。'},
+    ],
+    faults:[
+      {m:'IR drop超標→ASIC電壓不足',rpn:120,cs:['Via數量不足或Via尺寸太小','銅層厚度不夠','PCB分層（Delamination）增加電阻'],a:'Power Integrity模擬驗證；PDN實測；PCB品質管控'},
+      {m:'VRM過熱→效率下降',rpn:84,cs:['VRM背面散熱不足','VRM輸出電流超額','Cold Plate接觸不良'],a:'VRM溫度監控；熱設計驗證；Thermal Management協同'},
+      {m:'Via焊接問題→接觸電阻升高',rpn:72,cs:['Via-in-pad設計未塞孔','Reflow時焊料吸入Via','高電流造成Via電遷移（Electromigration）'],a:'Via-in-pad塞孔設計；電流密度設計驗證（<20 A/mm²）'},
+    ],
+    qc:['PDN阻抗量測（Power Delivery Network Impedance）','IR drop實測（使用Kelvin Connection量測方法）','VRM效率測試（Efficiency at full load）','熱影像（Thermal Imaging）——確認VRM和ASIC溫度分佈均勻']
+  }
+];
+
+/* ── Load / Save ── */
+function smtLd() {
+  const r = localStorage.getItem(SMT_KEY);
+  if (r) { const d = JSON.parse(r); SS.visited = new Set(d.visited||[]); SS.notes = d.notes||''; SS.qScore = d.qScore||{c:0,t:0}; }
+}
+function smtSv() {
+  localStorage.setItem(SMT_KEY, JSON.stringify({visited:[...SS.visited], notes:SS.notes, qScore:SS.qScore}));
+}
+
+/* ── Tab ── */
+function smtTab(t, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('vis'));
+  document.getElementById('smtsec-'+t).classList.add('vis');
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  if (t === 'reflow') smtDR();
+  if (t === 'stencil-detail') renderStencilDetail();
+  if (t === 'stencil-care') renderStencilCare();
+  if (t === 'aoi-compare') renderAOICompare();
+  if (t === 'profile-guide') renderProfileGuide();
+  if (t === 'paste-select') renderPasteSelect();
+  if (t === 'ipc-accept') renderIPCAccept();
+  if (t === 'test-methods') renderTestMethods();
+  if (t === 'gpu-tpu') renderGPUTPU();
+  if (t === 'thermal') smtRThermal();
+  if (t === 'notes') smtRNotes();
+  if (t === 'quiz') smtRQ();
+  if (t === 'stencil') smtCS();
+  if (t === 'nozzle') smtRN2();
+}
+
+/* ── Progress ── */
+function smtUP() {
+  const pct = Math.round(SS.visited.size / SMTST.length * 100);
+  document.getElementById('smt-pb').style.width = pct + '%';
+  document.getElementById('smt-prog-txt').textContent = SS.visited.size + '/8 站';
+}
+
+/* ── Stations ── */
+function smtRS() {
+  document.getElementById('smt-pgrid').innerHTML = SMTST.map(s => `
+    <div class="pcard ${s.id===SS.cur?'sel':''} ${SS.visited.has(s.id)?'done':''}" onclick="smtSS(${s.id})">
+      <div class="pi">${s.icon}</div>
+      <div class="pn">${s.name}</div>
+      <div class="pk">${s.num}</div>
+      ${SS.visited.has(s.id) ? '<div class="pck">✓ 已讀</div>' : ''}
+    </div>`).join('');
+  document.getElementById('smt-sctr').textContent = `${SS.cur+1}/8`;
+  const s = SMTST[SS.cur];
+  document.getElementById('smt-det').innerHTML = `
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="font-size:22px">${s.icon}</span>
+        <div style="flex:1;min-width:150px">
+          <div style="font-size:15px;font-weight:700;color:var(--text)">${s.num} ${s.name}</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:2px">${s.desc}</div>
+        </div>
+      </div>
+      ${STATION_DIAGRAMS[s.id] ? STATION_DIAGRAMS[s.id] : ''}
+      <div class="io-grid">
+        <div class="io-box in"><div class="io-lbl">Inputs</div>${s.inp.map(i=>`<div class="io-item">${i}</div>`).join('')}</div>
+        <div class="io-box out"><div class="io-lbl">Outputs</div>${s.out.map(o=>`<div class="io-item">${o}</div>`).join('')}</div>
+      </div>
+      <div class="lbl">品質管控重點</div>
+      ${s.kpis.map(k=>`<div class="krow"><div class="dot" style="background:${k.c}"></div>${k.t}</div>`).join('')}
+      <div class="lbl">失效模式（PFMEA）</div>
+      ${s.faults.map(f=>`
+        <div class="fmode">
+          <button class="fhdr" onclick="smtTF(this)">
+            <span>${f.m}</span>
+            <span class="badge ${f.rpn>=100?'r':f.rpn>=60?'a':'g'}">RPN ${f.rpn}</span>
+            <i class="farr">▶</i>
+          </button>
+          <div class="fcauses">
+            ${f.cs.map(c=>`<div class="fcause">${c}</div>`).join('')}
+            <span class="fact">管控措施：${f.a}</span>
+          </div>
+        </div>`).join('')}
+      <div style="margin-top:12px;text-align:right">
+        <button class="nbtn pr" onclick="smtMD(${s.id})" style="font-size:11px;border-radius:20px">
+          ${SS.visited.has(s.id) ? '✓ 已讀完' : '標記此站已讀 ✓'}
+        </button>
+      </div>
+    </div>`;
+}
+function smtSS(id) { SS.cur = id; smtRS(); }
+function smtPrev() { if (SS.cur > 0) { SS.cur--; smtRS(); } }
+function smtNext() { smtMD(SS.cur); if (SS.cur < 7) { SS.cur++; smtRS(); } }
+function smtMD(id) { SS.visited.add(id); smtSv(); smtUP(); smtRS(); }
+function smtTF(el) { el.classList.toggle('open'); el.nextElementSibling.classList.toggle('vis'); }
+
+/* ── Reflow ── */
+function smtDR() {
+  const cv = document.getElementById('smt-cv'); if (!cv) return;
+  const dpr = window.devicePixelRatio || 1;
+  const W = cv.offsetWidth || 580, H = cv.offsetHeight || 200;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
+  const ramp = parseFloat(document.getElementById('smt-ramp').value);
+  const soak = parseFloat(document.getElementById('smt-soak').value);
+  const peak = parseFloat(document.getElementById('smt-peak').value);
+  const coolR = parseFloat(document.getElementById('smt-cool').value);
+  document.getElementById('smt-rv').textContent = ramp.toFixed(1);
+  document.getElementById('smt-sv').textContent = Math.round(soak);
+  document.getElementById('smt-pv').textContent = Math.round(peak);
+  document.getElementById('smt-cv2').textContent = coolR.toFixed(1);
+
+  const toT = t => H - 8 - (t - 20) / (peak - 20 + 15) * (H - 22);
+  const preT = soak / ramp, soakT = 90, reflowT = 60, coolT = (peak - 40) / coolR;
+  const total = preT + soakT + reflowT + coolT;
+  const toX = sec => 34 + sec / total * (W - 50);
+
+  // Zone backgrounds
+  const zoneColors = ['rgba(235,242,252,.6)', 'rgba(254,245,228,.6)', 'rgba(253,236,234,.6)', 'rgba(234,245,238,.6)'];
+  const ze = [0, preT, preT+soakT, preT+soakT+reflowT, total];
+  ze.forEach((e, i) => {
+    if (i === 0) return;
+    ctx.fillStyle = zoneColors[i-1];
+    ctx.fillRect(toX(ze[i-1]), 0, toX(e) - toX(ze[i-1]), H);
+  });
+
+  // Grid lines
+  ctx.setLineDash([2,3]); ctx.lineWidth = 0.5;
+  [100, 150, 183, peak].forEach(t => {
+    ctx.strokeStyle = 'rgba(0,0,0,.12)';
+    ctx.beginPath(); ctx.moveTo(34, toT(t)); ctx.lineTo(W-16, toT(t)); ctx.stroke();
+    ctx.fillStyle = '#8A8278'; ctx.font = '9px sans-serif';
+    ctx.fillText(t + '°', 2, toT(t) + 3);
+  });
+  ctx.setLineDash([]);
+
+  // Profile curve
+  const pts = [[0,25],[preT*.3,102],[preT,soak],[preT+soakT,soak+20],[preT+soakT+reflowT*.5,peak],[preT+soakT+reflowT,peak-4],[total,40]];
+  ctx.strokeStyle = '#1A7A5A'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round';
+  ctx.beginPath();
+  pts.forEach(([x,y], i) => { i === 0 ? ctx.moveTo(toX(x), toT(y)) : ctx.lineTo(toX(x), toT(y)); });
+  ctx.stroke();
+
+  // Alerts
+  const al = [];
+  if (ramp > 3) al.push('升溫速率>3°C/s — 錫珠/熱衝擊風險');
+  if (peak < 235) al.push('峰值溫度<235°C — SAC305冷焊風險');
+  if (peak > 260) al.push('峰值溫度>260°C — 元件損傷風險');
+  if (coolR > 4) al.push('冷卻速率>4°C/s — 熱應力裂縫風險');
+
+  const zl = document.getElementById('smt-zl');
+  zl.innerHTML = ['預熱','均溫','回焊','冷卻'].map((n,i) =>
+    `<span class="ztag" style="background:${zoneColors[i]};color:${'var(--blue) var(--amber) var(--red) var(--green)'.split(' ')[i]};border:1px solid ${['var(--blue-border)','var(--amber-border)','var(--red-border)','var(--green-border)'][i]}">${n}</span>`
+  ).join('');
+
+  document.getElementById('smt-ra').innerHTML = al.length
+    ? al.map(a => `<div style="font-size:11px;padding:4px 9px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:5px;color:var(--amber);margin-bottom:3px">⚠️ ${a}</div>`).join('')
+    : '<div style="font-size:11px;padding:4px 9px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:5px;color:var(--green)">✓ 參數在正常範圍內</div>';
+
+  // Zone cards
+  document.getElementById('smt-zc').innerHTML = SMTZON.map(z => `
+    <div style="display:flex;gap:10px;margin-bottom:7px;padding:9px;border-radius:var(--radius-sm);background:${z.c};border:1px solid ${z.tc === 'var(--blue)' ? 'var(--blue-border)' : z.tc === 'var(--amber)' ? 'var(--amber-border)' : z.tc === 'var(--red)' ? 'var(--red-border)' : 'var(--green-border)'}">
+      <div style="min-width:75px">
+        <div style="font-size:11px;font-weight:700;color:${z.tc}">${z.n}</div>
+        <div style="font-size:10px;color:${z.tc};opacity:.7">${z.r}</div>
+        <div style="font-size:10px;color:${z.tc};opacity:.55">${z.t}</div>
+      </div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.55">${z.w}</div>
+    </div>`).join('');
+}
+
+/* ── Defects ── */
+function smtRD() {
+  const cats = ['全部', ...new Set(SMTDEF.map(d => d.st))];
+  document.getElementById('smt-df').innerHTML = cats.map(c =>
+    `<button class="dfbtn ${SS.defFilter===c?'on':''}" onclick="smtSDF('${c}',this)">${c}</button>`
+  ).join('');
+  const list = SS.defFilter === '全部' ? SMTDEF : SMTDEF.filter(d => d.st === SS.defFilter);
+  document.getElementById('smt-dl').innerHTML = list.map(d => `
+    <div class="dcard">
+      <div class="dcard-hdr">
+        <div class="dcard-name">${d.name}</div>
+        <span class="badge ${d.sv}" style="margin-left:auto">IPC: ${d.ipc}</span>
+      </div>
+      <div class="dcard-st">站台：${d.st}</div>
+      <div class="dcard-ap">${d.ap}</div>
+      <div class="lbl">根本原因</div>
+      ${d.cs.map(c => `<div class="fcause" style="margin-bottom:3px">${c}</div>`).join('')}
+      <div class="lbl" style="margin-top:6px">偵測方式</div>
+      <div class="dinfo-box detect">${d.dt}</div>
+      <div class="lbl" style="margin-top:4px">對策</div>
+      <div class="dinfo-box action">${d.ac}</div>
+    </div>`).join('');
+}
+function smtSDF(f, btn) {
+  SS.defFilter = f;
+  document.querySelectorAll('.dfbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  smtRD();
+}
+
+/* ── Stencil ── */
+function smtCS() {
+  const L = parseFloat(document.getElementById('smt-sl').value);
+  const W = parseFloat(document.getElementById('smt-sw').value);
+  const T = parseFloat(document.getElementById('smt-st').value);
+  document.getElementById('smt-slv').textContent = L.toFixed(2);
+  document.getElementById('smt-swv').textContent = W.toFixed(2);
+  document.getElementById('smt-stv').textContent = T.toFixed(2);
+  const ar = (L * W) / (2 * T * (L + W));
+  const asp = W / T;
+  const arCls = ar >= 0.66 ? 'tok' : ar >= 0.55 ? 'twn' : 'tbd';
+  const aspCls = asp >= 1.5 ? 'tok' : 'tbd';
+  document.getElementById('smt-sr').innerHTML = `
+    <div>
+      <div class="st-val-label">Area Ratio (AR)</div>
+      <div class="st-val ${arCls}">${ar.toFixed(3)}</div>
+      <div class="st-sub">${ar>=0.66?'轉移率 >80% ✓':ar>=0.55?'邊緣，需監控 ⚠️':'轉移率 <65% ✗'}</div>
+    </div>
+    <div>
+      <div class="st-val-label">Aspect Ratio (W/T)</div>
+      <div class="st-val ${aspCls}">${asp.toFixed(2)}</div>
+      <div class="st-sub">${asp>=1.5?'≥1.5 合格 ✓':'<1.5 開孔易殘膏 ✗'}</div>
+    </div>`;
+}
+
+/* ── Nozzle ── */
+function smtRN2() {
+  document.getElementById('smt-ng').innerHTML = SMTNOZ.map(n => `
+    <div class="ncard">
+      <div class="ncard-top">
+        <div class="nshape" style="background:${n.bg};color:${n.cl}">${n.sh}</div>
+        <div>
+          <div class="ntitle">${n.n}</div>
+          <div class="nsub-txt">${n.sz}</div>
+        </div>
+      </div>
+      <div class="nrow">封裝：<span>${n.pk}</span></div>
+      <div class="nrow">真空：<span>${n.vc}</span></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:5px">${n.nt}</div>
+    </div>`).join('');
+}
+
+/* ── Thermal sections (NEW) ── */
+function smtRThermal() {
+  document.getElementById('thermal-content').innerHTML = THERMAL_SECTIONS.map(s => `
+    <div class="card" style="border-left:4px solid ${s.color}">
+      <div class="card-title" style="color:${s.color}">${s.icon} ${s.title}</div>
+
+      <div class="lbl">什麼是它？</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px">${s.what}</div>
+
+      <div class="lbl">為什麼需要？</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px">${s.why}</div>
+
+      ${s.concept ? `
+        <div class="lbl">架構比較</div>
+        <div class="concept-box">
+          ${s.concept.map(c=>`
+            <div class="concept-item" style="background:${c.color};border:1px solid ${c.border}">
+              <div style="font-size:11px;font-weight:700;color:${c.tc};margin-bottom:4px">${c.title}</div>
+              <div style="font-size:12px;color:var(--text2);line-height:1.5">${c.desc}</div>
+            </div>`).join('')}
+        </div>` : ''}
+
+      <div class="lbl">製程步驟</div>
+      <div class="process-flow">
+        ${s.process.map((p,i) => `
+          <div class="pf-step">
+            <div class="pf-num">${i+1}</div>
+            <div class="pf-body">
+              <div class="pf-title">${p.t}</div>
+              <div class="pf-desc">${p.d}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+
+      <div class="lbl">失效模式（PFMEA）</div>
+      ${s.faults.map(f => `
+        <div class="fmode">
+          <button class="fhdr" onclick="smtTF(this)" style="background:${s.bg};border-color:${s.border};color:${s.color}">
+            <span>${f.m}</span>
+            <span class="badge ${f.rpn>=100?'r':f.rpn>=60?'a':'g'}">RPN ${f.rpn}</span>
+            <i class="farr">▶</i>
+          </button>
+          <div class="fcauses">
+            ${f.cs.map(c=>`<div class="fcause">${c}</div>`).join('')}
+            <span class="fact">管控措施：${f.a}</span>
+          </div>
+        </div>`).join('')}
+
+      <div class="lbl">品質管控重點</div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        ${s.qc.map(q=>`<div class="krow"><div class="dot" style="background:${s.color}"></div>${q}</div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+/* ── Notes ── */
+function smtRNotes() {
+  const ta = document.getElementById('smt-nta');
+  if (ta) ta.value = SS.notes || '';
+  const ps = document.getElementById('smt-ps');
+  if (ps) ps.innerHTML = `
+    <div class="ps-box"><div class="ps-num" style="color:var(--green)">${SS.visited.size}</div><div class="ps-label">已讀站台</div></div>
+    <div class="ps-box"><div class="ps-num" style="color:var(--blue)">${SS.qScore.c}</div><div class="ps-label">測驗答對</div></div>
+    <div class="ps-box"><div class="ps-num">${Math.round(SS.visited.size/SMTST.length*100)}%</div><div class="ps-label">完成度</div></div>`;
+}
+function smtSN() {
+  SS.notes = document.getElementById('smt-nta').value;
+  smtSv();
+  const b = event.target; b.textContent = '✓ 已儲存！';
+  setTimeout(() => b.textContent = '💾 儲存筆記', 1500);
+}
+function smtEN() {
+  const progress = [...SS.visited].map(i => SMTST[i]?.name).join(', ');
+  const text = `=== SMT 製程培訓學習筆記 ===\n匯出時間：${new Date().toLocaleString('zh-TW')}\n已完成站台：${progress||'（尚未讀任何站台）'}\n測驗：${SS.qScore.c}/${SS.qScore.t}題答對\n\n--- 我的筆記 ---\n${SS.notes||'（尚無筆記）'}`;
+  navigator.clipboard.writeText(text).catch(() => {
+    const ta = document.createElement('textarea'); ta.value = text;
+    ta.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+  });
+  const b = event.target; const o = b.innerHTML;
+  b.innerHTML = '✓ 已複製！'; setTimeout(() => b.innerHTML = o, 2000);
+}
+
+/* ── Quiz ── */
+function smtRQ() {
+  const p = document.getElementById('smt-qp'); if (!p) return;
+  if (SS.qIdx >= SMTQZ.length) {
+    p.innerHTML = `<div class="card" style="text-align:center;padding:24px">
+      <div style="font-size:28px;margin-bottom:8px">${SS.qScore.c===SS.qScore.t?'🏆':'📊'}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px">測驗完成！</div>
+      <div style="font-size:13px;color:var(--text3);margin-bottom:12px">得分：${SS.qScore.c}/${SS.qScore.t} 題正確</div>
+      <div style="font-size:12px;color:var(--text2);padding:9px;background:var(--bg);border-radius:var(--radius-sm);margin-bottom:14px">${SS.qScore.c===SS.qScore.t?'完美！SMT品質課程全部掌握。':SS.qScore.c>=4?'很好！回顧站台補強弱點。':'繼續複習各站台和缺陷圖庫。'}</div>
+      <button class="nbtn pr" onclick="smtRstQ()" style="border-radius:20px">重新測驗</button>
+    </div>`; return;
+  }
+  const q = SMTQZ[SS.qIdx];
+  p.innerHTML = `<div class="card">
+    <div style="font-size:11px;color:var(--text3);margin-bottom:8px">Q${SS.qIdx+1}/${SMTQZ.length} · 已答對 ${SS.qScore.c} 題</div>
+    <div class="qq">${q.q}</div>
+    ${q.opts.map((o,i) => `<button class="qopt" id="sqo${i}" onclick="smtAQ(${i})">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}
+    <div id="smt-qfb"></div>
+  </div>`;
+  SS.qAns = false;
+}
+function smtAQ(ch) {
+  if (SS.qAns) return; SS.qAns = true;
+  const q = SMTQZ[SS.qIdx]; SS.qScore.t++;
+  const ok = ch === q.ans; if (ok) SS.qScore.c++;
+  document.querySelectorAll('.qopt').forEach((b,i) => {
+    b.disabled = true;
+    if (i === q.ans) b.classList.add('cor');
+    else if (i === ch && !ok) b.classList.add('wrg');
+  });
+  document.getElementById('smt-qfb').innerHTML = `
+    <div class="qfb ${ok?'ok':'fail'}">${ok?'✅ 正確！':'❌ 不對。'}${q.exp}</div>
+    <button class="nbtn pr" style="margin-top:9px;float:right;border-radius:20px" onclick="smtNQ()">${SS.qIdx<SMTQZ.length-1?'下一題 →':'查看結果 →'}</button>`;
+  smtSv();
+}
+function smtNQ() { SS.qIdx++; smtRQ(); }
+function smtRstQ() { SS.qIdx = 0; SS.qScore = {c:0,t:0}; SS.qAns = false; smtRQ(); }
+
+
+/* ── Stencil Aperture Detail Data ── */
+function renderStencilDetail() {
+  document.getElementById('stencil-detail-content').innerHTML = `
+    <div class="card" style="border-left:4px solid var(--blue)">
+      <div class="card-title" style="color:var(--blue)">📏 鋼板開孔大小對錫膏與焊接結果的影響</div>
+      <div class="card-sub">開孔尺寸決定錫膏量，直接影響焊點形狀、橋接風險、冷焊風險。沒有「通用值」——每個元件/Pad組合都需獨立計算。</div>
+
+      <div class="lbl">核心公式</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:10px;font-family:monospace;font-size:13px;color:var(--text)">
+        <div style="margin-bottom:6px"><strong>Area Ratio (AR)</strong> = (L × W) ÷ (2 × T × (L + W))</div>
+        <div style="margin-bottom:6px"><strong>Aspect Ratio</strong> = W ÷ T</div>
+        <div style="color:var(--green);font-size:12px">✓ AR ≥ 0.66 → 錫膏轉移率 &gt;80%（合格）</div>
+        <div style="color:var(--amber);font-size:12px">⚠ AR 0.55–0.66 → 邊緣，需監控</div>
+        <div style="color:var(--red);font-size:12px">✗ AR &lt; 0.55 → 轉移率 &lt;65%，需重新設計</div>
+      </div>
+
+      <div class="lbl">開孔過大 vs 過小的影響</div>
+      <div class="concept-box">
+        <div class="concept-item" style="background:var(--red-bg);border:1px solid var(--red-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:5px">❌ 開孔過大（超過PAD尺寸）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            • 錫膏溢出PAD邊緣<br>
+            • 相鄰PAD發生橋接（Solder Bridge）<br>
+            • Fine pitch元件風險極高<br>
+            • SPI可能偵測到Volume超標<br>
+            • BGA: 球間距不足 → 短路
+          </div>
+        </div>
+        <div class="concept-item" style="background:var(--amber-bg);border:1px solid var(--amber-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:5px">⚠️ 開孔過小（AR &lt; 0.55）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            • 錫膏附著在開孔壁面，無法脫模<br>
+            • 錫量不足 → 焊點Fillet薄或缺失<br>
+            • 冷焊風險上升（接觸面積不足）<br>
+            • 需反覆清洗鋼板<br>
+            • BGA: 球高不一致 → 可靠度下降
+          </div>
+        </div>
+      </div>
+
+      <div class="lbl" style="margin-top:12px">不同元件類型的開孔設計原則</div>
+      <table class="tbl">
+        <tr><th>元件類型</th><th>開孔尺寸原則</th><th>特殊注意</th></tr>
+        <tr><td><strong>0402 / 0201</strong></td><td>與PAD等寬或略縮（-0.05mm/側）</td><td>AR需≥0.66，考慮減薄鋼板</td></tr>
+        <tr><td><strong>Fine pitch QFP &lt;0.5mm</strong></td><td>Home plate開孔（梯形），縮減Toe端</td><td>防Toe端橋接，保Heel端錫量</td></tr>
+        <tr><td><strong>BGA（0.8mm pitch）</strong></td><td>球徑的80–90%（約0.64–0.72mm）</td><td>圓形開孔，確保球高一致性</td></tr>
+        <tr><td><strong>BGA（0.5mm pitch）</strong></td><td>球徑的75–85%，考慮電鑄鋼板</td><td>AR計算更嚴格，建議≥0.70</td></tr>
+        <tr><td><strong>Thermal Pad（散熱墊）</strong></td><td>開孔率約50–80%（分割為小開孔）</td><td>防Void，助Flux outgassing</td></tr>
+        <tr><td><strong>Via-in-pad</strong></td><td>必須塞孔（Plugged）後再設計開孔</td><td>未塞孔 → 錫膏吸入Via（HIP效應）</td></tr>
+      </table>
+
+      <div class="lbl" style="margin-top:12px">鋼板厚度選擇指引</div>
+      <table class="tbl">
+        <tr><th>鋼板厚度</th><th>適用元件</th><th>備註</th></tr>
+        <tr><td class="tok">0.08–0.10mm</td><td>01005、超細間距（&lt;0.3mm pitch）</td><td>電鑄鋼板，壁面最光滑</td></tr>
+        <tr><td class="tok">0.10–0.12mm</td><td>0201、Fine pitch BGA（0.4mm pitch）</td><td>電鑄或高精度雷射切割</td></tr>
+        <tr><td class="twn">0.12–0.15mm</td><td>0402、BGA（0.8mm）、一般SMD</td><td>最常用，雷射切割鋼板</td></tr>
+        <tr><td class="twn">0.15–0.20mm</td><td>電感、大型連接器、Power元件</td><td>需要較多錫量的元件</td></tr>
+        <tr><td>Step stencil</td><td>同板同時有Fine pitch和大型元件</td><td>局部加厚/減薄，一次印刷</td></tr>
+      </table>
+
+      <div class="lbl" style="margin-top:12px">品質管控重點</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div><strong>SPI 100%量測</strong>：每片板子每個PAD的Volume、Height、Area Coverage——開孔問題必然在SPI反映</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div>新產品首次投產：用AR公式驗算所有關鍵PAD的開孔設計，AR不足的需在設計階段修改</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div>Stencil清洗週期：依開孔數量和錫膏類型設定，一般每5–10片清洗一次底部（Under-wipe）</div>
+      <div class="krow"><div class="dot" style="background:var(--blue)"></div>鋼板壽命管控：一般雷射切割鋼板壽命 ~100,000 prints；電鑄鋼板較長。超壽命後AR會因磨損下降</div>
+    </div>
+  `;
+}
+
+/* ── Paste Selection Data ── */
+function renderPasteSelect() {
+  document.getElementById('paste-select-content').innerHTML = `
+    <div class="card" style="border-left:4px solid var(--amber)">
+      <div class="card-title" style="color:var(--amber)">🧪 錫膏選擇對焊接結果的影響</div>
+      <div class="card-sub">錫膏 = 錫合金粉末 + 助焊劑（Flux）+ 溶劑。每個成分都直接影響焊點品質、製程窗口和可靠度。</div>
+
+      <div class="lbl">錫膏組成與各成分作用</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:7px;margin-bottom:10px">
+        <div class="spec-box" style="background:var(--blue-bg);border-color:var(--blue-border)">
+          <div class="spec-label" style="color:var(--blue)">錫合金粉末（約85–90wt%）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.5;margin-top:3px">決定熔點、強度、可靠度。SAC305最普遍。</div>
+        </div>
+        <div class="spec-box" style="background:var(--green-bg);border-color:var(--green-border)">
+          <div class="spec-label" style="color:var(--green)">助焊劑 Flux（約10–15wt%）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.5;margin-top:3px">去除氧化層、降低表面張力、防止再氧化。影響殘留物和清洗需求。</div>
+        </div>
+        <div class="spec-box">
+          <div class="spec-label">粉末粒徑（Type）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.5;margin-top:3px">決定能印製的最小開孔尺寸。Type 4/5用於細間距。</div>
+        </div>
+      </div>
+
+      <div class="lbl">常見錫合金比較</div>
+      <table class="tbl">
+        <tr><th>合金</th><th>成分</th><th>熔點</th><th>適用場景</th><th>優缺點</th></tr>
+        <tr><td><strong>SAC305</strong></td><td>Sn96.5/Ag3/Cu0.5</td><td>217–220°C</td><td>主流無鉛製程</td><td class="tok">強度佳、可靠度高；Peak需245°C</td></tr>
+        <tr><td><strong>SAC105</strong></td><td>Sn98.5/Ag1/Cu0.5</td><td>217–220°C</td><td>低成本無鉛</td><td class="twn">銀含量低→成本低；強度略遜SAC305</td></tr>
+        <tr><td><strong>Sn63/Pb37</strong></td><td>錫鉛共晶</td><td>183°C（共晶點）</td><td>有鉛製程（限特殊用途）</td><td class="twn">Peak低~215°C；元件損傷風險低</td></tr>
+        <tr><td><strong>低溫錫膏（LT）</strong></td><td>Sn/Bi或Sn/In系</td><td>138–175°C</td><td>溫度敏感元件、Step reflow</td><td class="twn">Peak可低至170°C；強度較低，Bi會脆</td></tr>
+        <tr><td><strong>高可靠度合金</strong></td><td>SAC+Sb/Ni/Ge添加</td><td>217–221°C</td><td>車用、航太、AI伺服器</td><td class="tok">抗熱疲勞、抗蠕變；成本較高</td></tr>
+      </table>
+
+      <div class="lbl" style="margin-top:12px">Flux類型選擇</div>
+      <table class="tbl">
+        <tr><th>Flux類型</th><th>活性</th><th>殘留</th><th>需要清洗？</th><th>適用場景</th></tr>
+        <tr><td><strong>No-clean (ROL0)</strong></td><td>低</td><td>少、非導電</td><td>通常不需要</td><td>高量產SMT主流，節省清洗成本</td></tr>
+        <tr><td><strong>Water-soluble (ORL0)</strong></td><td>中–高</td><td>導電、腐蝕性</td><td><span class="tbd">必須清洗</span></td><td>需要Conformal Coating前的清洗</td></tr>
+        <tr><td><strong>Rosin RA/RMA</strong></td><td>中</td><td>松香殘留</td><td>視規格</td><td>高可靠度應用（軍用/醫療）</td></tr>
+        <tr><td><strong>Halide-free (ROL0)</strong></td><td>低</td><td>少</td><td>通常不需要</td><td>銀/銅表面敏感應用，防腐蝕</td></tr>
+      </table>
+
+      <div class="lbl" style="margin-top:12px">粉末粒徑（Type）與開孔關係</div>
+      <table class="tbl">
+        <tr><th>粒徑Type</th><th>粉末直徑</th><th>最小開孔寬度</th><th>適用</th></tr>
+        <tr><td>Type 3</td><td>25–45µm</td><td>≥ 200µm</td><td>一般SMD（0402以上）</td></tr>
+        <tr><td>Type 4</td><td>20–38µm</td><td>≥ 150µm</td><td>Fine pitch QFP、0201</td></tr>
+        <tr><td>Type 5</td><td>15–25µm</td><td>≥ 100µm</td><td>01005、超細間距BGA</td></tr>
+        <tr><td>Type 6</td><td>5–15µm</td><td>≥ 75µm</td><td>先進封裝、噴墨式印刷</td></tr>
+      </table>
+      <div style="font-size:12px;color:var(--text3);margin-top:5px">原則：開孔寬度 ≥ 粉末最大粒徑 × 5。粒徑太大 → 開孔被堵，錫量不足。</div>
+
+      <div class="lbl" style="margin-top:12px">錫膏保存與使用管控（品質關鍵）</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div><strong>保存溫度：2–10°C冷藏</strong>，超溫會使Flux提前老化失效</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div><strong>開封後回溫：≥4小時</strong>才能使用（防止水氣凝結混入，造成錫珠）</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div><strong>開封後使用期：≤12小時</strong>（依廠商規格），超時必須丟棄</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div>每次使用前確認: P/N、批號、效期——三項必查（RF掃描防呆最佳）</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div>錫膏黏度管控：使用前攪拌（機器或人工），恢復均勻狀態</div>
+      <div class="krow"><div class="dot" style="background:var(--blue)"></div>FIFO（先進先出）管理：避免舊批次被壓在底層</div>
+
+      <div class="lbl" style="margin-top:12px">5-Ball Rule（五球規則）— 開孔與粒徑的關係</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px;margin-bottom:10px">
+        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:5px">規則：開孔寬度 ≥ 最大粉末粒徑 × 5</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.7">
+          原因：錫膏開孔寬度至少要能容納5顆最大粉末並排，才能確保：(1) 粉末不會堵塞開孔 (2) 錫膏流動性足夠確保良好脫模 (3) 轉移效率維持≥80%<br><br>
+          <strong>範例計算：</strong><br>
+          • Type 4（最大粒徑38µm）→ 最小開孔寬度 = 38 × 5 = <span style="color:var(--green);font-weight:600">190µm（≈0.19mm）</span><br>
+          • Type 5（最大粒徑25µm）→ 最小開孔寬度 = 25 × 5 = <span style="color:var(--green);font-weight:600">125µm（≈0.13mm）</span><br>
+          • 0201元件Pad通常約0.25–0.30mm → Type 4可用；01005需Type 5或更細
+        </div>
+      </div>
+
+      <div class="lbl">Voiding（錫洞）與錫膏的關係</div>
+      <table class="tbl">
+        <tr><th>Void來源</th><th>原因</th><th>管控方式</th></tr>
+        <tr><td>Flux Outgassing</td><td>Flux中溶劑在Reflow時急速揮發，形成氣泡困在焊點中</td><td>放慢Ramp rate；Soak時間足夠讓溶劑先揮發</td></tr>
+        <tr><td>HIP（Head-in-Pillow）</td><td>BGA翹曲造成焊球與PAD未完全熔合</td><td>3D CT X-ray；Profile優化；支撐Pin</td></tr>
+        <tr><td>Via-in-Pad（HIP效應）</td><td>焊料被Via吸走，形成空洞</td><td>Via塞孔（Plugged via）設計</td></tr>
+        <tr><td>PCB吸濕</td><td>PCB層間水氣在高溫下膨脹</td><td>PCB烘烤（150°C/4hr before assembly）</td></tr>
+      </table>
+      <div class="krow" style="margin-top:6px"><div class="dot" style="background:var(--red)"></div><strong>Voiding Area%判準：</strong>IPC-7095 BGA &lt;25%（Class 2）/ &lt;10%（Class 3）；Thermal Pad &lt;25%（一般），散熱關鍵部位需更嚴格</div>
+
+      <div class="lbl" style="margin-top:12px">錫膏選擇失誤 → 製程影響（Fault Tree）</div>
+      <div class="fmode"><button class="fhdr" onclick="smtTF(this)"><span>高溫SAC305用於溫度敏感板 → 元件損傷</span><i class="farr">▶</i></button><div class="fcauses"><div class="fcause">Peak 245°C超過部分元件耐溫規格（如某些電容、連接器）</div><div class="fcause">未查元件Moisture Sensitivity Level（MSL）</div><span class="fact">管控：DFM審查元件耐溫；考慮低溫錫膏或Step Reflow</span></div></div>
+      <div class="fmode"><button class="fhdr" onclick="smtTF(this)"><span>No-clean Flux殘留 + Conformal Coating → 附著失敗</span><i class="farr">▶</i></button><div class="fcauses"><div class="fcause">No-clean殘留會阻礙Conformal Coating附著</div><div class="fcause">客戶要求Conformal Coating但未更換為Water-soluble Flux</div><span class="fact">管控：Conformal Coating製程前必須使用Water-soluble Flux並清洗</span></div></div>
+      <div class="fmode"><button class="fhdr" onclick="smtTF(this)"><span>Flux活性不足 → 冷焊/潤濕不良</span><i class="farr">▶</i></button><div class="fcauses"><div class="fcause">No-clean低活性Flux對重度氧化表面清潔力不足</div><div class="fcause">錫膏存放過久，Flux活性下降</div><span class="fact">管控：選擇適當活性的Flux；嚴格管控保存期限</span></div></div>
+    </div>
+  `;
+}
+
+/* ── IPC Acceptability Data ── */
+function renderIPCAccept() {
+  document.getElementById('ipc-accept-content').innerHTML = `
+    <div class="card" style="border-left:4px solid var(--green)">
+      <div class="card-title" style="color:var(--green)">✅ IPC-A-610 焊接允收標準</div>
+      <div class="card-sub">IPC-A-610J（2024年最新版）是全球電子組裝工藝允收標準。新版新增Process Indicator（製程指標）作為第三級，四個等級對應不同判定結果。</div>
+
+      <div class="lbl">三個品質等級定義</div>
+      <div class="concept-box" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">
+        <div class="concept-item" style="background:var(--bg2);border:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--text3);margin-bottom:4px">Class 1｜一般電子</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.5">消費性電子、玩具。最寬鬆。主要功能完整即可，外觀瑕疵可接受。</div>
+        </div>
+        <div class="concept-item" style="background:var(--blue-bg);border:1px solid var(--blue-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:4px">Class 2｜商業電子</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.5">工業設備、通訊、電腦。需要長期可靠性，不中斷服務。<strong>大多數EMS採用此標準。</strong></div>
+        </div>
+        <div class="concept-item" style="background:var(--red-bg);border:1px solid var(--red-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px">Class 3｜高可靠度</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.5">醫療、軍事、航太。停機或失效不可接受。最嚴格，Class 2允收的部分在Class 3為拒收。</div>
+        </div>
+      </div>
+
+      <div class="lbl" style="margin-top:12px">關鍵焊點允收條件（SMT元件）</div>
+      
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin:8px 0 5px">① Chip元件（0402、0603等）Fillet要求</div>
+      <table class="tbl">
+        <tr><th>部位</th><th>Class 2 接受條件</th><th>Class 3 接受條件</th></tr>
+        <tr><td>Side Fillet（側面）</td><td>≥ 75% 元件端子寬度</td><td>≥ 75% 元件端子寬度</td></tr>
+        <tr><td>Heel Fillet（後端）</td><td>≥ 0（可接受無Heel fillet）</td><td class="tbd">≥ 25% 端子高度（更嚴格）</td></tr>
+        <tr><td>End Overlap（端子覆蓋）</td><td>≥ 75% 元件端子寬度，或&gt;0.5mm</td><td>≥ 75%</td></tr>
+        <tr><td>Toe Fillet（前端）</td><td>≥ 0（無要求）</td><td>≥ 25% 端子高度</td></tr>
+        <tr><td>最大Fillet高度</td><td>不超過元件本體</td><td>不超過元件本體</td></tr>
+      </table>
+
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin:10px 0 5px">② QFP / SOP 腳型元件（Gull-wing lead）</div>
+      <table class="tbl">
+        <tr><th>項目</th><th>Class 2 接受</th><th>Class 3 接受</th></tr>
+        <tr><td>Side Fillet寬度</td><td>≥ 75% 腳寬</td><td>≥ 75% 腳寬</td></tr>
+        <tr><td>Heel Fillet高度</td><td>≥ 25% 腳厚</td><td>≥ 50% 腳厚</td></tr>
+        <tr><td>最大腳懸出量</td><td>≤ 25% 腳寬 or ≤ 0.5mm</td><td>≤ 25% 腳寬 or ≤ 0.5mm</td></tr>
+        <tr><td>腳提起（Lifted lead）</td><td>≤ 25% 腳厚，且不超過0.5mm</td><td class="tbd">任何提起 = 拒收</td></tr>
+        <tr><td>偏位（Side Overhang）</td><td>≤ 50% 腳寬</td><td>≤ 25% 腳寬</td></tr>
+      </table>
+
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin:10px 0 5px">③ BGA 焊球允收條件</div>
+      <table class="tbl">
+        <tr><th>項目</th><th>Class 2 接受</th><th>Class 3 接受</th></tr>
+        <tr><td>缺件焊球</td><td class="tbd">0（零容忍）</td><td class="tbd">0（零容忍）</td></tr>
+        <tr><td>焊球橋接</td><td class="tbd">0</td><td class="tbd">0</td></tr>
+        <tr><td>Solder Void（X-ray）</td><td>≤ 25% 焊球面積（IPC-7095）</td><td class="tbd">≤ 10% 焊球面積（更嚴格）</td></tr>
+        <tr><td>焊球形狀</td><td>不規則但連接完整</td><td>近似圓形，偏差≤25%直徑</td></tr>
+        <tr><td>外圍焊球偏位</td><td>≤ 25% 焊球直徑</td><td>≤ 25% 焊球直徑</td></tr>
+      </table>
+
+      <div style="font-size:12px;font-weight:700;color:var(--text);margin:10px 0 5px">④ 常見缺陷允收/拒收判準</div>
+      <table class="tbl">
+        <tr><th>缺陷類型</th><th>Class 2</th><th>Class 3</th><th>依據條款</th></tr>
+        <tr><td>Solder Bridge（橋接）</td><td class="tbd">拒收</td><td class="tbd">拒收</td><td>IPC-A-610 §7.5</td></tr>
+        <tr><td>Cold Solder（冷焊）</td><td class="tbd">拒收</td><td class="tbd">拒收</td><td>§7.2</td></tr>
+        <tr><td>Insufficient Solder（錫量不足）</td><td class="twn">視Fillet尺寸定</td><td class="tbd">更嚴格Fillet要求</td><td>§7.3</td></tr>
+        <tr><td>Missing component（缺件）</td><td class="tbd">拒收</td><td class="tbd">拒收</td><td>§7.1</td></tr>
+        <tr><td>Tombstone（立碑）</td><td class="tbd">拒收</td><td class="tbd">拒收</td><td>§7.4</td></tr>
+        <tr><td>Wrong polarity（極性反向）</td><td class="tbd">拒收</td><td class="tbd">拒收</td><td>§7.1</td></tr>
+        <tr><td>Solder Ball（活動錫珠）</td><td class="tbd">拒收</td><td class="tbd">拒收</td><td>§7.5</td></tr>
+        <tr><td>Solder Ball（固定，非導線間）</td><td class="tok">可接受</td><td class="twn">需評估</td><td>§7.5</td></tr>
+        <tr><td>Lifted pad（PAD脫層）</td><td class="tbd">拒收</td><td class="tbd">拒收</td><td>§6.2</td></tr>
+        <tr><td>Dewetting（去潤濕）</td><td class="twn">視面積定</td><td class="tbd">拒收</td><td>§7.2</td></tr>
+      </table>
+
+      <div class="lbl" style="margin-top:12px">Target / Accept / Reject 三級判準說明</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:7px;margin:8px 0">
+        <div class="spec-box" style="background:var(--blue-bg);border-color:var(--blue-border)">
+          <div class="spec-label" style="color:var(--blue)">1. Target 目標條件</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:3px">理想完美狀態，接近零缺陷。努力達成但不強制要求。</div>
+        </div>
+        <div class="spec-box" style="background:var(--green-bg);border-color:var(--green-border)">
+          <div class="spec-label" style="color:var(--green)">2. Acceptable 允收條件</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:3px">不完美但功能可靠。產品可以放行，不需維修。</div>
+        </div>
+        <div class="spec-box" style="background:var(--amber-bg);border-color:var(--amber-border)">
+          <div class="spec-label" style="color:var(--amber)">3. Process Indicator 製程指標（IPC-A-610J新增）</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:3px">製程能力的指標，產品本身允收，但顯示製程需要改善。無需維修但需記錄並追蹤改善。</div>
+        </div>
+        <div class="spec-box" style="background:var(--red-bg);border-color:var(--red-border)">
+          <div class="spec-label" style="color:var(--red)">4. Defect 拒收條件</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:3px">不可接受，必須維修或報廢。影響功能、可靠度或安全。</div>
+        </div>
+      </div>
+
+      <div class="lbl" style="margin-top:10px">品質管控實務建議</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div>確認Zebra各產品線適用Class：消費性手持設備通常Class 2；企業/工業設備建議Class 2+（介於2和3之間的客戶特規）</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div>Inspector必須持有IPC-A-610 CIS（Certified IPC Specialist）認證才能做正式判定</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div>Boundary Sample（邊界樣品）：製作Allow/Reject的實物範例板，Inspector每班開工前確認一致性</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div>Inter-inspector correlation study（Inspector相關性研究）：每季執行，確保不同Inspector判定一致率 &gt;95%</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div>AOI alarm disposition必須記錄：Accept/Reject/Rework，不可空白放行</div>
+      <div class="krow"><div class="dot" style="background:var(--blue)"></div>若客戶有特殊要求（Customer-specific requirement）：必須優先於IPC-A-610，記錄在作業指導書（WI）中</div>
+    </div>
+  `;
+}
+
+
+
+/* ══════════════════════════════════════════════════
+   STATION DIAGRAMS — SVG inline process illustrations
+   ══════════════════════════════════════════════════ */
+const STATION_DIAGRAMS = {
+  0: `<svg viewBox="0 0 420 90" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:8px auto">
+    <rect x="10" y="30" width="80" height="40" rx="6" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1.5"/>
+    <text x="50" y="47" text-anchor="middle" font-size="10" fill="#1A55A0" font-weight="600">裸板倉庫</text>
+    <text x="50" y="60" text-anchor="middle" font-size="9" fill="#1A55A0">Bare PCB</text>
+    <path d="M92 50 L112 50" stroke="#4A4540" stroke-width="1.5" marker-end="url(#arr)"/>
+    <rect x="114" y="30" width="80" height="40" rx="6" fill="#EAF5EE" stroke="#1A7A5A" stroke-width="1.5"/>
+    <text x="154" y="47" text-anchor="middle" font-size="10" fill="#1A7A5A" font-weight="600">掃描Barcode</text>
+    <text x="154" y="60" text-anchor="middle" font-size="9" fill="#1A7A5A">料號確認</text>
+    <path d="M196 50 L216 50" stroke="#4A4540" stroke-width="1.5" marker-end="url(#arr)"/>
+    <rect x="218" y="30" width="80" height="40" rx="6" fill="#FEF5E4" stroke="#8A5A00" stroke-width="1.5"/>
+    <text x="258" y="47" text-anchor="middle" font-size="10" fill="#8A5A00" font-weight="600">翹曲檢查</text>
+    <text x="258" y="60" text-anchor="middle" font-size="9" fill="#8A5A00">&lt;0.75%</text>
+    <path d="M300 50 L320 50" stroke="#4A4540" stroke-width="1.5" marker-end="url(#arr)"/>
+    <rect x="322" y="30" width="80" height="40" rx="6" fill="#EAF5EE" stroke="#1A7A5A" stroke-width="1.5"/>
+    <text x="362" y="47" text-anchor="middle" font-size="10" fill="#1A7A5A" font-weight="600">載入Carrier</text>
+    <text x="362" y="60" text-anchor="middle" font-size="9" fill="#1A7A5A">B面朝上</text>
+    <defs><marker id="arr" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#4A4540" stroke-width="1.2"/></marker></defs>
+  </svg>`,
+  1: `<svg viewBox="0 0 420 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:8px auto">
+    <defs><marker id="arr1" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#4A4540" stroke-width="1.2"/></marker></defs>
+    <!-- Stencil top -->
+    <rect x="60" y="10" width="300" height="12" rx="3" fill="#C8C0B0" stroke="#8A8278" stroke-width="1"/>
+    <text x="210" y="20" text-anchor="middle" font-size="9" fill="#4A4540" font-weight="600">鋼板 Stencil</text>
+    <!-- apertures -->
+    <rect x="120" y="10" width="16" height="12" fill="#F7F5F0"/>
+    <rect x="160" y="10" width="16" height="12" fill="#F7F5F0"/>
+    <rect x="200" y="10" width="16" height="12" fill="#F7F5F0"/>
+    <rect x="240" y="10" width="16" height="12" fill="#F7F5F0"/>
+    <rect x="280" y="10" width="16" height="12" fill="#F7F5F0"/>
+    <!-- squeegee -->
+    <rect x="80" y="5" width="14" height="22" rx="2" fill="#1A55A0" stroke="#0D3A7A" stroke-width="1"/>
+    <text x="87" y="34" text-anchor="middle" font-size="8" fill="#1A55A0">刮刀</text>
+    <path d="M94 16 L106 16" stroke="#1A55A0" stroke-width="1.5" marker-end="url(#arr1)"/>
+    <!-- solder paste balls on stencil -->
+    <ellipse cx="128" cy="16" rx="6" ry="5" fill="#8A8278" opacity=".7"/>
+    <!-- PCB -->
+    <rect x="60" y="35" width="300" height="22" rx="3" fill="#E6F2E0" stroke="#1A7A5A" stroke-width="1.5"/>
+    <text x="210" y="50" text-anchor="middle" font-size="9" fill="#1A7A5A" font-weight="600">PCB</text>
+    <!-- paste deposits -->
+    <rect x="118" y="29" width="20" height="8" rx="2" fill="#8A8278"/>
+    <rect x="158" y="29" width="20" height="8" rx="2" fill="#8A8278"/>
+    <rect x="198" y="29" width="20" height="8" rx="2" fill="#8A8278"/>
+    <rect x="238" y="29" width="20" height="8" rx="2" fill="#8A8278"/>
+    <rect x="278" y="29" width="20" height="8" rx="2" fill="#8A8278"/>
+    <!-- labels -->
+    <text x="128" y="74" text-anchor="middle" font-size="8" fill="#8A8278">錫膏</text>
+    <text x="210" y="85" text-anchor="middle" font-size="9" fill="#4A4540">刮刀單向移動 → 錫膏透過開孔沉積到PAD</text>
+    <text x="210" y="98" text-anchor="middle" font-size="9" fill="#1A7A5A">關鍵：鋼板AR ≥ 0.66 ｜ 壓力 ｜ 速度 ｜ 分離速度</text>
+  </svg>`,
+  2: `<svg viewBox="0 0 420 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:8px auto">
+    <defs><marker id="arr2" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#4A4540" stroke-width="1.2"/></marker></defs>
+    <!-- Camera/Projector -->
+    <rect x="170" y="5" width="80" height="28" rx="5" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1.5"/>
+    <text x="210" y="17" text-anchor="middle" font-size="9" fill="#1A55A0" font-weight="600">3D結構光投影</text>
+    <text x="210" y="28" text-anchor="middle" font-size="8" fill="#1A55A0">相機量測</text>
+    <!-- light beams -->
+    <line x1="180" y1="33" x2="130" y2="60" stroke="#EF9F27" stroke-width="1" stroke-dasharray="3,2"/>
+    <line x1="210" y1="33" x2="210" y2="60" stroke="#EF9F27" stroke-width="1" stroke-dasharray="3,2"/>
+    <line x1="240" y1="33" x2="290" y2="60" stroke="#EF9F27" stroke-width="1" stroke-dasharray="3,2"/>
+    <!-- PCB with paste deposits of varying height -->
+    <rect x="60" y="60" width="300" height="18" rx="3" fill="#E6F2E0" stroke="#1A7A5A" stroke-width="1"/>
+    <rect x="115" y="46" width="22" height="16" rx="2" fill="#8A8278"/>
+    <rect x="155" y="52" width="22" height="10" rx="2" fill="#8A8278" opacity=".5"/>
+    <rect x="195" y="44" width="22" height="18" rx="2" fill="#8A8278"/>
+    <rect x="235" y="50" width="22" height="12" rx="2" fill="#8A8278" opacity=".7"/>
+    <rect x="275" y="48" width="22" height="14" rx="2" fill="#8A8278"/>
+    <!-- measurement arrows -->
+    <path d="M126 44 L126 60" stroke="#E24B4A" stroke-width="1" marker-end="url(#arr2)"/>
+    <text x="126" y="41" text-anchor="middle" font-size="7" fill="#E24B4A">H</text>
+    <!-- Output labels -->
+    <text x="210" y="92" text-anchor="middle" font-size="9" fill="#4A4540">量測：Volume ｜ Height ｜ Area ｜ XY Offset</text>
+    <text x="210" y="104" text-anchor="middle" font-size="9" fill="#1A7A5A">規格：Volume 80–120% ｜ Area ≥80% ｜ Offset &lt;公差</text>
+  </svg>`,
+  3: `<svg viewBox="0 0 420 115" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:8px auto">
+    <defs><marker id="arr3" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#4A4540" stroke-width="1.2"/></marker></defs>
+    <!-- Gantry arm -->
+    <rect x="30" y="8" width="360" height="8" rx="3" fill="#C8C0B0" stroke="#8A8278" stroke-width="1"/>
+    <!-- Nozzle head -->
+    <rect x="145" y="16" width="40" height="22" rx="4" fill="#1A55A0" stroke="#0D3A7A" stroke-width="1.5"/>
+    <text x="165" y="26" text-anchor="middle" font-size="9" fill="#fff" font-weight="600">吸嘴</text>
+    <text x="165" y="36" text-anchor="middle" font-size="8" fill="#EBF2FC">真空</text>
+    <!-- Component being picked -->
+    <rect x="153" y="38" width="24" height="10" rx="2" fill="#FEF5E4" stroke="#8A5A00" stroke-width="1"/>
+    <text x="165" y="46" text-anchor="middle" font-size="8" fill="#8A5A00">元件</text>
+    <path d="M165 48 L165 60" stroke="#4A4540" stroke-width="1.2" marker-end="url(#arr3)"/>
+    <!-- Feeder on left -->
+    <rect x="30" y="50" width="70" height="30" rx="5" fill="#EAF5EE" stroke="#1A7A5A" stroke-width="1"/>
+    <text x="65" y="63" text-anchor="middle" font-size="9" fill="#1A7A5A" font-weight="600">Feeder</text>
+    <text x="65" y="74" text-anchor="middle" font-size="8" fill="#1A7A5A">料卷</text>
+    <!-- PCB on right with pads -->
+    <rect x="230" y="50" width="160" height="45" rx="4" fill="#E6F2E0" stroke="#1A7A5A" stroke-width="1.5"/>
+    <rect x="248" y="60" width="18" height="10" rx="2" fill="#8A8278"/>
+    <rect x="275" y="60" width="18" height="10" rx="2" fill="#8A8278"/>
+    <rect x="302" y="60" width="18" height="10" rx="2" fill="#1A55A0" opacity=".6"/>
+    <rect x="329" y="60" width="18" height="10" rx="2" fill="#8A8278"/>
+    <text x="257" y="84" text-anchor="middle" font-size="8" fill="#4A4540">✓</text>
+    <text x="284" y="84" text-anchor="middle" font-size="8" fill="#4A4540">✓</text>
+    <text x="311" y="84" text-anchor="middle" font-size="8" fill="#1A55A0">→</text>
+    <text x="338" y="84" text-anchor="middle" font-size="8" fill="#4A4540">✓</text>
+    <text x="310" y="108" text-anchor="middle" font-size="9" fill="#4A4540">精度 &lt;50µm ｜ 視覺對位 ｜ 真空確認</text>
+  </svg>`,
+  4: `<svg viewBox="0 0 420 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:8px auto">
+    <!-- Oven outline -->
+    <rect x="20" y="20" width="380" height="70" rx="8" fill="#FEF5E4" stroke="#8A5A00" stroke-width="1.5"/>
+    <!-- Zone separators -->
+    <line x1="110" y1="20" x2="110" y2="90" stroke="#8A5A00" stroke-width="0.8" stroke-dasharray="4,3"/>
+    <line x1="210" y1="20" x2="210" y2="90" stroke="#8A5A00" stroke-width="0.8" stroke-dasharray="4,3"/>
+    <line x1="305" y1="20" x2="305" y2="90" stroke="#8A5A00" stroke-width="0.8" stroke-dasharray="4,3"/>
+    <!-- Zone colors and labels -->
+    <rect x="21" y="21" width="88" height="68" rx="6" fill="#EBF2FC" opacity=".6"/>
+    <rect x="111" y="21" width="98" height="68" rx="4" fill="#FEF5E4" opacity=".7"/>
+    <rect x="212" y="21" width="92" height="68" rx="4" fill="#FDECEA" opacity=".7"/>
+    <rect x="306" y="21" width="93" height="68" rx="6" fill="#EAF5EE" opacity=".6"/>
+    <!-- Zone temp labels -->
+    <text x="65" y="40" text-anchor="middle" font-size="9" fill="#1A55A0" font-weight="600">預熱</text>
+    <text x="65" y="52" text-anchor="middle" font-size="8" fill="#1A55A0">25→150°C</text>
+    <text x="65" y="63" text-anchor="middle" font-size="8" fill="#1A55A0">&lt;3°C/s</text>
+    <text x="160" y="40" text-anchor="middle" font-size="9" fill="#8A5A00" font-weight="600">均溫</text>
+    <text x="160" y="52" text-anchor="middle" font-size="8" fill="#8A5A00">150–180°C</text>
+    <text x="160" y="63" text-anchor="middle" font-size="8" fill="#8A5A00">60–120s</text>
+    <text x="258" y="40" text-anchor="middle" font-size="9" fill="#A02020" font-weight="600">回焊</text>
+    <text x="258" y="52" text-anchor="middle" font-size="8" fill="#A02020">183–250°C</text>
+    <text x="258" y="63" text-anchor="middle" font-size="8" fill="#A02020">TAL 60–90s</text>
+    <text x="353" y="40" text-anchor="middle" font-size="9" fill="#1A7A5A" font-weight="600">冷卻</text>
+    <text x="353" y="52" text-anchor="middle" font-size="8" fill="#1A7A5A">250→25°C</text>
+    <text x="353" y="63" text-anchor="middle" font-size="8" fill="#1A7A5A">&lt;4°C/s</text>
+    <!-- PCB travelling through -->
+    <rect x="30" y="72" width="55" height="12" rx="3" fill="#1A7A5A" opacity=".7"/>
+    <text x="58" y="81" text-anchor="middle" font-size="7" fill="#fff">PCB →</text>
+    <!-- Conveyor line -->
+    <line x1="20" y1="85" x2="400" y2="85" stroke="#C8C0B0" stroke-width="2"/>
+    <text x="210" y="108" text-anchor="middle" font-size="9" fill="#4A4540">傳送帶速度 + 溫區設定 = Profile ｜ SAC305 Peak 245±5°C</text>
+  </svg>`,
+  5: `<svg viewBox="0 0 420 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:8px auto">
+    <defs><marker id="arr5" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#4A4540" stroke-width="1.2"/></marker></defs>
+    <!-- Camera system -->
+    <rect x="150" y="5" width="120" height="22" rx="5" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1.5"/>
+    <text x="210" y="14" text-anchor="middle" font-size="9" fill="#1A55A0" font-weight="600">多角度LED + 攝影機</text>
+    <text x="210" y="23" text-anchor="middle" font-size="8" fill="#1A55A0">🔴低角 🟢中角 🔵高角 ⚪頂光</text>
+    <!-- Light rays -->
+    <line x1="165" y1="27" x2="135" y2="58" stroke="#E24B4A" stroke-width="1.2" stroke-dasharray="3,2"/>
+    <line x1="210" y1="27" x2="210" y2="58" stroke="#4CAF50" stroke-width="1.2" stroke-dasharray="3,2"/>
+    <line x1="255" y1="27" x2="285" y2="58" stroke="#1A55A0" stroke-width="1.2" stroke-dasharray="3,2"/>
+    <!-- PCB with joints -->
+    <rect x="60" y="58" width="300" height="20" rx="3" fill="#E6F2E0" stroke="#1A7A5A" stroke-width="1.5"/>
+    <!-- good joints -->
+    <ellipse cx="120" cy="55" rx="12" ry="6" fill="#8A8278"/>
+    <path d="M108 58 Q120 52 132 58" fill="#C8C0B0" stroke="none"/>
+    <ellipse cx="170" cy="55" rx="12" ry="6" fill="#8A8278"/>
+    <!-- bad joint - bridge -->
+    <rect x="208" y="52" width="34" height="8" rx="3" fill="#E24B4A" opacity=".8"/>
+    <text x="225" y="58" text-anchor="middle" font-size="7" fill="#fff">橋接!</text>
+    <!-- missing -->
+    <rect x="268" y="52" width="24" height="8" rx="3" fill="#FEF5E4" stroke="#8A5A00" stroke-width="1" stroke-dasharray="2,2"/>
+    <text x="280" y="58" text-anchor="middle" font-size="7" fill="#8A5A00">缺件!</text>
+    <!-- pass/fail -->
+    <rect x="60" y="82" width="130" height="20" rx="5" fill="#EAF5EE" stroke="#1A7A5A" stroke-width="1"/>
+    <text x="125" y="95" text-anchor="middle" font-size="9" fill="#1A7A5A" font-weight="600">✅ PASS → 下站</text>
+    <rect x="200" y="82" width="160" height="20" rx="5" fill="#FDECEA" stroke="#A02020" stroke-width="1"/>
+    <text x="280" y="95" text-anchor="middle" font-size="9" fill="#A02020" font-weight="600">❌ FAIL → 目視確認</text>
+    <text x="210" y="113" text-anchor="middle" font-size="9" fill="#4A4540">100%板子過AOI ｜ Escape = 0目標 ｜ False call &lt;5%</text>
+  </svg>`,
+  6: `<svg viewBox="0 0 420 105" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:8px auto">
+    <!-- Inspector -->
+    <circle cx="60" cy="42" r="16" fill="#FEF5E4" stroke="#8A5A00" stroke-width="1.5"/>
+    <text x="60" y="38" text-anchor="middle" font-size="14">🧑‍🔬</text>
+    <text x="60" y="65" text-anchor="middle" font-size="9" fill="#8A5A00" font-weight="600">Inspector</text>
+    <text x="60" y="76" text-anchor="middle" font-size="8" fill="#8A5A00">IPC CIS認證</text>
+    <!-- Microscope/light -->
+    <rect x="100" y="28" width="50" height="30" rx="5" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1"/>
+    <text x="125" y="42" text-anchor="middle" font-size="9" fill="#1A55A0">放大鏡</text>
+    <text x="125" y="52" text-anchor="middle" font-size="8" fill="#1A55A0">強光源</text>
+    <!-- PCB -->
+    <rect x="165" y="25" width="150" height="45" rx="4" fill="#E6F2E0" stroke="#1A7A5A" stroke-width="1.5"/>
+    <text x="240" y="42" text-anchor="middle" font-size="9" fill="#1A7A5A" font-weight="600">AOI Alarm Board</text>
+    <text x="240" y="55" text-anchor="middle" font-size="8" fill="#1A7A5A">標示缺陷位置</text>
+    <!-- Reference -->
+    <rect x="328" y="25" width="75" height="45" rx="4" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1"/>
+    <text x="366" y="42" text-anchor="middle" font-size="9" fill="#1A55A0">黃金樣本</text>
+    <text x="366" y="53" text-anchor="middle" font-size="8" fill="#1A55A0">Boundary</text>
+    <text x="366" y="63" text-anchor="middle" font-size="8" fill="#1A55A0">Sample</text>
+    <!-- Decision -->
+    <text x="210" y="90" text-anchor="middle" font-size="9" fill="#4A4540">對比IPC-A-610判準 → Accept / Repair / Reject</text>
+    <text x="210" y="102" text-anchor="middle" font-size="9" fill="#1A7A5A">100% AOI alarm確認 ｜ AQL抽樣 ｜ 記錄處置原因</text>
+  </svg>`,
+  7: `<svg viewBox="0 0 420 105" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:8px auto">
+    <defs><marker id="arr7" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#4A4540" stroke-width="1.2"/></marker></defs>
+    <!-- Lot box -->
+    <rect x="15" y="20" width="70" height="55" rx="6" fill="#EAF5EE" stroke="#1A7A5A" stroke-width="1.5"/>
+    <text x="50" y="40" text-anchor="middle" font-size="9" fill="#1A7A5A" font-weight="600">完成批次</text>
+    <text x="50" y="52" text-anchor="middle" font-size="8" fill="#1A7A5A">PCBA Lot</text>
+    <text x="50" y="63" text-anchor="middle" font-size="8" fill="#1A7A5A">n=500pcs</text>
+    <path d="M87 47 L107 47" stroke="#4A4540" stroke-width="1.5" marker-end="url(#arr7)"/>
+    <!-- Sampling -->
+    <rect x="108" y="20" width="80" height="55" rx="6" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1.5"/>
+    <text x="148" y="38" text-anchor="middle" font-size="9" fill="#1A55A0" font-weight="600">AQL抽樣</text>
+    <text x="148" y="50" text-anchor="middle" font-size="8" fill="#1A55A0">n=32pcs</text>
+    <text x="148" y="62" text-anchor="middle" font-size="8" fill="#1A55A0">AQL 0.65</text>
+    <path d="M190 47 L210 47" stroke="#4A4540" stroke-width="1.5" marker-end="url(#arr7)"/>
+    <!-- Metrics -->
+    <rect x="211" y="20" width="80" height="55" rx="6" fill="#FEF5E4" stroke="#8A5A00" stroke-width="1.5"/>
+    <text x="251" y="38" text-anchor="middle" font-size="9" fill="#8A5A00" font-weight="600">計算指標</text>
+    <text x="251" y="50" text-anchor="middle" font-size="8" fill="#8A5A00">RFTY / PPM</text>
+    <text x="251" y="62" text-anchor="middle" font-size="8" fill="#8A5A00">TDM分析</text>
+    <path d="M293 47 L313 47" stroke="#4A4540" stroke-width="1.5" marker-end="url(#arr7)"/>
+    <!-- Release -->
+    <rect x="314" y="20" width="90" height="55" rx="6" fill="#EAF5EE" stroke="#1A7A5A" stroke-width="1.5"/>
+    <text x="359" y="38" text-anchor="middle" font-size="9" fill="#1A7A5A" font-weight="600">批次放行</text>
+    <text x="359" y="50" text-anchor="middle" font-size="8" fill="#1A7A5A">IPQC簽核</text>
+    <text x="359" y="62" text-anchor="middle" font-size="8" fill="#1A7A5A">系統解鎖</text>
+    <text x="210" y="92" text-anchor="middle" font-size="9" fill="#4A4540">全追溯：料號 批號 作業員 設備 → 工單</text>
+    <text x="210" y="104" text-anchor="middle" font-size="9" fill="#1A7A5A">RFTY目標達成 + 抽樣無超標 → 放行</text>
+  </svg>`
+};
+
+/* ── Stencil Care: 材質/清洗/檢查 ── */
+function renderStencilCare() {
+  document.getElementById('stencil-care-content').innerHTML = `
+    <div class="card" style="border-left:4px solid var(--teal)">
+      <div class="card-title" style="color:var(--teal)">🪣 鋼板材質、清洗與檢查</div>
+      <div class="card-sub">鋼板（Stencil）品質直接決定錫膏沉積的一致性。材質、製程、維護三者缺一不可。</div>
+
+      <div class="lbl">鋼板材質比較</div>
+      <table class="tbl">
+        <tr><th>材質類型</th><th>製程</th><th>壁面粗糙度</th><th>適用場景</th><th>優缺點</th></tr>
+        <tr>
+          <td><strong>雷射切割不鏽鋼</strong><br><span style="font-size:10px;color:var(--text3)">Laser-cut SS</span></td>
+          <td>雷射切割後電解拋光</td>
+          <td>Ra ≈ 0.5–1.0µm</td>
+          <td>0402以上一般製程</td>
+          <td class="tok">成本低、交期短、普遍使用；壁面略粗，細間距脫模差</td>
+        </tr>
+        <tr>
+          <td><strong>電鑄鋼板</strong><br><span style="font-size:10px;color:var(--text3)">Electroformed Nickel</span></td>
+          <td>電化學沉積鎳</td>
+          <td>Ra ≈ 0.1–0.3µm（最光滑）</td>
+          <td>01005、0201、Fine pitch &lt;0.3mm</td>
+          <td class="tok">壁面最光滑、脫模率最高、AR可更低；成本高、交期長</td>
+        </tr>
+        <tr>
+          <td><strong>化學蝕刻鋼板</strong><br><span style="font-size:10px;color:var(--text3)">Chemically Etched</span></td>
+          <td>化學蝕刻</td>
+          <td>Ra ≈ 1.5–3.0µm</td>
+          <td>舊式製程，較少用</td>
+          <td class="twn">精度低、壁面粗、AR需求高；成本最低</td>
+        </tr>
+        <tr>
+          <td><strong>奈米塗層鋼板</strong><br><span style="font-size:10px;color:var(--text3)">Nano-coated</span></td>
+          <td>雷射切割 + 奈米塗佈</td>
+          <td>Ra ≈ 0.2–0.4µm</td>
+          <td>細間距、高頻率清洗環境</td>
+          <td class="tok">脫模性接近電鑄；壽命更長、減少Under-wipe頻率；成本中等</td>
+        </tr>
+        <tr>
+          <td><strong>Step Stencil</strong><br><span style="font-size:10px;color:var(--text3)">階梯式鋼板</span></td>
+          <td>雷射切割 + 局部加工</td>
+          <td>同雷射切割</td>
+          <td>同板有Fine pitch和大型元件</td>
+          <td class="twn">Step區域局部加厚/減薄，一次印刷同時滿足不同錫量需求；設計複雜</td>
+        </tr>
+      </table>
+
+      <div class="lbl" style="margin-top:14px">鋼板清洗方法</div>
+      <div class="concept-box">
+        <div class="concept-item" style="background:var(--blue-bg);border:1px solid var(--blue-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:5px">Under-wipe（底部擦拭）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            <strong>時機：</strong>每5–10片印刷一次（依錫膏類型和開孔密度）<br>
+            <strong>目的：</strong>清除鋼板底部滲出的錫膏，防止底部沾錫污染PCB<br>
+            <strong>方式：</strong>乾擦、濕擦（IPA）、真空擦三種組合<br>
+            <strong>注意：</strong>Under-wipe後要等溶劑揮發才能印刷
+          </div>
+        </div>
+        <div class="concept-item" style="background:var(--green-bg);border:1px solid var(--green-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:5px">離線清洗（Off-line）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            <strong>時機：</strong>換線換產品、下班收線、開孔堵塞時<br>
+            <strong>目的：</strong>完整清除所有開孔內殘留錫膏和助焊劑<br>
+            <strong>設備：</strong>超音波清洗機（DI水+專用清洗劑）或噴淋清洗<br>
+            <strong>驗收：</strong>清洗後需目視或光學確認開孔是否暢通
+          </div>
+        </div>
+        <div class="concept-item" style="background:var(--amber-bg);border:1px solid var(--amber-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:5px">自動清洗（In-line）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            <strong>特點：</strong>印刷機內建Under-wipe系統自動執行<br>
+            <strong>優點：</strong>自動化、頻率可設定、不需人工停機<br>
+            <strong>溶劑：</strong>IPA或廠商指定清洗劑（需與錫膏Flux相容）<br>
+            <strong>管控：</strong>定期確認清洗布（Wiper）用量和清洗效果
+          </div>
+        </div>
+      </div>
+
+      <div class="lbl" style="margin-top:14px">鋼板清洗步驟（離線標準流程）</div>
+      <div class="process-flow">
+        <div class="pf-step"><div class="pf-num">1</div><div class="pf-body"><div class="pf-title">錫膏刮除</div><div class="pf-desc">用刮刀將鋼板上多餘錫膏刮回錫膏罐（未過期者可回收），減少進入清洗機的錫膏量。</div></div></div>
+        <div class="pf-step"><div class="pf-num">2</div><div class="pf-body"><div class="pf-title">預洗（Pre-rinse）</div><div class="pf-desc">用IPA或DI水沖洗，軟化助焊劑殘留。溫度約40–50°C效果更好。避免使用硬毛刷，會損傷鋼板邊緣。</div></div></div>
+        <div class="pf-step"><div class="pf-num">3</div><div class="pf-body"><div class="pf-title">超音波清洗（主洗）</div><div class="pf-desc">放入超音波清洗槽，溫度40–60°C，清洗液依錫膏Flux類型選擇。時間通常3–8分鐘。超音波空化作用去除開孔內殘留。</div><div class="pf-warn">⚠ 不可用超音波清洗有元件的PCB——會損傷焊點</div></div></div>
+        <div class="pf-step"><div class="pf-num">4</div><div class="pf-body"><div class="pf-title">DI水沖洗（Post-rinse）</div><div class="pf-desc">用去離子水（DI water）徹底沖洗，去除清洗劑殘留。殘留清洗劑會影響下次錫膏附著性。</div></div></div>
+        <div class="pf-step"><div class="pf-num">5</div><div class="pf-body"><div class="pf-title">乾燥</div><div class="pf-desc">壓縮空氣吹乾或熱風烘乾（50–60°C）。確認完全乾燥——殘留水分會造成錫珠（Solder Ball）。</div></div></div>
+        <div class="pf-step"><div class="pf-num">6</div><div class="pf-body"><div class="pf-title">清洗效果確認</div><div class="pf-desc">目視或用放大鏡確認所有開孔暢通、無殘留錫膏、無水漬。記錄清洗日期、批次、操作員。</div></div></div>
+      </div>
+
+      <div class="lbl" style="margin-top:14px">鋼板檢查項目與標準</div>
+      <table class="tbl">
+        <tr><th>檢查項目</th><th>檢查時機</th><th>方法</th><th>合格標準</th></tr>
+        <tr><td>開孔堵塞</td><td>每次清洗後、SPI異常時</td><td>目視 + 光源背照</td><td>所有開孔透光均勻，無殘留</td></tr>
+        <tr><td>開孔壁面損傷</td><td>每月 or 50,000 prints</td><td>光學顯微鏡 100×</td><td>壁面無毛刺、無拉傷、無形變</td></tr>
+        <tr><td>框架張力</td><td>每月</td><td>張力計量測</td><td>依廠商規格（通常≥40N/cm）</td></tr>
+        <tr><td>開孔尺寸精度</td><td>新鋼板驗收 + 每季</td><td>光學量測儀</td><td>±5µm（雷射）/ ±2µm（電鑄）</td></tr>
+        <tr><td>鋼板翹曲/平整度</td><td>新鋼板 + 異常時</td><td>平台量測</td><td>≤0.2mm全面積</td></tr>
+        <tr><td>使用次數</td><td>持續計數（MES）</td><td>設備自動記錄</td><td>雷射切割：~100,000 prints；電鑄：~300,000 prints</td></tr>
+      </table>
+
+      <div class="lbl" style="margin-top:12px">品質管控重點</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div>SPI Volume異常 → 立即停線 → 確認鋼板開孔是否堵塞 → 清洗後重新確認SPI合格才復線</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div>Under-wipe頻率SPC化：記錄每次Under-wipe的觸發原因，趨勢惡化代表鋼板需要離線清洗</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div>鋼板壽命管控：在MES記錄印刷次數，接近壽命上限時提前預備替換鋼板（避免突然失效造成停線）</div>
+      <div class="krow"><div class="dot" style="background:var(--blue)"></div>鋼板存放：清洗乾燥後存放於防塵袋，垂直放置，避免開孔面受壓</div>
+    </div>
+  `;
+}
+
+/* ── 2D vs 3D AOI ── */
+function renderAOICompare() {
+  document.getElementById('aoi-compare-content').innerHTML = `
+    <div class="card" style="border-left:4px solid var(--purple)">
+      <div class="card-title" style="color:var(--purple)">📷 2D vs 3D AOI 偵測能力差異</div>
+      <div class="card-sub">AOI有2D（平面影像）和3D（立體量測）兩種主要技術，偵測能力差異顯著。現代高端SMT線建議2D+3D搭配使用。</div>
+
+      <div class="lbl">技術原理比較</div>
+      <svg viewBox="0 0 420 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;display:block;margin:8px auto">
+        <defs><marker id="a6" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#4A4540" stroke-width="1.2"/></marker></defs>
+        <!-- 2D side -->
+        <rect x="10" y="5" width="190" height="145" rx="8" fill="#F2EAFA" stroke="#5A2A90" stroke-width="1.5"/>
+        <text x="105" y="22" text-anchor="middle" font-size="11" fill="#5A2A90" font-weight="700">2D AOI</text>
+        <!-- Camera top-down -->
+        <rect x="75" y="30" width="60" height="18" rx="4" fill="#5A2A90" opacity=".8"/>
+        <text x="105" y="42" text-anchor="middle" font-size="9" fill="#fff">攝影機</text>
+        <line x1="105" y1="48" x2="105" y2="72" stroke="#5A2A90" stroke-width="1.5" marker-end="url(#a6)"/>
+        <!-- PCB flat view -->
+        <rect x="55" y="74" width="100" height="22" rx="3" fill="#E6F2E0" stroke="#1A7A5A" stroke-width="1"/>
+        <rect x="70" y="70" width="15" height="8" rx="2" fill="#8A8278"/>
+        <rect x="95" y="68" width="15" height="10" rx="2" fill="#8A8278"/>
+        <rect x="120" y="71" width="15" height="7" rx="2" fill="#8A8278"/>
+        <!-- sees only top view -->
+        <text x="105" y="110" text-anchor="middle" font-size="9" fill="#5A2A90">只看得到：</text>
+        <text x="105" y="122" text-anchor="middle" font-size="8" fill="#4A4540">✓ 元件有無（presence）</text>
+        <text x="105" y="133" text-anchor="middle" font-size="8" fill="#4A4540">✓ 極性方向（polarity）</text>
+        <text x="105" y="144" text-anchor="middle" font-size="8" fill="#E24B4A">✗ 無法量高度/焊點形狀</text>
+
+        <!-- 3D side -->
+        <rect x="220" y="5" width="190" height="145" rx="8" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1.5"/>
+        <text x="315" y="22" text-anchor="middle" font-size="11" fill="#1A55A0" font-weight="700">3D AOI</text>
+        <!-- Camera + projector -->
+        <rect x="265" y="28" width="40" height="16" rx="3" fill="#1A55A0" opacity=".8"/>
+        <text x="285" y="39" text-anchor="middle" font-size="8" fill="#fff">投影機</text>
+        <rect x="325" y="28" width="40" height="16" rx="3" fill="#1A7A5A" opacity=".8"/>
+        <text x="345" y="39" text-anchor="middle" font-size="8" fill="#fff">攝影機</text>
+        <!-- structured light -->
+        <line x1="282" y1="44" x2="295" y2="70" stroke="#EF9F27" stroke-width="1" stroke-dasharray="2,2"/>
+        <line x1="290" y1="44" x2="305" y2="70" stroke="#EF9F27" stroke-width="1" stroke-dasharray="2,2"/>
+        <line x1="345" y1="44" x2="325" y2="72" stroke="#1A55A0" stroke-width="1" stroke-dasharray="2,2"/>
+        <!-- PCB with heights shown -->
+        <rect x="255" y="74" width="120" height="22" rx="3" fill="#E6F2E0" stroke="#1A7A5A" stroke-width="1"/>
+        <rect x="268" y="62" width="15" height="14" rx="2" fill="#8A8278"/>
+        <rect x="293" y="58" width="15" height="18" rx="2" fill="#8A8278"/>
+        <rect x="318" y="65" width="15" height="11" rx="2" fill="#8A8278"/>
+        <!-- height indicators -->
+        <text x="276" y="58" text-anchor="middle" font-size="7" fill="#1A55A0">H1</text>
+        <text x="301" y="54" text-anchor="middle" font-size="7" fill="#1A55A0">H2</text>
+        <text x="326" y="61" text-anchor="middle" font-size="7" fill="#1A55A0">H3</text>
+        <!-- sees 3D -->
+        <text x="315" y="110" text-anchor="middle" font-size="9" fill="#1A55A0">可量測：</text>
+        <text x="315" y="122" text-anchor="middle" font-size="8" fill="#4A4540">✓ 焊點高度（Height）</text>
+        <text x="315" y="133" text-anchor="middle" font-size="8" fill="#4A4540">✓ Fillet形狀/體積</text>
+        <text x="315" y="144" text-anchor="middle" font-size="8" fill="#1D9E75">✓ 元件浮起/共面度</text>
+      </svg>
+
+      <div class="lbl">偵測能力對比表</div>
+      <table class="tbl">
+        <tr><th>偵測項目</th><th>2D AOI</th><th>3D AOI</th><th>說明</th></tr>
+        <tr><td>元件存在/缺件</td><td class="tok">✓ 優</td><td class="tok">✓ 優</td><td>兩者都能偵測，3D更可靠</td></tr>
+        <tr><td>極性/方向錯誤</td><td class="tok">✓ 優</td><td class="tok">✓ 優</td><td>元件標記辨識</td></tr>
+        <tr><td>橋接（Bridge）</td><td class="tok">✓ 可</td><td class="tok">✓ 優</td><td>3D可偵測低矮橋接</td></tr>
+        <tr><td>焊點高度/Fillet形狀</td><td class="tbd">✗ 無法</td><td class="tok">✓ 優</td><td>3D專有能力</td></tr>
+        <tr><td>元件浮起（Lifted）</td><td class="twn">△ 限制</td><td class="tok">✓ 優</td><td>3D可精確量共面度偏差</td></tr>
+        <tr><td>錫量不足（高度）</td><td class="tbd">✗ 無法</td><td class="tok">✓ 優</td><td>3D可偵測Fillet高度不足</td></tr>
+        <tr><td>Tombstone（立碑）</td><td class="tok">✓ 可</td><td class="tok">✓ 優</td><td>3D高度差明顯，偵測更準</td></tr>
+        <tr><td>冷焊（外觀）</td><td class="twn">△ 有限</td><td class="twn">△ 有限</td><td>兩者均難靠外觀判定冷焊，需X-ray</td></tr>
+        <tr><td>Void（錫洞）</td><td class="tbd">✗ 無法</td><td class="tbd">✗ 無法</td><td>需X-ray</td></tr>
+        <tr><td>元件本體損傷</td><td class="tok">✓ 可</td><td class="tok">✓ 可</td><td>影像辨識</td></tr>
+        <tr><td>偵測速度</td><td class="tok">較快</td><td class="twn">較慢（量測較多）</td><td>3D需多角度掃描</td></tr>
+        <tr><td>設備成本</td><td class="tok">較低</td><td class="twn">較高（2–5×）</td><td>—</td></tr>
+      </table>
+
+      <div class="lbl" style="margin-top:12px">SPI（印刷後）vs Reflow後AOI 定位</div>
+      <div class="concept-box">
+        <div class="concept-item" style="background:var(--amber-bg);border:1px solid var(--amber-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:5px">SPI（錫膏3D量測）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">印刷後 / P&P前<br>量測：Volume、Height、Area、Offset<br>目的：在放元件前攔截印刷問題<br><strong>Cost of quality最低點</strong>——這裡發現最便宜</div>
+        </div>
+        <div class="concept-item" style="background:var(--purple-bg);border:1px solid var(--purple-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--purple);margin-bottom:5px">Pre-reflow AOI（可選）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">P&P後 / Reflow前<br>確認元件放置正確、無掉料<br>高密度板或高價BGA常用<br>及早攔截置件錯誤，避免過爐</div>
+        </div>
+        <div class="concept-item" style="background:var(--blue-bg);border:1px solid var(--blue-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:5px">Post-reflow AOI（必要）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">Reflow後<br>確認焊點品質、橋接、缺件<br>3D AOI可量焊點高度和形狀<br>最終品質關卡，100%必過</div>
+        </div>
+      </div>
+
+      <div class="lbl" style="margin-top:12px">AOI程式建立與調校原則</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div>每個新PCB設計都必須重新建立AOI程式，不可直接複製舊程式——Pad位置、元件庫和光學特性都不同</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div>False call率超過5%必須調程式：分析哪種元件/哪個位置最多，針對性調整Detection threshold</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div>每日Golden Board Run：用已知良品和已知缺陷板各一塊，確認AOI靈敏度沒有漂移</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div>程式版本管控：AOI程式必須版本控制，與ECN（工程更改通知）同步更新</div>
+      <div class="krow"><div class="dot" style="background:var(--blue)"></div>3D AOI特別注意：元件高度資料庫要準確，高度tolerance設定過緊會造成高false call率</div>
+    </div>
+  `;
+}
+
+/* ── Reflow Profile Selection Guide ── */
+function renderProfileGuide() {
+  document.getElementById('profile-guide-content').innerHTML = `
+    <div class="card" style="border-left:4px solid var(--red)">
+      <div class="card-title" style="color:var(--red)">📈 Reflow Profile 選擇指南</div>
+      <div class="card-sub">不同產品、錫膏、元件組合需要不同的Profile。Profile選錯是冷焊、錫珠、元件損傷的最主要來源之一。</div>
+
+      <div class="lbl">Profile選擇的五個決定因素</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:7px;margin-bottom:12px">
+        <div class="spec-box" style="background:var(--red-bg);border-color:var(--red-border)">
+          <div class="spec-label" style="color:var(--red)">① 錫膏規格</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:3px">廠商提供的建議Profile是起點。Peak temp、TAL、Ramp rate都有規格範圍。<strong>必看TDS（技術規格書）</strong></div>
+        </div>
+        <div class="spec-box" style="background:var(--amber-bg);border-color:var(--amber-border)">
+          <div class="spec-label" style="color:var(--amber)">② 最脆弱的元件</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:3px">所有元件中耐溫最低的那個決定上限。電解電容、某些連接器、LED通常最敏感。</div>
+        </div>
+        <div class="spec-box" style="background:var(--blue-bg);border-color:var(--blue-border)">
+          <div class="spec-label" style="color:var(--blue)">③ PCB熱質量</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:3px">層數多、銅量大、厚度厚的PCB需要更長的Soak或更高的溫度才能讓所有點達到Peak。</div>
+        </div>
+        <div class="spec-box" style="background:var(--green-bg);border-color:var(--green-border)">
+          <div class="spec-label" style="color:var(--green)">④ 最大熱質量元件</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:3px">BGA、大型連接器、散熱片附近的元件升溫慢。Profile量測點必須包含這些位置。</div>
+        </div>
+        <div class="spec-box" style="background:var(--purple-bg);border-color:var(--purple-border)">
+          <div class="spec-label" style="color:var(--purple)">⑤ MSL限制</div>
+          <div style="font-size:12px;color:var(--text2);margin-top:3px">Moisture Sensitivity Level。MSL 1可無限存放；MSL 3開封後168小時內必須過爐。超期需烘烤。</div>
+        </div>
+      </div>
+
+      <div class="lbl">不同產品類型的Profile建議</div>
+      <table class="tbl">
+        <tr><th>產品類型</th><th>典型元件特性</th><th>建議Profile重點</th><th>常見風險</th></tr>
+        <tr>
+          <td><strong>消費性電子</strong><br><span style="font-size:10px;color:var(--text3)">手持、穿戴</span></td>
+          <td>元件小（0402/0201）、薄PCB、無大型散熱元件</td>
+          <td>Ramp可較快（2–3°C/s）、Peak 240–248°C、TAL 60–75s、快速冷卻OK</td>
+          <td class="twn">0201立碑（Tombstone）、錫珠（Solder Ball）</td>
+        </tr>
+        <tr>
+          <td><strong>工業/企業設備</strong><br><span style="font-size:10px;color:var(--text3)">Zebra主要產品</span></td>
+          <td>混合元件（BGA+連接器+Passives）、中等PCB厚度</td>
+          <td>Ramp 1.5–2°C/s、Soak 150–180°C 90–120s（均溫）、Peak 243–248°C、TAL 60–90s</td>
+          <td class="twn">角落BGA冷焊、大型連接器熱不足</td>
+        </tr>
+        <tr>
+          <td><strong>AI伺服器 / HPC</strong><br><span style="font-size:10px;color:var(--text3)">高功率ASIC板</span></td>
+          <td>超大BGA（50mm+）、高銅量多層PCB（16層+）、大熱質量元件</td>
+          <td>Ramp慢（1–1.5°C/s）、Soak長（120–150s）、Peak 245–252°C（確保大BGA達標）、TAL 75–90s</td>
+          <td class="tbd">PCB各點△T大（>20°C）、BGA邊角未回焊</td>
+        </tr>
+        <tr>
+          <td><strong>低溫製程</strong><br><span style="font-size:10px;color:var(--text3)">Bi/In基錫膏</span></td>
+          <td>溫度敏感元件（LCD、某些感測器）、已有元件的板子二次過爐</td>
+          <td>Peak 165–185°C（Bi基）/ 195–210°C（In基）、Ramp需更慢（避免Bi脆性）</td>
+          <td class="twn">Bi基錫膏強度低、抗疲勞差；混錫（Bi+SAC）會形成低溫共晶脆性相</td>
+        </tr>
+        <tr>
+          <td><strong>有鉛維修</strong><br><span style="font-size:10px;color:var(--text3)">特殊客戶要求</span></td>
+          <td>Sn63/Pb37共晶錫膏、低Peak</td>
+          <td>Peak 205–215°C、TAL 30–60s（共晶點183°C，窗口較窄）</td>
+          <td class="twn">無鉛BGA + 有鉛錫膏混錫問題（需特別評估）</td>
+        </tr>
+      </table>
+
+      <div class="lbl" style="margin-top:14px">Profile量測流程（SOP）</div>
+      <div class="process-flow">
+        <div class="pf-step"><div class="pf-num">1</div><div class="pf-body"><div class="pf-title">選擇量測點（Thermocouple placement）</div><div class="pf-desc">必測：最大熱質量元件（大BGA、連接器）的焊點 / 最小/輕的元件（0402）/ PCB中央 / 四個角落。至少6個點，複雜板需12個。</div></div></div>
+        <div class="pf-step"><div class="pf-num">2</div><div class="pf-body"><div class="pf-title">熱電偶固定</div><div class="pf-desc">用高溫Kapton膠帶固定熱電偶到量測點。注意：熱電偶接觸點要緊貼焊點，不能懸空，否則量測值偏低。</div><div class="pf-warn">⚠ 熱電偶要定期校正，偏差&gt;3°C需更換</div></div></div>
+        <div class="pf-step"><div class="pf-num">3</div><div class="pf-body"><div class="pf-title">過爐量測</div><div class="pf-desc">以正常生產速度過爐，記錄每個點的完整Profile曲線。確認所有點的Peak temp、TAL、Ramp rate都在規格內。</div></div></div>
+        <div class="pf-step"><div class="pf-num">4</div><div class="pf-body"><div class="pf-title">計算△T（各點溫差）</div><div class="pf-desc">△T = 最高點Peak temp - 最低點Peak temp。一般要求△T ≤ 15–20°C。△T過大需調整爐溫分布或降低傳送帶速度。</div></div></div>
+        <div class="pf-step"><div class="pf-num">5</div><div class="pf-body"><div class="pf-title">Profile鎖定與文件化</div><div class="pf-desc">量測合格後鎖定Profile設定值（溫度、速度），存入MES。產品、爐號、Profile版本三者綁定。禁止在未授權情況下修改。</div></div></div>
+        <div class="pf-step"><div class="pf-num">6</div><div class="pf-body"><div class="pf-title">定期重測</div><div class="pf-desc">觸發條件：設備PM後、換錫膏批次、更換零件、SPC趨勢偏移、生產中斷超過4小時。日常：每12小時或每班。</div></div></div>
+      </div>
+
+      <div class="lbl" style="margin-top:12px">Profile失效的Fault Tree</div>
+      <div class="fmode"><button class="fhdr" onclick="smtTF(this)" style="background:var(--red-bg);border-color:var(--red-border);color:var(--red)"><span>冷焊（Cold Solder）→ Profile根因追查</span><i class="farr">▶</i></button><div class="fcauses"><div class="fcause">確認：最低點的Peak temp是否達到錫膏規格最低值？</div><div class="fcause">確認：TAL是否≥60秒？（計算液相以上時間）</div><div class="fcause">確認：Profile上次量測時間？PM後有沒有重測？</div><div class="fcause">確認：元件是否有高熱質量零件遮蔽周圍元件？</div><span class="fact">動作：重新量測Profile → 找到最低點 → 調整溫區補償</span></div></div>
+      <div class="fmode"><button class="fhdr" onclick="smtTF(this)" style="background:var(--red-bg);border-color:var(--red-border);color:var(--red)"><span>錫珠（Solder Ball）→ Profile根因追查</span><i class="farr">▶</i></button><div class="fcauses"><div class="fcause">確認：Ramp rate是否 &gt;3°C/s？（水分或溶劑來不及揮發）</div><div class="fcause">確認：Soak zone是否足夠？（Flux未完全活化就到Reflow zone）</div><div class="fcause">確認：N₂流量是否過大？（吹散錫膏）</div><div class="fcause">交叉確認SPI：錫量是否超標？（非Profile問題）</div><span class="fact">動作：降低Ramp rate到1.5–2°C/s；延長Soak時間</span></div></div>
+      <div class="fmode"><button class="fhdr" onclick="smtTF(this)" style="background:var(--red-bg);border-color:var(--red-border);color:var(--red)"><span>元件損傷（Component damage）→ Profile根因追查</span><i class="farr">▶</i></button><div class="fcauses"><div class="fcause">確認：Peak temp是否超過元件耐溫上限（查元件規格書）</div><div class="fcause">確認：元件是否有MSL問題（過期開封吸濕→爆裂）</div><div class="fcause">確認：PCB是否有Board-level warpage造成元件應力</div><span class="fact">動作：比對元件TDS耐溫 vs 實測Peak；考慮低溫錫膏或Step Reflow</span></div></div>
+
+      <div class="lbl" style="margin-top:12px">品質管控重點</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div><strong>Profile量測報告必須保存</strong>：每次量測結果（含所有TC曲線）歸檔，作為產品品質記錄的一部分</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div>換錫膏批次前：比較新舊批次TDS的Profile建議範圍，如有差異需重新確認Profile</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div>換爐生產：同型號爐不代表相同Profile！不同設備老化狀態不同，必須重新量測</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div>Profile SPC：趨勢監控爐溫是否漂移，提前預警加熱器老化</div>
+      <div class="krow"><div class="dot" style="background:var(--blue)"></div>保存Profile圖形（不只數字）：曲線形狀能看出加熱器均勻性問題，數字表格看不出來</div>
+    </div>
+  `;
+}
+
+
+
+/* ══════════════════════════════════════════════
+   TEST METHODS: ICT / Boundary Scan / FCT
+   Source: SMT_test.pages
+   ══════════════════════════════════════════════ */
+function renderTestMethods() {
+  document.getElementById('test-methods-content').innerHTML = `
+    <div class="card" style="border-left:4px solid var(--teal)">
+      <div class="card-title" style="color:var(--teal)">🔌 PCBA 功能測試：ICT / Boundary Scan / FCT</div>
+      <div class="card-sub">PCBA組裝完成後需通過電性測試才能出貨。三種主要測試方式各有不同的偵測能力、成本和適用場景。</div>
+
+      <div class="lbl">三種測試方式快速比較</div>
+      <table class="tbl">
+        <tr><th>測試類型</th><th>英文全名</th><th>偵測對象</th><th>速度(UPH)</th><th>成本</th></tr>
+        <tr><td><strong style="color:var(--blue)">ICT</strong></td><td>In-Circuit Test</td><td>元件值、短路、開路、極性</td><td>高</td><td class="twn">高（治具）</td></tr>
+        <tr><td><strong style="color:var(--purple)">Boundary Scan</strong></td><td>IEEE 1149.1 / JTAG</td><td>數位IC連接性、Flash燒錄</td><td>中</td><td class="tok">低（軟體驅動）</td></tr>
+        <tr><td><strong style="color:var(--green)">FCT</strong></td><td>Functional Circuit Test</td><td>整板功能、通訊協議、韌體</td><td>低–中</td><td class="twn">中–高</td></tr>
+      </table>
+
+      <div class="lbl" style="margin-top:14px">① ICT — In-Circuit Test（針床測試）</div>
+      <div class="concept-box">
+        <div class="concept-item" style="background:var(--blue-bg);border:1px solid var(--blue-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:5px">原理</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            Bed of Nails（針床）：數百至數千根探針同時接觸PCB上的測試點（TP），逐一量測各元件的電阻、電容、二極體特性。<br><br>
+            使用Kelvin Connection（4線量測）消除接觸電阻誤差，確保量測精度。
+          </div>
+        </div>
+        <div class="concept-item" style="background:var(--blue-bg);border:1px solid var(--blue-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:5px">偵測能力</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            ✅ 元件值偏差（R、C、L）<br>
+            ✅ 短路（Bridge）<br>
+            ✅ 開路（Open）<br>
+            ✅ 元件極性錯誤（Diode、Capacitor）<br>
+            ✅ 缺件（Missing）<br>
+            ❌ 無法測BGA內部、覆蓋區域<br>
+            ❌ 無法驗功能邏輯
+          </div>
+        </div>
+      </div>
+      <div class="lbl">ICT限制與品質注意事項</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div><strong>治具（Fixture）成本高：</strong>每個新產品PCB Layout需重新製作針床，一套治具約US$5,000–30,000，Lead time 4–6週</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div><strong>測試點面積要求：</strong>PCB Layout必須預留足夠的TP（Test Point）面積，建議≥0.8mm直徑，現代高密度板越來越難滿足</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div><strong>BGA死角問題：</strong>BGA封裝下方的焊點無法直接探針接觸，需搭配Boundary Scan或X-ray補充</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div><strong>Test Coverage目標：</strong>一般要求≥85%，高可靠度產品要求≥95%</div>
+
+      <div class="lbl" style="margin-top:14px">② Boundary Scan — JTAG（IEEE 1149.1）</div>
+      <div class="concept-box">
+        <div class="concept-item" style="background:var(--purple-bg);border:1px solid var(--purple-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--purple);margin-bottom:5px">原理</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            利用IC內建的BSR（Boundary Scan Register）移位暫存器，透過JTAG介面（TDI/TDO/TMS/TCK）串接多顆IC，軟體驅動控制每個pin腳輸出/輸入，驗證連接性。<br><br>
+            使用BSDL（Boundary Scan Description Language）描述每顆IC的Boundary Scan能力。
+          </div>
+        </div>
+        <div class="concept-item" style="background:var(--purple-bg);border:1px solid var(--purple-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--purple);margin-bottom:5px">偵測能力</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            ✅ IC間連接開路/短路<br>
+            ✅ BGA焊球連接性（無需針床）<br>
+            ✅ Flash/CPLD/FPGA燒錄（ISP）<br>
+            ✅ CPU、FPGA功能初步驗證<br>
+            ❌ 只覆蓋有JTAG支援的IC<br>
+            ❌ 類比元件（R、C）不在範圍
+          </div>
+        </div>
+      </div>
+      <div class="lbl">Boundary Scan在SMT中的應用</div>
+      <div class="krow"><div class="dot" style="background:var(--purple)"></div><strong>BGA互連驗證：</strong>BGA封裝焊點無法用針床探針，Boundary Scan是目前最有效的BGA連接性電性測試方法（搭配X-ray看Void）</div>
+      <div class="krow"><div class="dot" style="background:var(--purple)"></div><strong>韌體燒錄：</strong>Flash Memory、CPLD、FPGA可在PCBA組裝後直接透過JTAG進行ISP（In-System Programming），無需拆件</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div><strong>覆蓋率限制：</strong>只有支援IEEE 1149.1的IC才能納入Boundary Scan chain。無JTAG的IC（如大多數Analog IC）需ICT或FCT補充</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div><strong>NPI階段必用：</strong>新產品導入時，Boundary Scan可在沒有ICT治具的情況下提前進行電性驗證，縮短NPI Lead time</div>
+
+      <div class="lbl" style="margin-top:14px">③ FCT — Functional Circuit Test（功能測試）</div>
+      <div class="concept-box">
+        <div class="concept-item" style="background:var(--green-bg);border:1px solid var(--green-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:5px">原理</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            模擬PCBA在實際產品中的操作環境，對整板通電，執行韌體/軟體指令，驗證所有功能是否正常。<br><br>
+            透過治具（Fixture）提供電源、通訊介面（USB/WiFi/BT/Ethernet），並連接測試設備（Signal Analyzer、Power Meter等）。
+          </div>
+        </div>
+        <div class="concept-item" style="background:var(--green-bg);border:1px solid var(--green-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:5px">偵測能力</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            ✅ 整板功能驗證（WiFi、BT、Camera）<br>
+            ✅ 通訊協議正確性<br>
+            ✅ 韌體邏輯驗證<br>
+            ✅ 電源管理（PMIC）功能<br>
+            ✅ 機構/感測器功能（Scanner、GPS）<br>
+            ❌ 無法精確定位單一元件故障<br>
+            ❌ 測試時間長，UPH較低
+          </div>
+        </div>
+      </div>
+      <div class="lbl">Zebra產品的FCT重點</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div><strong>Scanner功能：</strong>條碼掃描器（Barcode Engine）讀取率、景深、各種symbology（1D/2D/QR）驗證</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div><strong>無線連接：</strong>Wi-Fi 6/6E頻段、Bluetooth 5.x、WWAN（4G/5G）各頻段功率和接收靈敏度</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div><strong>Battery/Power：</strong>充電電流、電壓切換、低電量保護、GPIO控制</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div><strong>FCT Throughput（UPH）管控：</strong>FCT是SMT後段瓶頸，UPH直接影響產線output。測試時間過長需DOE優化測試sequence</div>
+
+      <div class="lbl" style="margin-top:14px">測試方法組合策略</div>
+      <table class="tbl">
+        <tr><th>產品類型</th><th>推薦組合</th><th>說明</th></tr>
+        <tr><td>高量產消費品</td><td>ICT + FCT</td><td>ICT攔截組裝缺陷，FCT確認功能。BGA多的板搭配X-ray抽查</td></tr>
+        <tr><td>企業設備（Zebra主力）</td><td>ICT + Boundary Scan + FCT</td><td>ICT覆蓋Passive，BS覆蓋BGA/CPU，FCT全功能驗證</td></tr>
+        <tr><td>NPI / 小批量</td><td>Boundary Scan + FCT</td><td>無ICT治具，BS提供基本電性覆蓋，FCT做功能驗證</td></tr>
+        <tr><td>AI伺服器板（高複雜度）</td><td>ICT + BS + FCT + X-ray</td><td>多層BGA必加X-ray；BS做ASIC互連；FCT跑完整系統測試</td></tr>
+      </table>
+
+      <div class="lbl" style="margin-top:12px">測試覆蓋率與AQL</div>
+      <div class="krow"><div class="dot" style="background:var(--red)"></div><strong>ICT Test Coverage ≥85%</strong>（高可靠度≥95%）：未覆蓋的節點需要FCT或其他方式補充</div>
+      <div class="krow"><div class="dot" style="background:var(--amber)"></div><strong>AQL抽樣（MIL-STD-105）：</strong>FCT 100%全測是理想；如因UPH限制改抽樣，需以AQL計算樣本數和允收水準</div>
+      <div class="krow"><div class="dot" style="background:var(--green)"></div><strong>Diagnostic能力：</strong>FCT測試程式需包含Fault Isolation功能，fail時能指出是哪個模組/功能異常，縮短維修時間</div>
+      <div class="krow"><div class="dot" style="background:var(--blue)"></div><strong>測試資料收集：</strong>所有測試結果（Pass/Fail/Measurement值）上傳MES，用於SPC和Field quality correlation</div>
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════════
+   GPU/TPU SUPPLY CHAIN
+   Source: GPU___TPU.pages
+   ══════════════════════════════════════════════ */
+function renderGPUTPU() {
+  document.getElementById('gpu-tpu-content').innerHTML = `
+    <div class="card" style="border-left:4px solid var(--text3)">
+      <div class="card-title">🖥️ GPU vs TPU — AI硬體供應鏈與PCBA製造</div>
+      <div class="card-sub">了解NVIDIA GPU和Google TPU在AI硬體市場的定位差異，以及它們如何影響EMS/ODM（如Zebra/Wistron）的PCBA製程要求。</div>
+
+      <div class="lbl">業務模型差異：通用型 vs 專用型</div>
+      <div class="concept-box">
+        <div class="concept-item" style="background:var(--green-bg);border:1px solid var(--green-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:5px">NVIDIA GPU — 武器商模型（Merchant Silicon）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            <strong>定位：</strong>「賣武器給所有人」——銷售GPU晶片+CUDA軟體生態系，任何需要算力的客戶（Microsoft、Amazon、Meta等）都是目標。<br><br>
+            <strong>設計理念：</strong>通用型（Versatile Generalist）——同一顆H100/B200可以用於AI訓練、推理、圖形、科學計算。<br><br>
+            <strong>供應鏈模式：</strong>委外製造（Fabless）— 晶圓代工台積電，封裝CoWoS/SoIC，ODM（Foxconn/Wistron/Quanta）做伺服器PCBA組裝。
+          </div>
+        </div>
+        <div class="concept-item" style="background:var(--blue-bg);border:1px solid var(--blue-border)">
+          <div style="font-size:11px;font-weight:700;color:var(--blue);margin-bottom:5px">Google TPU — 自給自足模型（Custom ASIC）</div>
+          <div style="font-size:12px;color:var(--text2);line-height:1.6">
+            <strong>定位：</strong>「自製武器，只為自己用」——TPU是Custom ASIC，只用於Google自己的AI工作負載（TensorFlow/JAX）。<br><br>
+            <strong>設計理念：</strong>究極專用型（Ultimate Specialist）——針對矩陣乘法（AI推理/訓練）極度優化，TDP（熱功耗）效率遠高於GPU。<br><br>
+            <strong>供應鏈模式：</strong>自行設計 → 台積電晶圓 → 特定ODM/EMS做PCBA → 只部署在Google Cloud（不對外銷售）。
+          </div>
+        </div>
+      </div>
+
+      <div class="lbl" style="margin-top:12px">供應鏈路徑比較（Wafer → PCBA）</div>
+      <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;margin:8px auto">
+        <defs><marker id="ga" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1L7 4L1 7" fill="none" stroke="#4A4540" stroke-width="1.2"/></marker></defs>
+        <!-- NVIDIA row -->
+        <text x="10" y="22" font-size="10" fill="#1A7A5A" font-weight="700">NVIDIA</text>
+        <rect x="10" y="28" width="70" height="28" rx="5" fill="#EAF5EE" stroke="#1A7A5A" stroke-width="1.2"/>
+        <text x="45" y="40" text-anchor="middle" font-size="8" fill="#1A7A5A" font-weight="600">設計</text>
+        <text x="45" y="50" text-anchor="middle" font-size="8" fill="#1A7A5A">Santa Clara</text>
+        <path d="M82 42 L100 42" stroke="#4A4540" stroke-width="1.2" marker-end="url(#ga)"/>
+        <rect x="102" y="28" width="80" height="28" rx="5" fill="#EAF5EE" stroke="#1A7A5A" stroke-width="1.2"/>
+        <text x="142" y="40" text-anchor="middle" font-size="8" fill="#1A7A5A" font-weight="600">晶圓代工</text>
+        <text x="142" y="50" text-anchor="middle" font-size="8" fill="#1A7A5A">TSMC (N4/N3)</text>
+        <path d="M184 42 L202 42" stroke="#4A4540" stroke-width="1.2" marker-end="url(#ga)"/>
+        <rect x="204" y="28" width="90" height="28" rx="5" fill="#EAF5EE" stroke="#1A7A5A" stroke-width="1.2"/>
+        <text x="249" y="40" text-anchor="middle" font-size="8" fill="#1A7A5A" font-weight="600">先進封裝</text>
+        <text x="249" y="50" text-anchor="middle" font-size="8" fill="#1A7A5A">CoWoS/SoIC HBM</text>
+        <path d="M296 42 L314 42" stroke="#4A4540" stroke-width="1.2" marker-end="url(#ga)"/>
+        <rect x="316" y="28" width="100" height="28" rx="5" fill="#EAF5EE" stroke="#1A7A5A" stroke-width="1.2"/>
+        <text x="366" y="40" text-anchor="middle" font-size="8" fill="#1A7A5A" font-weight="600">伺服器PCBA</text>
+        <text x="366" y="50" text-anchor="middle" font-size="8" fill="#1A7A5A">Foxconn/Wistron/Quanta</text>
+        <path d="M418 42 L436 42" stroke="#4A4540" stroke-width="1.2" marker-end="url(#ga)"/>
+        <rect x="438" y="28" width="80" height="28" rx="5" fill="#EAF5EE" stroke="#1A7A5A" stroke-width="1.2"/>
+        <text x="478" y="40" text-anchor="middle" font-size="8" fill="#1A7A5A" font-weight="600">超大型資料中心</text>
+        <text x="478" y="50" text-anchor="middle" font-size="8" fill="#1A7A5A">AWS/Azure/GCP</text>
+        <!-- Google row -->
+        <text x="10" y="95" font-size="10" fill="#1A55A0" font-weight="700">Google TPU</text>
+        <rect x="10" y="101" width="70" height="28" rx="5" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1.2"/>
+        <text x="45" y="113" text-anchor="middle" font-size="8" fill="#1A55A0" font-weight="600">設計</text>
+        <text x="45" y="123" text-anchor="middle" font-size="8" fill="#1A55A0">Google Brain</text>
+        <path d="M82 115 L100 115" stroke="#4A4540" stroke-width="1.2" marker-end="url(#ga)"/>
+        <rect x="102" y="101" width="80" height="28" rx="5" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1.2"/>
+        <text x="142" y="113" text-anchor="middle" font-size="8" fill="#1A55A0" font-weight="600">晶圓代工</text>
+        <text x="142" y="123" text-anchor="middle" font-size="8" fill="#1A55A0">TSMC（競爭相同廠）</text>
+        <path d="M184 115 L202 115" stroke="#4A4540" stroke-width="1.2" marker-end="url(#ga)"/>
+        <rect x="204" y="101" width="90" height="28" rx="5" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1.2"/>
+        <text x="249" y="113" text-anchor="middle" font-size="8" fill="#1A55A0" font-weight="600">封裝</text>
+        <text x="249" y="123" text-anchor="middle" font-size="8" fill="#1A55A0">CoCoS（自研互連）</text>
+        <path d="M296 115 L314 115" stroke="#4A4540" stroke-width="1.2" marker-end="url(#ga)"/>
+        <rect x="316" y="101" width="100" height="28" rx="5" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1.2"/>
+        <text x="366" y="113" text-anchor="middle" font-size="8" fill="#1A55A0" font-weight="600">TPU Board PCBA</text>
+        <text x="366" y="123" text-anchor="middle" font-size="8" fill="#1A55A0">特定EMS（保密）</text>
+        <path d="M418 115 L436 115" stroke="#4A4540" stroke-width="1.2" marker-end="url(#ga)"/>
+        <rect x="438" y="101" width="80" height="28" rx="5" fill="#EBF2FC" stroke="#1A55A0" stroke-width="1.2"/>
+        <text x="478" y="113" text-anchor="middle" font-size="8" fill="#1A55A0" font-weight="600">Google Cloud Only</text>
+        <text x="478" y="123" text-anchor="middle" font-size="8" fill="#1A55A0">不對外銷售</text>
+        <!-- shared resource note -->
+        <rect x="80" y="148" width="200" height="22" rx="5" fill="#FDECEA" stroke="#A02020" stroke-width="1"/>
+        <text x="180" y="163" text-anchor="middle" font-size="9" fill="#A02020" font-weight="600">⚠ 共同競爭台積電最先進製程產能（N3/N4）</text>
+        <text x="280" y="163" font-size="9" fill="#4A4540"> → EMS如Wistron同時服務兩者</text>
+        <text x="10" y="192" font-size="9" fill="#4A4540">從品質管理視角：AI伺服器板的SMT複雜度遠高於一般消費品，冷焊/Void/BGA互連失效是主要風險</text>
+      </svg>
+
+      <div class="lbl">對EMS/ODM的PCBA製程影響</div>
+      <table class="tbl">
+        <tr><th>特性</th><th>AI GPU伺服器板</th><th>一般企業設備（Zebra）</th></tr>
+        <tr><td>PCB層數</td><td>16–32層，高銅量</td><td>6–12層</td></tr>
+        <tr><td>BGA尺寸</td><td>超大BGA（50mm+，HBM堆疊）</td><td>中小型BGA（15–25mm）</td></tr>
+        <tr><td>Reflow Profile</td><td>需長Soak、精確控制△T≤15°C</td><td>標準SAC305 Profile</td></tr>
+        <tr><td>X-ray要求</td><td>100%（BGA Void≤10%）</td><td>抽查（Void≤25%）</td></tr>
+        <tr><td>散熱</td><td>水冷+SCP+Vertical Power</td><td>風冷為主，部分Water Cooling</td></tr>
+        <tr><td>測試</td><td>ICT+BS+FCT+系統燒機48–72hr</td><td>ICT+Boundary Scan+FCT</td></tr>
+        <tr><td>產量</td><td>小批量（客製化高）</td><td>中大量</td></tr>
+        <tr><td>IPC等級</td><td>Class 3（高可靠度）</td><td>Class 2~3</td></tr>
+      </table>
+
+      <div class="lbl" style="margin-top:12px">關鍵術語</div>
+      <div class="krow"><div class="dot" style="background:var(--text3)"></div><strong>TDP (Thermal Design Power)：</strong>晶片設計熱功耗。H100: ~700W/顆；TPU v5: 性能/瓦特更高（專用架構優勢）</div>
+      <div class="krow"><div class="dot" style="background:var(--text3)"></div><strong>CoWoS (Chip on Wafer on Substrate)：</strong>台積電先進封裝，把GPU+HBM記憶體集成在同一基板，縮短距離、降低功耗</div>
+      <div class="krow"><div class="dot" style="background:var(--text3)"></div><strong>HBM (High Bandwidth Memory)：</strong>堆疊DRAM，頻寬是GDDR6的5–10倍，AI訓練必需。SMT組裝挑戰：Void%控管關鍵</div>
+      <div class="krow"><div class="dot" style="background:var(--text3)"></div><strong>ODM vs EMS：</strong>ODM自行設計+製造（如Wistron）；EMS只負責製造（如Foxconn子公司）。兩者都是NVIDIA/Google的供應鏈夥伴</div>
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════════
+   ENHANCED: IPC-A-610J 2024 update + Solder Paste 5-ball rule + HIP
+   Patches to existing content
+   ══════════════════════════════════════════════ */
+
+/* ── Init ── */
+smtLd();
+smtUP();
+smtRS();
+smtRD();
+smtCS();
+smtRN2();
+setTimeout(() => smtDR(), 100);
+
+// Redraw canvas on resize
+window.addEventListener('resize', () => {
+  if (document.getElementById('smtsec-reflow').classList.contains('vis')) smtDR();
+});
+</script>
+</body>
+</html>
