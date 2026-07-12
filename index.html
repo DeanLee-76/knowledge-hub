@@ -4,12 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dean's Knowledge Forest</title>
-<meta name="theme-color" content="#120A03">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="知識森林">
-<link rel="manifest" id="pwa-manifest">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23120A03' rx='20'/><text y='.9em' font-size='80'>🌲</text></svg>">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
@@ -41,17 +35,17 @@ body{min-height:100vh;font-family:'Noto Serif TC','Lora',Georgia,serif;color:#ff
 
 /* header */
 header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.logo{font-family:'Lora',serif;font-size:19px;font-weight:600;color:#1a1a1a;letter-spacing:.05em;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.72);padding:6px 14px;border-radius:20px;border:1px solid rgba(0,0,0,.08)}
+.logo{font-family:'Lora',serif;font-size:19px;font-weight:600;color:#1a1a1a;letter-spacing:.05em;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.72);backdrop-filter:blur(8px);padding:6px 14px;border-radius:20px;border:1px solid rgba(0,0,0,.08)}
 .logo i{color:var(--gold)}
 .top-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.s-btn{background:rgba(255,255,255,.72);border:1px solid rgba(0,0,0,.1);border-radius:20px;padding:5px 13px;font-size:12px;font-family:'Noto Serif TC',serif;color:#1a1a1a;cursor:pointer;transition:all .2s}
+.s-btn{background:rgba(255,255,255,.72);border:1px solid rgba(0,0,0,.1);border-radius:20px;padding:5px 13px;font-size:12px;font-family:'Noto Serif TC',serif;color:#1a1a1a;cursor:pointer;transition:all .2s;backdrop-filter:blur(8px)}
 .s-btn:hover,.s-btn.active{background:rgba(255,255,255,.95);border-color:rgba(0,0,0,.2);font-weight:600}
 .btn-add{display:flex;align-items:center;gap:5px;background:var(--gold);color:#fff;border:none;border-radius:22px;padding:7px 16px;font-size:13px;font-family:'Noto Serif TC',serif;cursor:pointer;transition:background .2s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .btn-add:hover{background:#a87a28}
 
 /* search */
 .search-zone{padding:14px 28px 0;max-width:620px;width:100%;margin:0 auto}
-.search-bar{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.92);border:1px solid rgba(0,0,0,.1);border-radius:28px;padding:10px 20px}
+.search-bar{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.80);backdrop-filter:blur(12px);border:1px solid rgba(0,0,0,.1);border-radius:28px;padding:10px 20px}
 .search-bar i{color:#555;font-size:18px;flex-shrink:0}
 .search-bar input{flex:1;border:none;background:transparent;font-family:'Noto Serif TC',serif;font-size:14px;color:#1a1a1a;outline:none}
 .search-bar input::placeholder{color:#888;font-style:italic}
@@ -60,11 +54,11 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
 /* cats */
 .cat-zone{padding:12px 28px 0;display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;max-width:900px;width:100%;margin:0 auto}
 .cat-zone::-webkit-scrollbar{display:none}
-.cat-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.92);border:1px solid rgba(0,0,0,.12);border-radius:20px;padding:6px 14px;font-size:13px;font-family:'Noto Serif TC',serif;color:#1a1a1a;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.cat-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.72);backdrop-filter:blur(8px);border:1px solid rgba(0,0,0,.08);border-radius:20px;padding:6px 14px;font-size:13px;font-family:'Noto Serif TC',serif;color:#1a1a1a;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
 .cat-btn.active,.cat-btn:hover{background:rgba(255,255,255,.95);border-color:rgba(0,0,0,.18);font-weight:600}
 .subcat-zone{padding:7px 28px 0;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;max-width:900px;width:100%;margin:0 auto;min-height:34px}
 .subcat-zone::-webkit-scrollbar{display:none}
-.sub-btn{background:rgba(255,255,255,.88);border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:4px 12px;font-size:12px;font-family:'Noto Serif TC',serif;color:#333;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.sub-btn{background:rgba(255,255,255,.60);border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:4px 12px;font-size:12px;font-family:'Noto Serif TC',serif;color:#333;cursor:pointer;transition:all .2s;white-space:nowrap;flex-shrink:0}
 .sub-btn.active,.sub-btn:hover{background:rgba(255,255,255,.95);border-color:rgba(0,0,0,.18);color:#111}
 
 .result-info{font-size:12px;color:#fff;padding:6px 28px 0;max-width:960px;width:100%;margin:0 auto;font-style:italic;text-shadow:0 1px 4px rgba(0,0,0,.6)}
@@ -97,7 +91,7 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
 .book::before{content:'';position:absolute;top:3px;left:3px;right:8px;height:5px;background:rgba(255,255,255,.12);border-radius:1px}
 
 /* book context menu */
-.book-ctx{position:absolute;top:4px;right:6px;background:rgba(0,0,0,.55);border-radius:50%;width:18px;height:18px;display:none;align-items:center;justify-content:center;color:#fff;font-size:11px;z-index:5}
+.book-ctx{position:absolute;top:4px;right:6px;background:rgba(0,0,0,.55);border-radius:50%;width:18px;height:18px;display:none;align-items:center;justify-content:center;color:#fff;font-size:11px;z-index:5;backdrop-filter:blur(4px)}
 .book:hover .book-ctx{display:flex}
 
 /* deco */
@@ -118,9 +112,9 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
 .empty-shelf i{font-size:36px;display:block;margin-bottom:10px;opacity:.5}
 
 /* ── Detail Panel ── */
-.panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+.panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
 .panel-overlay.open{display:flex}
-.panel{background:#1E1208;border:1px solid rgba(255,255,255,.15);border-radius:18px;max-width:520px;width:100%;padding:28px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.5);max-height:85vh;overflow-y:auto}
+.panel{background:rgba(30,18,8,.92);border:1px solid rgba(255,255,255,.15);border-radius:18px;max-width:520px;width:100%;padding:28px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.5);max-height:85vh;overflow-y:auto;backdrop-filter:blur(16px)}
 .panel h2{font-size:18px;font-family:'Lora',serif;color:#fff;margin-bottom:10px;line-height:1.45;padding-right:28px}
 .panel-meta{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
 .pmeta{font-size:11px;background:rgba(255,255,255,.12);border-radius:10px;padding:3px 10px;color:rgba(255,255,255,.75)}
@@ -137,9 +131,9 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
 .pa-btn.danger:hover{background:rgba(220,80,80,.25)}
 
 /* ── Modals ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px)}
 .modal-overlay.open{display:flex}
-.modal{background:#1C1006;border:1px solid rgba(255,255,255,.15);border-radius:18px;max-width:480px;width:100%;padding:28px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.6);max-height:90vh;overflow-y:auto}
+.modal{background:rgba(28,16,6,.94);border:1px solid rgba(255,255,255,.15);border-radius:18px;max-width:480px;width:100%;padding:28px;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.6);max-height:90vh;overflow-y:auto}
 .modal h2{font-size:17px;font-family:'Lora',serif;color:#fff;margin-bottom:20px;display:flex;align-items:center;gap:8px}
 .modal h2 i{color:var(--gold)}
 .form-group{margin-bottom:15px}
@@ -167,29 +161,20 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
 .del-btns .danger-btn:hover{background:rgba(200,50,50,.55)}
 
 /* toast */
-.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:#1E1206;border:1px solid rgba(201,150,58,.3);color:#fff;border-radius:24px;padding:10px 24px;font-size:13px;font-family:'Noto Serif TC',serif;z-index:400;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:rgba(30,18,6,.95);border:1px solid rgba(201,150,58,.3);color:#fff;border-radius:24px;padding:10px 24px;font-size:13px;font-family:'Noto Serif TC',serif;z-index:400;opacity:0;transition:opacity .3s;pointer-events:none;backdrop-filter:blur(8px)}
 .toast.show{opacity:1}
 
 /* bookmarklet hint */
-.bm-banner{position:fixed;bottom:20px;right:20px;background:rgba(30,18,8,.96);border:1px solid rgba(201,150,58,.25);border-radius:12px;padding:12px 16px 12px;font-size:12px;color:rgba(255,255,255,.8);max-width:230px;z-index:50;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.bm-banner{position:fixed;bottom:20px;right:20px;background:rgba(30,18,8,.88);backdrop-filter:blur(10px);border:1px solid rgba(201,150,58,.25);border-radius:12px;padding:12px 16px 12px;font-size:12px;color:rgba(255,255,255,.8);max-width:230px;z-index:50;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .bm-banner strong{display:block;margin-bottom:5px;color:var(--gold)}
 .bm-link{display:inline-block;margin-top:7px;padding:5px 14px;background:var(--gold);color:#fff;border-radius:12px;font-size:11px;cursor:pointer;text-decoration:none;font-weight:600}
 .bm-close{position:absolute;top:7px;right:10px;background:none;border:none;cursor:pointer;color:rgba(255,255,255,.4);font-size:13px}
 
 /* photo credit */
 .photo-credit{position:fixed;bottom:8px;left:12px;font-size:10px;color:rgba(255,255,255,.3);z-index:3;pointer-events:none}
-
-/* ── Inbox Editor ── */
-.ed-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:4px 9px;color:rgba(255,255,255,.75);cursor:pointer;font-size:14px;display:flex;align-items:center;gap:4px;transition:all .15s}
-.ed-btn:hover{background:rgba(255,255,255,.2);color:#fff}
-#inbox-editor:empty:before{content:attr(placeholder);color:rgba(255,255,255,.25);pointer-events:none}
-#inbox-editor:focus{border-color:rgba(201,150,58,.4)}
-#inbox-editor ul,#inbox-editor ol{padding-left:20px}
-#inbox-editor strong{color:#fff}
-/* inbox tab active */
 /* ── Inbox / 暫存區 ── */
 .inbox-fab{position:fixed;bottom:28px;left:28px;z-index:60;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-.inbox-btn{display:flex;align-items:center;gap:7px;background:rgba(30,18,8,.96);border:1px solid rgba(201,150,58,.35);border-radius:24px;padding:9px 18px;font-size:13px;font-family:'Noto Serif TC',serif;color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);transition:all .2s}
+.inbox-btn{display:flex;align-items:center;gap:7px;background:rgba(30,18,8,.88);backdrop-filter:blur(10px);border:1px solid rgba(201,150,58,.35);border-radius:24px;padding:9px 18px;font-size:13px;font-family:'Noto Serif TC',serif;color:#fff;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.35);transition:all .2s}
 .inbox-btn:hover{background:rgba(50,30,10,.95);border-color:var(--gold)}
 .inbox-badge{background:var(--gold);color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0}
 .inbox-badge:empty,.inbox-badge.hide{display:none}
@@ -197,7 +182,7 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
 /* Inbox drawer */
 .inbox-drawer{position:fixed;bottom:0;left:0;right:0;z-index:150;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1)}
 .inbox-drawer.open{transform:translateY(0)}
-.inbox-inner{background:#160C04;border-top:1px solid rgba(201,150,58,.2);border-radius:20px 20px 0 0;padding:20px 24px 32px;max-height:75vh;display:flex;flex-direction:column}
+.inbox-inner{background:rgba(22,12,4,.96);backdrop-filter:blur(18px);border-top:1px solid rgba(201,150,58,.2);border-radius:20px 20px 0 0;padding:20px 24px 32px;max-height:75vh;display:flex;flex-direction:column}
 .inbox-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-shrink:0}
 .inbox-header h3{font-size:16px;font-family:'Lora',serif;color:#fff;display:flex;align-items:center;gap:8px}
 .inbox-header h3 i{color:var(--gold)}
@@ -242,9 +227,9 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
       <button class="s-btn" data-s="summer">🌿 夏</button>
       <button class="s-btn" data-s="autumn">🍂 秋</button>
       <button class="s-btn" data-s="winter">❄️ 冬</button>
-      <button class="btn-add" onclick="openAdd()" style="background:rgba(255,255,255,.88);color:#1a1a1a;border:1px solid rgba(0,0,0,.15)"><i class="ti ti-plus" style="color:#5C3218"></i>新增</button>
-      <button onclick="openDataMgr()" onmouseover="this.style.background='rgba(255,255,255,.98)'" onmouseout="this.style.background='rgba(255,255,255,.88)'" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.88);border:1px solid rgba(0,0,0,.12);border-radius:22px;padding:7px 14px;font-size:13px;font-family:inherit;color:#1a1a1a;cursor:pointer;transition:all .2s"><i class="ti ti-database" style="font-size:15px;color:#5C3218"></i>資料</button>
-      <button onclick="window.open('./stock-dashboard/','_blank')" onmouseover="this.style.background='rgba(255,255,255,.98)'" onmouseout="this.style.background='rgba(255,255,255,.88)'" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.88);border:1px solid rgba(0,0,0,.12);border-radius:22px;padding:7px 14px;font-size:13px;font-family:inherit;color:#1a1a1a;cursor:pointer;transition:all .2s"><span style="font-size:15px;line-height:1">📈</span>股票</button>
+      <a href="./smt-training.html" target="_blank" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.88);border:1px solid rgba(0,0,0,.12);border-radius:22px;padding:7px 14px;font-size:13px;font-family:'Noto Serif TC',serif;color:#1a1a1a;cursor:pointer;transition:all .2s;text-decoration:none;white-space:nowrap" onmouseover="this.style.background='rgba(255,255,255,.98)'" onmouseout="this.style.background='rgba(255,255,255,.88)'"><span style="font-size:15px;line-height:1">⚡</span>SMT課程</a>
+      <button onclick="window.open('./stock-dashboard/','_blank')" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.88);border:1px solid rgba(0,0,0,.12);border-radius:22px;padding:7px 14px;font-size:13px;font-family:'Noto Serif TC',serif;color:#1a1a1a;cursor:pointer;transition:all .2s"><span style="font-size:15px;line-height:1">📈</span>股票</button>
+      <button class="btn-add" onclick="openAdd()"><i class="ti ti-plus"></i>新增</button>
     </div>
   </header>
 
@@ -323,7 +308,7 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
 </div>
 
 <!-- Detail Page (full screen overlay) -->
-<div id="detail-page" style="display:none;position:fixed;inset:0;z-index:90;overflow-y:auto;background:rgba(10,6,2,.96)">
+<div id="detail-page" style="display:none;position:fixed;inset:0;z-index:90;overflow-y:auto;background:rgba(10,6,2,.96);backdrop-filter:blur(20px)">
   <div style="max-width:900px;margin:0 auto;padding:24px 24px 60px">
     <button onclick="closeDetail()" style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:7px 16px;color:#fff;font-size:13px;font-family:inherit;cursor:pointer;margin-bottom:24px">
       <i class="ti ti-arrow-left" style="font-size:15px"></i>回書架
@@ -529,59 +514,12 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
 
 <!-- Inbox Drawer -->
 <div class="inbox-drawer" id="inbox-drawer">
-  <div class="inbox-inner" style="padding:0;display:flex;flex-direction:column;height:75vh">
-
-    <!-- Tab bar -->
-    <div style="display:flex;align-items:center;border-bottom:1px solid rgba(255,255,255,.08);padding:0 20px;flex-shrink:0">
-      <button id="inbox-tab-list" onclick="switchInboxTab('list')" style="padding:12px 16px;font-size:13px;font-family:inherit;color:#fff;background:none;border:none;border-bottom:2px solid var(--gold);cursor:pointer;font-weight:600">
-        <i class="ti ti-inbox" style="font-size:14px"></i> 暫存區 <span id="inbox-count" style="font-size:11px;color:rgba(255,255,255,.5);font-weight:400"></span>
-      </button>
-      <button id="inbox-tab-editor" onclick="switchInboxTab('editor')" style="padding:12px 16px;font-size:13px;font-family:inherit;color:rgba(255,255,255,.45);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer">
-        <i class="ti ti-file-text" style="font-size:14px"></i> 編輯整理
-      </button>
-      <div style="flex:1"></div>
+  <div class="inbox-inner">
+    <div class="inbox-header">
+      <h3><i class="ti ti-inbox"></i>暫存區 <span id="inbox-count" style="font-size:13px;color:rgba(255,255,255,.5);font-weight:400"></span></h3>
       <button class="inbox-close-btn" onclick="toggleInbox()"><i class="ti ti-x"></i></button>
     </div>
-
-    <!-- List tab -->
-    <div id="inbox-panel-list" style="flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:10px">
-      <div class="inbox-items" id="inbox-items"></div>
-    </div>
-
-    <!-- Editor tab -->
-    <div id="inbox-panel-editor" style="display:none;flex:1;display:flex;flex-direction:column;padding:16px 20px;gap:10px">
-      <div style="font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px">整理筆記 — 像 Word 一樣編輯，最後一鍵匯出</div>
-
-      <!-- toolbar -->
-      <div style="display:flex;gap:5px;flex-wrap:wrap;flex-shrink:0">
-        <button onclick="editorCmd('bold')" class="ed-btn" title="粗體"><i class="ti ti-bold"></i></button>
-        <button onclick="editorCmd('italic')" class="ed-btn" title="斜體"><i class="ti ti-italic"></i></button>
-        <button onclick="editorCmd('underline')" class="ed-btn" title="底線"><i class="ti ti-underline"></i></button>
-        <div style="width:1px;background:rgba(255,255,255,.15);margin:0 2px"></div>
-        <button onclick="editorCmd('insertUnorderedList')" class="ed-btn" title="清單"><i class="ti ti-list"></i></button>
-        <button onclick="editorCmd('insertOrderedList')" class="ed-btn" title="編號"><i class="ti ti-list-numbers"></i></button>
-        <div style="width:1px;background:rgba(255,255,255,.15);margin:0 2px"></div>
-        <button onclick="insertFromInbox()" class="ed-btn" title="插入暫存項目" style="font-size:11px;padding:4px 8px;gap:3px"><i class="ti ti-plus"></i>插入暫存</button>
-        <button onclick="clearEditor()" class="ed-btn" title="清空" style="font-size:11px;padding:4px 8px"><i class="ti ti-trash"></i>清空</button>
-      </div>
-
-      <!-- contenteditable area -->
-      <div id="inbox-editor" contenteditable="true"
-        style="flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:14px;color:#fff;font-size:14px;line-height:1.8;outline:none;overflow-y:auto;min-height:200px"
-        placeholder="在這裡整理你的筆記…">
-      </div>
-
-      <!-- export bar -->
-      <div style="display:flex;gap:8px;flex-shrink:0;padding-top:4px">
-        <button onclick="editorToShelf()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;background:var(--bark2);border:none;border-radius:10px;color:#fff;font-size:13px;font-family:inherit;cursor:pointer;font-weight:600">
-          <i class="ti ti-books" style="font-size:15px"></i>存入書架
-        </button>
-        <button onclick="editorToSheet()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;background:rgba(52,168,83,.25);border:1px solid rgba(52,168,83,.4);border-radius:10px;color:#fff;font-size:13px;font-family:inherit;cursor:pointer">
-          <i class="ti ti-table-export" style="font-size:15px"></i>匯出 Google Sheet
-        </button>
-      </div>
-    </div>
-
+    <div class="inbox-items" id="inbox-items"></div>
   </div>
 </div>
 
@@ -615,78 +553,10 @@ header{padding:18px 28px 0;display:flex;align-items:center;justify-content:space
   </div>
 </div>
 
-<!-- Data Manager Full Page -->
-<div id="datamgr-page" style="display:none;position:fixed;inset:0;z-index:500;overflow-y:auto;background:#120A03">
-  <div style="max-width:700px;margin:0 auto;padding:28px 24px 80px">
-
-    <!-- top bar -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:28px">
-      <div style="font-size:20px;font-family:'Lora',serif;color:#fff;display:flex;align-items:center;gap:10px">
-        <i class="ti ti-database" style="color:var(--gold)"></i>資料管理
-      </div>
-      <button onclick="closeDataMgr()" style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:8px 20px;color:#fff;font-size:14px;font-family:inherit;cursor:pointer">
-        <i class="ti ti-arrow-left" style="font-size:15px"></i>回書架
-      </button>
-    </div>
-
-    <!-- stats -->
-    <div class="dm-section">
-      <h3><i class="ti ti-chart-bar"></i>書架現況</h3>
-      <div id="dm-stats"></div>
-    </div>
-
-    <!-- Export JSON for GitHub -->
-    <div class="dm-section">
-      <h3><i class="ti ti-brand-github"></i>匯出 → 更新到 GitHub（全球同步）</h3>
-      <p class="dm-desc">把書架最新資料複製出來，貼到 GitHub 的 index.html，Netlify 就會全球同步。適合在台灣整理好後更新。</p>
-      <button class="dm-btn primary" onclick="exportForGithub()"><i class="ti ti-copy" style="font-size:15px"></i>複製書架資料 JSON</button>
-      <div id="dm-export-hint" style="display:none;margin-top:10px;font-size:12px;color:rgba(255,255,255,.5);line-height:1.7">
-        ✅ 已複製！接著：<br>
-        1. 開啟 github.com/DeanLee-76/knowledge-hub<br>
-        2. 點 index.html → 鉛筆編輯<br>
-        3. 搜尋 <code style="background:rgba(255,255,255,.1);padding:1px 5px;border-radius:3px">EMBEDDED_DATA_PLACEHOLDER</code><br>
-        4. 替換成剛才複製的內容 → Commit
-      </div>
-    </div>
-
-    <!-- Auto push to GitHub -->
-    <div class="dm-section">
-      <h3><i class="ti ti-bolt"></i>自動同步到 GitHub（選用）</h3>
-      <p class="dm-desc">輸入 GitHub Personal Access Token，可以直接從這裡推送資料，不需要手動貼上。Token 只存在你的瀏覽器，不會上傳到任何地方。</p>
-      <div class="github-token-row">
-        <input type="password" id="dm-pat-input" placeholder="ghp_xxxxxxxxxxxx（GitHub PAT）">
-        <button onclick="savePAT()" style="background:var(--gold);border:none;border-radius:8px;padding:8px 14px;color:#fff;font-size:13px;font-family:inherit;cursor:pointer;white-space:nowrap">儲存</button>
-      </div>
-      <div id="dm-pat-status" style="font-size:12px;color:rgba(255,255,255,.4);margin-top:6px"></div>
-      <button class="dm-btn success" style="margin-top:10px" onclick="autoPushToGithub()"><i class="ti ti-upload" style="font-size:15px"></i>立即同步到 GitHub</button>
-    </div>
-
-    <!-- Import from Google Sheet -->
-    <div class="dm-section">
-      <h3><i class="ti ti-table-import"></i>從 Google Sheet 匯入</h3>
-      <p class="dm-desc">在 Google Sheet 整理好資料後，複製內容貼到下方，系統會自動解析匯入書架。格式：每行一筆，欄位用 Tab 分隔（標題、分類、說明、連結、標籤）。</p>
-      <textarea class="dm-textarea" id="dm-import-input" rows="6" placeholder="從 Google Sheet 複製貼上資料（Ctrl+A 全選後 Ctrl+C）…"></textarea>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="dm-btn secondary" style="flex:1" onclick="previewImport()"><i class="ti ti-eye" style="font-size:14px"></i>預覽</button>
-        <button class="dm-btn primary" style="flex:1" onclick="doImport()"><i class="ti ti-download" style="font-size:14px"></i>匯入書架</button>
-      </div>
-      <div id="dm-import-preview" style="display:none;margin-top:10px"></div>
-    </div>
-
-    <!-- Export to CSV for Google Sheet -->
-    <div class="dm-section">
-      <h3><i class="ti ti-table-export"></i>匯出到 Google Sheet（備份）</h3>
-      <p class="dm-desc">把書架資料匯出成 CSV 格式，可以直接貼到 Google Sheet 備份或整理。</p>
-      <button class="dm-btn secondary" onclick="exportToCSV()"><i class="ti ti-file-type-csv" style="font-size:15px"></i>下載 CSV 備份</button>
-    </div>
-
-  </div>
-</div>
-
 <div class="bm-banner" id="bm-banner">
   <button class="bm-close" onclick="document.getElementById('bm-banner').style.display='none'">✕</button>
   <strong><i class="ti ti-bookmark" style="font-size:13px"></i> 快速收藏</strong>
-  先選取文字（可選）→ 點書籤 → 直接存入暫存區，不會離開當前網頁
+  先選取網頁文字（可選），再點書籤 → 自動存入暫存區
   <a class="bm-link" id="bm-link" title="拖曳到書籤列">🔖 拖曳此書籤</a>
 </div>
 
@@ -768,7 +638,25 @@ let slides=[];
 
 function loadDB(){
   const raw=localStorage.getItem(DATA_KEY);
-  if(raw){db=JSON.parse(raw);}
+  if(raw){
+    db=JSON.parse(raw);
+    // ── GitHub Pages v1: 製程技術分類 ──
+    if(!db.categories.find(c=>c.id==='mfg')){
+      db.categories.push({id:'mfg',label:'製程技術',icon:'ti-circuit-board',color:'#26C6DA',sub:['SMT','DIP','測試','設備','其他']});
+    }
+    // ── SMT課程書本 → 連結到 GitHub Pages ──
+    if(!db.entries.find(e=>e.id==='smt001')){
+      db.entries.push({
+        id:'smt001',title:'SMT 製程培訓課程',
+        url:'./smt-training.html',
+        summary:'Surface Mount Technology完整培訓：8大製程站台 Input/Output/品質管控、Reflow Profile模擬器、缺陷圖庫（含HIP/NWO）、Stencil設計、Nozzle指南、AOI 2D/3D差異、IPC-A-610J 2024、ICT/Boundary Scan/FCT測試、散熱製程（Edge Bonding/Water Cooling/SCP/Vertical Power）、GPU/TPU供應鏈、測驗12題',
+        category:'mfg',sub:'SMT',
+        tags:['SMT','PCBA','品質','製程','Reflow','AOI','PFMEA','IPC','ICT','BGA'],
+        date:'2026-07-12',smtCourse:true
+      });
+    }
+    saveDB();
+  }
   else{
     db={
       categories:[
@@ -980,6 +868,11 @@ const CLAUDE_DEMO={
 };
 
 function openPanel(entry){
+  // SMT Course → open as separate page (GitHub Pages)
+  if(entry && entry.smtCourse){
+    window.open(entry.url || './smt-training.html', '_blank');
+    return;
+  }
   currentEntryId=entry.id;
   const cat=db.categories.find(c=>c.id===entry.category);
   const ft=FILE_TYPE_MAP[getFileType(entry)];
@@ -1154,31 +1047,17 @@ function showToast(msg){
 
 /* ── Bookmarklet ── */
 function buildBookmarklet(){
-  // Strategy: write directly to localStorage on the current page
-  // No navigation, no popup — 100% Safari compatible
+  const base=window.location.href.split('?')[0].replace(/index\.html$/,'');
   const code=`javascript:(function(){
-    try{
-      var t=document.title||location.href;
-      var u=location.href;
-      var sel=(window.getSelection?window.getSelection().toString().trim():'').slice(0,1000);
-      var item={id:'bm'+Date.now(),title:t,url:u,excerpt:sel,summary:'',date:new Date().toISOString()};
-      var key='dean_inbox_v1';
-      var existing=[];
-      try{existing=JSON.parse(localStorage.getItem(key)||'[]');}catch(e){}
-      var isDup=existing.some(function(x){return x.url===u;});
-      if(!isDup){existing.unshift(item);localStorage.setItem(key,JSON.stringify(existing));}
-      /* Show quick toast on current page */
-      var d=document.createElement('div');
-      var msg=isDup?'已在暫存區（避免重複）':(sel?'✅ 已存入暫存區（含選取文字）':'✅ 已存入暫存區！');
-      d.textContent=msg;
-      d.style.cssText='position:fixed;top:20px;right:20px;z-index:999999;background:#120A03;color:#fff;padding:12px 20px;border-radius:12px;font-size:14px;font-family:sans-serif;border:1px solid #C9963A;box-shadow:0 4px 20px rgba(0,0,0,.4);pointer-events:none;transition:opacity .4s';
-      document.body.appendChild(d);
-      setTimeout(function(){d.style.opacity='0';setTimeout(function(){d.remove();},400);},2500);
-    }catch(e){alert('儲存失敗：'+e.message);}
+    var t=document.title,
+        u=window.location.href,
+        sel=window.getSelection?window.getSelection().toString().trim():'';
+    var params='?bm=1&title='+encodeURIComponent(t)+'&url='+encodeURIComponent(u);
+    if(sel) params+='&sel='+encodeURIComponent(sel.slice(0,1000));
+    window.open('${base}index.html'+params,'_blank','width=560,height=680');
   }())`;
   const a=document.getElementById('bm-link');
-  a.href=code;
-  a.setAttribute('draggable','true');
+  a.href=code;a.setAttribute('draggable','true');
 }
 function handleBookmarklet(){
   const p=new URLSearchParams(window.location.search);
@@ -1214,22 +1093,14 @@ function updateInboxBadge(){
 function toggleInbox(){
   const d=document.getElementById('inbox-drawer');
   const open=d.classList.toggle('open');
-  if(open){
-    // Always re-read from localStorage when opening
-    // This catches items written by Bookmarklet after page load
-    inbox=JSON.parse(localStorage.getItem(INBOX_KEY)||'[]');
-    updateInboxBadge();
-    renderInbox();
-  }
+  if(open) renderInbox();
 }
 function closeInboxDrawer(){document.getElementById('inbox-drawer').classList.remove('open');}
 
 function renderInbox(){
   const el=document.getElementById('inbox-items');
   if(!inbox.length){
-    const raw=localStorage.getItem(INBOX_KEY)||'[]';
-    const debugInfo=`localStorage key: ${INBOX_KEY}<br>內容: ${raw.slice(0,100)}`;
-    el.innerHTML='<div class="inbox-empty"><i class="ti ti-bookmark-off"></i>暫存區是空的<br>在任何網頁點 Bookmarklet 就能存進來<br><br><small style="color:rgba(255,255,255,.3);font-size:10px">Debug: '+debugInfo+'</small></div>';
+    el.innerHTML='<div class="inbox-empty"><i class="ti ti-bookmark-off"></i>暫存區是空的<br>在任何網頁點 Bookmarklet 就能存進來</div>';
     return;
   }
   el.innerHTML='';
@@ -1305,25 +1176,18 @@ function doFileEntry(){
 function handleBookmarklet(){
   const p=new URLSearchParams(window.location.search);
   if(p.get('bm')==='1'){
-    const title=decodeURIComponent(p.get('title')||'未知標題');
+    const title=decodeURIComponent(p.get('title')||'');
     const url=decodeURIComponent(p.get('url')||'');
     const sel=decodeURIComponent(p.get('sel')||'');
-    // avoid duplicate by url
-    const isDup=inbox.some(x=>x.url===url&&url!=='');
-    if(!isDup){
-      const item={id:'bm'+Date.now(),title,url,excerpt:sel,summary:'',date:new Date().toISOString()};
-      inbox.unshift(item);saveInbox();updateInboxBadge();
-    }
-    // clean URL
-    if(window.history&&window.history.replaceState){
-      window.history.replaceState({},'',window.location.pathname);
-    }
-    const msg=isDup?'⚠️ 已在暫存區（避免重複）':(sel?'📥 已加入暫存區（含選取文字）':'📥 已加入暫存區！');
+    const item={id:'bm'+Date.now(),title,url,excerpt:sel,summary:'',date:new Date().toISOString()};
+    inbox.unshift(item);saveInbox();updateInboxBadge();
+    window.history.replaceState({},'',window.location.pathname);
+    const msg=sel?'📥 已加入暫存區（含選取文字）！':'📥 已加入暫存區！記得回來整理';
+    showToast(msg);
     setTimeout(()=>{
-      showToast(msg);
       document.getElementById('inbox-drawer').classList.add('open');
       renderInbox();
-    },300);
+    },400);
   }
 }
 
@@ -1568,279 +1432,6 @@ function dpCancelEdit(){
   document.getElementById('dp-view-mode').style.display='block';
   document.getElementById('dp-edit-mode').style.display='none';
 }
-
-/* ── Data Manager ── */
-const GITHUB_REPO='DeanLee-76/knowledge-hub';
-const GITHUB_FILE='index.html';
-const PAT_KEY='dean_gh_pat';
-
-function openDataMgr(){
-  renderDmStats();
-  const pat=localStorage.getItem(PAT_KEY)||'';
-  document.getElementById('dm-pat-input').value=pat?'••••••••••••••••':'';
-  document.getElementById('dm-pat-status').textContent=pat?'✅ Token 已儲存':'尚未設定 Token';
-  document.getElementById('datamgr-page').style.display='block';
-  document.getElementById('app').style.display='none';
-  window.scrollTo(0,0);
-}
-function closeDataMgr(){
-  document.getElementById('datamgr-page').style.display='none';
-  document.getElementById('app').style.display='flex';
-}
-
-function renderDmStats(){
-  const el=document.getElementById('dm-stats');
-  const totalEntries=db.entries.length;
-  const totalCats=db.categories.length;
-  const inboxCount=inbox.length;
-  const lastDate=db.entries.length?db.entries.sort((a,b)=>b.date>a.date?1:-1)[0].date:'—';
-  el.innerHTML=`
-    <div class="dm-stat"><i class="ti ti-books"></i>書架書本總數<strong>${totalEntries} 本</strong></div>
-    <div class="dm-stat"><i class="ti ti-folders"></i>分類數<strong>${totalCats} 個大分類</strong></div>
-    <div class="dm-stat"><i class="ti ti-inbox"></i>暫存區待整理<strong>${inboxCount} 筆</strong></div>
-    <div class="dm-stat"><i class="ti ti-calendar"></i>最後新增日期<strong>${lastDate}</strong></div>
-  `;
-}
-
-/* ── Export for GitHub ── */
-function exportForGithub(){
-  const data=JSON.stringify({categories:db.categories,entries:db.entries},null,2);
-  navigator.clipboard.writeText(data).then(()=>{
-    document.getElementById('dm-export-hint').style.display='block';
-    showToast('📋 已複製！去 GitHub 貼上');
-  }).catch(()=>{
-    // fallback
-    const ta=document.createElement('textarea');
-    ta.value=data;ta.style.cssText='position:fixed;opacity:0';
-    document.body.appendChild(ta);ta.select();document.execCommand('copy');
-    document.body.removeChild(ta);
-    document.getElementById('dm-export-hint').style.display='block';
-    showToast('📋 已複製！去 GitHub 貼上');
-  });
-}
-
-/* ── PAT management ── */
-function savePAT(){
-  const val=document.getElementById('dm-pat-input').value.trim();
-  if(!val||val.startsWith('•')) return;
-  if(!val.startsWith('ghp_')&&!val.startsWith('github_pat_')){
-    showToast('Token 格式不對，應以 ghp_ 開頭');return;
-  }
-  localStorage.setItem(PAT_KEY,val);
-  document.getElementById('dm-pat-input').value='••••••••••••••••';
-  document.getElementById('dm-pat-status').textContent='✅ Token 已儲存（只存在此瀏覽器）';
-  showToast('✅ Token 儲存成功');
-}
-
-async function autoPushToGithub(){
-  const pat=localStorage.getItem(PAT_KEY);
-  if(!pat){showToast('請先輸入並儲存 GitHub Token');return;}
-  showToast('⏳ 上傳中…');
-  try{
-    // Get current file SHA
-    const infoRes=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`,{
-      headers:{'Authorization':`token ${pat}`,'Accept':'application/vnd.github.v3+json'}
-    });
-    if(!infoRes.ok) throw new Error('無法取得檔案資訊，請確認 Token 和 repo 名稱');
-    const info=await infoRes.json();
-    const sha=info.sha;
-    // Get current content and replace embedded data
-    const currentContent=atob(info.content.replace(/\n/g,''));
-    const dataMarker='/* EMBEDDED_DB_START */';
-    const dataMarkerEnd='/* EMBEDDED_DB_END */';
-    const newData=`/* EMBEDDED_DB_START */\nconst EMBEDDED_DB=${JSON.stringify({categories:db.categories,entries:db.entries})};\n/* EMBEDDED_DB_END */`;
-    let newContent;
-    if(currentContent.includes(dataMarker)){
-      const before=currentContent.split(dataMarker)[0];
-      const after=currentContent.split(dataMarkerEnd)[1];
-      newContent=before+newData+after;
-    } else {
-      showToast('❌ 找不到資料標記，請先手動更新一次');return;
-    }
-    // Push
-    const pushRes=await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`,{
-      method:'PUT',
-      headers:{'Authorization':`token ${pat}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
-      body:JSON.stringify({message:'Auto sync from Knowledge Forest',content:btoa(unescape(encodeURIComponent(newContent))),sha})
-    });
-    if(pushRes.ok){showToast('✅ 已同步到 GitHub！Netlify 約 1-2 分鐘後更新');}
-    else throw new Error('Push 失敗');
-  }catch(err){
-    showToast('❌ '+err.message);
-    console.error(err);
-  }
-}
-
-/* ── Import from Google Sheet ── */
-function parseSheetData(raw){
-  const lines=raw.trim().split('\n').filter(l=>l.trim());
-  const results=[];
-  lines.forEach((line,i)=>{
-    const cols=line.split('\t');
-    if(cols.length<2) return;
-    const title=(cols[0]||'').trim();
-    if(!title||title==='標題') return; // skip header
-    const cat=(cols[1]||'').trim();
-    const summary=(cols[2]||'').trim();
-    const url=(cols[3]||'').trim();
-    const tags=(cols[4]||'').split(',').map(t=>t.trim()).filter(Boolean);
-    const catObj=db.categories.find(c=>c.label===cat||c.id===cat)||db.categories[0];
-    results.push({
-      id:'imp'+Date.now()+i,title,
-      category:catObj?catObj.id:'work',
-      sub:cols[5]?.trim()||'其他',
-      summary,url,tags,
-      date:new Date().toISOString().slice(0,10),
-      source:'sheet'
-    });
-  });
-  return results;
-}
-
-function previewImport(){
-  const raw=document.getElementById('dm-import-input').value;
-  if(!raw.trim()){showToast('請先貼上 Google Sheet 資料');return;}
-  const items=parseSheetData(raw);
-  const el=document.getElementById('dm-import-preview');
-  if(!items.length){
-    el.innerHTML='<div style="color:rgba(255,100,100,.8);font-size:13px">無法解析，請確認格式（Tab 分隔）</div>';
-    el.style.display='block';return;
-  }
-  el.innerHTML=`<div style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:8px">預覽 ${items.length} 筆資料：</div>`+
-    items.slice(0,5).map(it=>`<div style="font-size:13px;color:rgba(255,255,255,.7);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06)">${it.title} <span style="color:rgba(255,255,255,.3);font-size:11px">→ ${it.category}</span></div>`).join('')+
-    (items.length>5?`<div style="font-size:12px;color:rgba(255,255,255,.3);margin-top:5px">…還有 ${items.length-5} 筆</div>`:'');
-  el.style.display='block';
-}
-
-function doImport(){
-  const raw=document.getElementById('dm-import-input').value;
-  if(!raw.trim()){showToast('請先貼上 Google Sheet 資料');return;}
-  const items=parseSheetData(raw);
-  if(!items.length){showToast('無法解析資料');return;}
-  // avoid duplicates by title
-  const existing=new Set(db.entries.map(e=>e.title));
-  const newItems=items.filter(it=>!existing.has(it.title));
-  db.entries.unshift(...newItems);
-  saveDB();
-  document.getElementById('dm-import-input').value='';
-  document.getElementById('dm-import-preview').style.display='none';
-  renderDmStats();renderShelves();
-  showToast(`✅ 匯入 ${newItems.length} 筆（跳過 ${items.length-newItems.length} 筆重複）`);
-}
-
-/* ── Export to CSV ── */
-function exportToCSV(){
-  const header='標題,分類,子分類,說明,網址,標籤,日期\n';
-  const rows=db.entries.map(e=>{
-    const cat=db.categories.find(c=>c.id===e.category);
-    return [
-      `"${(e.title||'').replace(/"/g,'""')}"`,
-      `"${cat?cat.label:''}"`,
-      `"${e.sub||''}"`,
-      `"${(e.summary||'').replace(/"/g,'""').replace(/\n/g,' ')}"`,
-      `"${e.url||''}"`,
-      `"${(e.tags||[]).join(', ')}"`,
-      `"${e.date||''}"`
-    ].join(',');
-  }).join('\n');
-  const csv=header+rows;
-  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download='KnowledgeHub_'+new Date().toISOString().slice(0,10)+'.csv';
-  document.body.appendChild(a);a.click();document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast('📥 CSV 已下載！可直接貼到 Google Sheet');
-}
-
-/* ── PWA Manifest ── */
-function initPWA(){
-  const manifest={
-    name:"Dean's Knowledge Forest",
-    short_name:"知識森林",
-    start_url:"./",
-    display:"standalone",
-    background_color:"#120A03",
-    theme_color:"#120A03",
-    icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23120A03' rx='20'/><text y='.9em' font-size='80'>🌲</text></svg>",sizes:"192x192",type:"image/svg+xml"}]
-  };
-  const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  document.getElementById('pwa-manifest').href=url;
-}
-
-/* ── Inbox Editor ── */
-function switchInboxTab(tab){
-  const isList = tab==='list';
-  document.getElementById('inbox-panel-list').style.display = isList?'flex':'none';
-  document.getElementById('inbox-panel-editor').style.display = isList?'none':'flex';
-  // tab button styles
-  document.getElementById('inbox-tab-list').style.cssText='padding:12px 16px;font-size:13px;font-family:inherit;background:none;border:none;cursor:pointer;font-weight:'+(isList?'600':'400')+';color:'+(isList?'#fff':'rgba(255,255,255,.45)')+';border-bottom:2px solid '+(isList?'var(--gold)':'transparent');
-  document.getElementById('inbox-tab-editor').style.cssText='padding:12px 16px;font-size:13px;font-family:inherit;background:none;border:none;cursor:pointer;font-weight:'+(!isList?'600':'400')+';color:'+(!isList?'#fff':'rgba(255,255,255,.45)')+';border-bottom:2px solid '+(!isList?'var(--gold)':'transparent');
-}
-
-function editorCmd(cmd){
-  document.getElementById('inbox-editor').focus();
-  document.execCommand(cmd,false,null);
-}
-
-function insertFromInbox(){
-  if(!inbox.length){showToast('暫存區是空的');return;}
-  // insert all inbox items as text into editor
-  const el=document.getElementById('inbox-editor');
-  el.focus();
-  const html=inbox.map(item=>{
-    let text=`<p><strong>${item.title}</strong></p>`;
-    if(item.excerpt) text+=`<blockquote style="border-left:2px solid #C9963A;padding-left:10px;color:rgba(255,255,255,.7);margin:4px 0">${item.excerpt}</blockquote>`;
-    if(item.url) text+=`<p style="font-size:12px;color:rgba(255,255,255,.4)">🔗 ${item.url}</p>`;
-    return text;
-  }).join('<hr style="border-color:rgba(255,255,255,.1);margin:8px 0">');
-  document.execCommand('insertHTML',false,html);
-  switchInboxTab('editor');
-  showToast('已插入 '+inbox.length+' 筆暫存內容');
-}
-
-function clearEditor(){
-  if(!confirm('確定清空編輯區？')) return;
-  document.getElementById('inbox-editor').innerHTML='';
-}
-
-function editorToShelf(){
-  const el=document.getElementById('inbox-editor');
-  const html=el.innerHTML.trim();
-  const text=el.innerText.trim();
-  if(!text){showToast('編輯區是空的');return;}
-  // Pre-fill add modal with editor content
-  openAdd();
-  setTimeout(()=>{
-    // get first line as title
-    const firstLine=text.split('\n')[0].slice(0,50);
-    document.getElementById('f-title').value=firstLine;
-    document.getElementById('f-summary').value=text;
-  },100);
-  showToast('已帶入新增表單，選好分類後儲存');
-}
-
-function editorToSheet(){
-  const el=document.getElementById('inbox-editor');
-  const text=el.innerText.trim();
-  if(!text){showToast('編輯區是空的');return;}
-  // Build CSV row
-  const title=text.split('\n')[0].slice(0,80);
-  const body=text.replace(/"/g,'""');
-  const date=new Date().toISOString().slice(0,10);
-  const csv='標題,內容,日期\n"'+title+'","'+body+'","'+date+'"';
-  // Copy to clipboard
-  navigator.clipboard.writeText(csv).then(()=>{
-    showToast('✅ 已複製 CSV！直接貼到 Google Sheet');
-  }).catch(()=>{
-    const ta=document.createElement('textarea');
-    ta.value=csv;ta.style.cssText='position:fixed;opacity:0';
-    document.body.appendChild(ta);ta.select();document.execCommand('copy');
-    document.body.removeChild(ta);
-    showToast('✅ 已複製！貼到 Google Sheet');
-  });
-}
 /* ── Init ── */
 loadDB();loadInbox();
 const s=autoSeason();
@@ -1848,7 +1439,6 @@ applySeason(s);
 document.querySelectorAll('.s-btn').forEach(b=>b.onclick=()=>applySeason(b.dataset.s));
 renderCats();renderSubcats();renderShelves();
 buildBookmarklet();handleBookmarklet();
-initPWA();
 </script>
 </body>
 </html>
