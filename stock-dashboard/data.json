@@ -1,24 +1,20 @@
 {
-  "fetchedAt": "2026-08-03T11:36:12.110805",
+  "fetchedAt": "2026-08-04T02:45:34.523391",
   "data": {
     "2330.TW": {
       "symbol": "2330.TW",
       "name": "台積電",
       "currency": "TWD",
-      "price": 2370.0,
-      "change": -55.0,
-      "changePct": -2.27,
-      "prevClose": 2425.0,
-      "weekChange": 0.85,
-      "monthChange": -0.21,
+      "price": 2335.0,
+      "change": -35.0,
+      "changePct": -1.48,
+      "prevClose": 2370.0,
+      "weekChange": 2.41,
+      "monthChange": -2.71,
       "week52High": 2535.0,
       "week52Low": 2180.0,
-      "volume": 32959497,
+      "volume": 19262340,
       "history": [
-        {
-          "date": "2026-06-15",
-          "close": 2375.0
-        },
         {
           "date": "2026-06-16",
           "close": 2400.0
@@ -154,28 +150,28 @@
         {
           "date": "2026-08-03",
           "close": 2370.0
+        },
+        {
+          "date": "2026-08-04",
+          "close": 2335.0
         }
       ],
-      "updatedAt": "2026-08-03T11:36:12.465515"
+      "updatedAt": "2026-08-04T02:45:34.805587"
     },
     "2317.TW": {
       "symbol": "2317.TW",
       "name": "鴻海",
       "currency": "TWD",
       "price": 253.0,
-      "change": 2.5,
-      "changePct": 1.0,
-      "prevClose": 250.5,
-      "weekChange": 0.0,
-      "monthChange": -2.6,
+      "change": 0.0,
+      "changePct": 0.0,
+      "prevClose": 253.0,
+      "weekChange": 6.3,
+      "monthChange": -3.15,
       "week52High": 267.53,
       "week52Low": 226.5,
-      "volume": 52569114,
+      "volume": 21041230,
       "history": [
-        {
-          "date": "2026-06-15",
-          "close": 259.76
-        },
         {
           "date": "2026-06-16",
           "close": 261.22
@@ -311,28 +307,28 @@
         {
           "date": "2026-08-03",
           "close": 253.0
+        },
+        {
+          "date": "2026-08-04",
+          "close": 253.0
         }
       ],
-      "updatedAt": "2026-08-03T11:36:12.715702"
+      "updatedAt": "2026-08-04T02:45:34.957914"
     },
     "2886.TW": {
       "symbol": "2886.TW",
       "name": "兆豐金",
       "currency": "TWD",
-      "price": 51.6,
-      "change": -1.5,
-      "changePct": -2.82,
-      "prevClose": 53.1,
-      "weekChange": 4.45,
-      "monthChange": 17.27,
+      "price": 51.3,
+      "change": -0.3,
+      "changePct": -0.58,
+      "prevClose": 51.6,
+      "weekChange": 3.74,
+      "monthChange": 15.28,
       "week52High": 53.7,
-      "week52Low": 43.4,
-      "volume": 38147152,
+      "week52Low": 43.5,
+      "volume": 11498290,
       "history": [
-        {
-          "date": "2026-06-15",
-          "close": 44.0
-        },
         {
           "date": "2026-06-16",
           "close": 44.5
@@ -468,28 +464,28 @@
         {
           "date": "2026-08-03",
           "close": 51.6
+        },
+        {
+          "date": "2026-08-04",
+          "close": 51.3
         }
       ],
-      "updatedAt": "2026-08-03T11:36:12.921519"
+      "updatedAt": "2026-08-04T02:45:35.090739"
     },
     "0050.TW": {
       "symbol": "0050.TW",
       "name": "元大台灣50",
       "currency": "TWD",
-      "price": 102.0,
-      "change": -0.85,
-      "changePct": -0.83,
-      "prevClose": 102.85,
-      "weekChange": 0.54,
-      "monthChange": -2.5,
+      "price": 101.25,
+      "change": -0.75,
+      "changePct": -0.74,
+      "prevClose": 102.0,
+      "weekChange": 4.22,
+      "monthChange": -3.81,
       "week52High": 111.62,
       "week52Low": 91.8,
-      "volume": 169023818,
+      "volume": 60389806,
       "history": [
-        {
-          "date": "2026-06-15",
-          "close": 104.61
-        },
         {
           "date": "2026-06-16",
           "close": 105.26
@@ -625,28 +621,28 @@
         {
           "date": "2026-08-03",
           "close": 102.0
+        },
+        {
+          "date": "2026-08-04",
+          "close": 101.25
         }
       ],
-      "updatedAt": "2026-08-03T11:36:13.157120"
+      "updatedAt": "2026-08-04T02:45:35.185075"
     },
     "0056.TW": {
       "symbol": "0056.TW",
       "name": "元大高股息",
       "currency": "TWD",
-      "price": 49.82,
-      "change": 0.34,
-      "changePct": 0.69,
+      "price": 50.65,
+      "change": 1.17,
+      "changePct": 2.36,
       "prevClose": 49.48,
-      "weekChange": -0.36,
-      "monthChange": -0.57,
+      "weekChange": 1.3,
+      "monthChange": 0.98,
       "week52High": 53.42,
       "week52Low": 45.84,
-      "volume": 37991908,
+      "volume": 21951852,
       "history": [
-        {
-          "date": "2026-06-15",
-          "close": 50.11
-        },
         {
           "date": "2026-06-16",
           "close": 50.16
@@ -780,30 +776,26 @@
           "close": 49.48
         },
         {
-          "date": "2026-08-03",
-          "close": 49.82
+          "date": "2026-08-04",
+          "close": 50.65
         }
       ],
-      "updatedAt": "2026-08-03T11:36:13.358885"
+      "updatedAt": "2026-08-04T02:45:35.371599"
     },
     "8462.TW": {
       "symbol": "8462.TW",
       "name": "8462.TW",
       "currency": "TWD",
-      "price": 165.0,
-      "change": -3.5,
-      "changePct": -2.08,
-      "prevClose": 168.5,
-      "weekChange": 4.1,
-      "monthChange": 19.83,
+      "price": 164.0,
+      "change": -1.0,
+      "changePct": -0.61,
+      "prevClose": 165.0,
+      "weekChange": 2.5,
+      "monthChange": 18.29,
       "week52High": 174.5,
       "week52Low": 135.0,
-      "volume": 264455,
+      "volume": 67421,
       "history": [
-        {
-          "date": "2026-06-15",
-          "close": 137.7
-        },
         {
           "date": "2026-06-16",
           "close": 138.65
@@ -939,28 +931,28 @@
         {
           "date": "2026-08-03",
           "close": 165.0
+        },
+        {
+          "date": "2026-08-04",
+          "close": 164.0
         }
       ],
-      "updatedAt": "2026-08-03T11:36:13.532158"
+      "updatedAt": "2026-08-04T02:45:35.565087"
     },
     "00885.TW": {
       "symbol": "00885.TW",
       "name": "00885.TW",
       "currency": "TWD",
-      "price": 18.27,
-      "change": 0.12,
-      "changePct": 0.66,
-      "prevClose": 18.15,
-      "weekChange": 4.88,
-      "monthChange": -0.0,
+      "price": 18.3,
+      "change": 0.03,
+      "changePct": 0.16,
+      "prevClose": 18.27,
+      "weekChange": 6.46,
+      "monthChange": -0.33,
       "week52High": 19.26,
       "week52Low": 17.03,
-      "volume": 3053895,
+      "volume": 1129620,
       "history": [
-        {
-          "date": "2026-06-15",
-          "close": 18.27
-        },
         {
           "date": "2026-06-16",
           "close": 18.36
@@ -1096,28 +1088,28 @@
         {
           "date": "2026-08-03",
           "close": 18.27
+        },
+        {
+          "date": "2026-08-04",
+          "close": 18.3
         }
       ],
-      "updatedAt": "2026-08-03T11:36:13.602895"
+      "updatedAt": "2026-08-04T02:45:35.648446"
     },
     "009816.TW": {
       "symbol": "009816.TW",
       "name": "009816.TW",
       "currency": "TWD",
-      "price": 14.61,
-      "change": -0.04,
-      "changePct": -0.27,
+      "price": 14.64,
+      "change": -0.01,
+      "changePct": -0.07,
       "prevClose": 14.65,
-      "weekChange": -0.48,
-      "monthChange": -5.01,
+      "weekChange": -0.27,
+      "monthChange": -5.61,
       "week52High": 16.32,
       "week52Low": 13.1,
-      "volume": 212402363,
+      "volume": 78803916,
       "history": [
-        {
-          "date": "2026-06-15",
-          "close": 15.38
-        },
         {
           "date": "2026-06-16",
           "close": 15.51
@@ -1251,30 +1243,26 @@
           "close": 14.65
         },
         {
-          "date": "2026-08-03",
-          "close": 14.61
+          "date": "2026-08-04",
+          "close": 14.64
         }
       ],
-      "updatedAt": "2026-08-03T11:36:13.762242"
+      "updatedAt": "2026-08-04T02:45:35.725843"
     },
     "AAPL": {
       "symbol": "AAPL",
       "name": "Apple",
       "currency": "USD",
-      "price": 308.91,
-      "change": -24.52,
-      "changePct": -7.35,
-      "prevClose": 333.43,
-      "weekChange": -7.24,
-      "monthChange": 4.49,
+      "price": 303.42,
+      "change": -5.49,
+      "changePct": -1.78,
+      "prevClose": 308.91,
+      "weekChange": -9.94,
+      "monthChange": 4.22,
       "week52High": 344.57,
       "week52Low": 273.75,
-      "volume": 132275300,
+      "volume": 71988041,
       "history": [
-        {
-          "date": "2026-06-11",
-          "close": 295.63
-        },
         {
           "date": "2026-06-12",
           "close": 291.13
@@ -1410,28 +1398,28 @@
         {
           "date": "2026-07-31",
           "close": 308.91
+        },
+        {
+          "date": "2026-08-03",
+          "close": 303.42
         }
       ],
-      "updatedAt": "2026-08-03T11:36:14.032271"
+      "updatedAt": "2026-08-04T02:45:35.896684"
     },
     "NVDA": {
       "symbol": "NVDA",
       "name": "NVIDIA",
       "currency": "USD",
-      "price": 200.75,
-      "change": 5.71,
+      "price": 206.64,
+      "change": 5.89,
       "changePct": 2.93,
-      "prevClose": 195.04,
-      "weekChange": -2.94,
-      "monthChange": -2.01,
+      "prevClose": 200.75,
+      "weekChange": 5.15,
+      "monthChange": 0.71,
       "week52High": 214.39,
       "week52Low": 189.8,
-      "volume": 139659700,
+      "volume": 127547828,
       "history": [
-        {
-          "date": "2026-06-11",
-          "close": 204.87
-        },
         {
           "date": "2026-06-12",
           "close": 205.19
@@ -1567,28 +1555,28 @@
         {
           "date": "2026-07-31",
           "close": 200.75
+        },
+        {
+          "date": "2026-08-03",
+          "close": 206.64
         }
       ],
-      "updatedAt": "2026-08-03T11:36:14.235819"
+      "updatedAt": "2026-08-04T02:45:35.997094"
     },
     "TSLA": {
       "symbol": "TSLA",
       "name": "Tesla",
       "currency": "USD",
-      "price": 311.21,
-      "change": 2.36,
-      "changePct": 0.76,
-      "prevClose": 308.85,
-      "weekChange": -0.58,
-      "monthChange": -22.03,
+      "price": 322.08,
+      "change": 10.87,
+      "changePct": 3.49,
+      "prevClose": 311.21,
+      "weekChange": 4.16,
+      "monthChange": -20.75,
       "week52High": 432.86,
       "week52Low": 297.38,
-      "volume": 36527800,
+      "volume": 37162483,
       "history": [
-        {
-          "date": "2026-06-11",
-          "close": 399.15
-        },
         {
           "date": "2026-06-12",
           "close": 406.43
@@ -1724,28 +1712,28 @@
         {
           "date": "2026-07-31",
           "close": 311.21
+        },
+        {
+          "date": "2026-08-03",
+          "close": 322.08
         }
       ],
-      "updatedAt": "2026-08-03T11:36:14.469030"
+      "updatedAt": "2026-08-04T02:45:36.101940"
     },
     "TSM": {
       "symbol": "TSM",
       "name": "TSMC ADR",
       "currency": "USD",
-      "price": 404.25,
-      "change": 0.94,
-      "changePct": 0.23,
-      "prevClose": 403.31,
-      "weekChange": 0.21,
-      "monthChange": -3.99,
+      "price": 406.11,
+      "change": 1.86,
+      "changePct": 0.46,
+      "prevClose": 404.25,
+      "weekChange": 1.76,
+      "monthChange": -4.2,
       "week52High": 479.0,
       "week52Low": 372.72,
-      "volume": 11926500,
+      "volume": 11345582,
       "history": [
-        {
-          "date": "2026-06-11",
-          "close": 421.07
-        },
         {
           "date": "2026-06-12",
           "close": 423.93
@@ -1881,28 +1869,28 @@
         {
           "date": "2026-07-31",
           "close": 404.25
+        },
+        {
+          "date": "2026-08-03",
+          "close": 406.11
         }
       ],
-      "updatedAt": "2026-08-03T11:36:14.609624"
+      "updatedAt": "2026-08-04T02:45:36.281184"
     },
     "LABU": {
       "symbol": "LABU",
       "name": "LABU",
       "currency": "USD",
-      "price": 227.4,
-      "change": -21.39,
-      "changePct": -8.6,
-      "prevClose": 248.79,
-      "weekChange": -7.41,
-      "monthChange": 30.32,
+      "price": 228.04,
+      "change": 0.64,
+      "changePct": 0.28,
+      "prevClose": 227.4,
+      "weekChange": -7.4,
+      "monthChange": 27.67,
       "week52High": 333.0,
-      "week52Low": 158.4,
-      "volume": 436100,
+      "week52Low": 175.6,
+      "volume": 345961,
       "history": [
-        {
-          "date": "2026-06-11",
-          "close": 174.49
-        },
         {
           "date": "2026-06-12",
           "close": 178.62
@@ -2038,28 +2026,28 @@
         {
           "date": "2026-07-31",
           "close": 227.4
+        },
+        {
+          "date": "2026-08-03",
+          "close": 228.04
         }
       ],
-      "updatedAt": "2026-08-03T11:36:14.718325"
+      "updatedAt": "2026-08-04T02:45:36.558071"
     },
     "VTI": {
       "symbol": "VTI",
       "name": "VTI",
       "currency": "USD",
-      "price": 368.21,
-      "change": 1.94,
-      "changePct": 0.53,
-      "prevClose": 366.27,
-      "weekChange": 0.93,
-      "monthChange": 1.36,
-      "week52High": 372.97,
-      "week52Low": 356.72,
-      "volume": 3195300,
+      "price": 373.84,
+      "change": 5.63,
+      "changePct": 1.53,
+      "prevClose": 368.21,
+      "weekChange": 2.37,
+      "monthChange": 2.34,
+      "week52High": 374.26,
+      "week52Low": 359.95,
+      "volume": 3245172,
       "history": [
-        {
-          "date": "2026-06-11",
-          "close": 363.26
-        },
         {
           "date": "2026-06-12",
           "close": 365.31
@@ -2195,28 +2183,28 @@
         {
           "date": "2026-07-31",
           "close": 368.21
+        },
+        {
+          "date": "2026-08-03",
+          "close": 373.84
         }
       ],
-      "updatedAt": "2026-08-03T11:36:14.995433"
+      "updatedAt": "2026-08-04T02:45:36.748363"
     },
     "VXUS": {
       "symbol": "VXUS",
       "name": "VXUS",
       "currency": "USD",
-      "price": 84.59,
-      "change": -0.18,
-      "changePct": -0.21,
-      "prevClose": 84.77,
-      "weekChange": 1.43,
-      "monthChange": -0.43,
+      "price": 85.02,
+      "change": 0.43,
+      "changePct": 0.51,
+      "prevClose": 84.59,
+      "weekChange": 1.47,
+      "monthChange": -0.32,
       "week52High": 88.62,
       "week52Low": 82.07,
-      "volume": 4103300,
+      "volume": 4852924,
       "history": [
-        {
-          "date": "2026-06-11",
-          "close": 84.96
-        },
         {
           "date": "2026-06-12",
           "close": 85.3
@@ -2352,28 +2340,28 @@
         {
           "date": "2026-07-31",
           "close": 84.59
+        },
+        {
+          "date": "2026-08-03",
+          "close": 85.02
         }
       ],
-      "updatedAt": "2026-08-03T11:36:15.149475"
+      "updatedAt": "2026-08-04T02:45:36.905503"
     },
     "COHR": {
       "symbol": "COHR",
       "name": "COHR",
       "currency": "USD",
-      "price": 262.89,
-      "change": 13.83,
-      "changePct": 5.55,
-      "prevClose": 249.06,
-      "weekChange": -6.91,
-      "monthChange": -27.69,
+      "price": 288.14,
+      "change": 25.25,
+      "changePct": 9.6,
+      "prevClose": 262.89,
+      "weekChange": 6.2,
+      "monthChange": -25.16,
       "week52High": 439.68,
       "week52Low": 220.68,
-      "volume": 5466600,
+      "volume": 5527804,
       "history": [
-        {
-          "date": "2026-06-11",
-          "close": 363.58
-        },
         {
           "date": "2026-06-12",
           "close": 385.03
@@ -2509,9 +2497,13 @@
         {
           "date": "2026-07-31",
           "close": 262.89
+        },
+        {
+          "date": "2026-08-03",
+          "close": 288.14
         }
       ],
-      "updatedAt": "2026-08-03T11:36:15.309507"
+      "updatedAt": "2026-08-04T02:45:37.127513"
     }
   }
 }
