@@ -1357,7 +1357,7 @@
 
     <!-- Detail Page (full screen overlay) -->
     <div id="detail-page" style="display:none;position:fixed;inset:0;z-index:90;overflow-y:auto;background:rgba(10,6,2,.96)">
-        <div style="max-width:900px;margin:0 auto;padding:24px 24px 60px">
+        <div class="dp-container">
             <button onclick="closeDetail()" style="display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:7px 16px;color:#fff;font-size:13px;font-family:inherit;cursor:pointer;margin-bottom:24px">
                 <i class="ti ti-arrow-left" style="font-size:15px"></i>
                 回書架
@@ -1375,7 +1375,7 @@
             </div>
 
             <!-- body grid -->
-            <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start">
+            <div class="dp-body-grid">
                 <!-- left: sections system -->
                 <div style="display:flex;flex-direction:column;min-height:400px">
                     <!-- section tab bar -->
@@ -1388,7 +1388,11 @@
                 </div>
 
                 <!-- right sidebar -->
-                <div style="display:flex;flex-direction:column;gap:16px">
+                <button id="dp-sidebar-toggle" class="dp-sidebar-toggle" onclick="toggleDpSidebar()">
+                    <i class="ti ti-adjustments"></i>
+                    更多工具與預覽
+                </button>
+                <div class="dp-sidebar" id="dp-sidebar">
                     <!-- file preview card -->
                     <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden">
                         <div id="dp-prevthumb" style="height:120px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;cursor:pointer;background:rgba(255,255,255,.04);transition:background .2s" onclick="dpOpenPreview()">
@@ -1501,6 +1505,167 @@
 
     .dp-claude-btn:hover i {
         color: rgba(201, 150, 58, .8)
+    }
+
+    .sec-tab-bar {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, .1);
+        padding-bottom: 12px
+    }
+
+    .sec-tab {
+        background: rgba(255, 255, 255, .06);
+        border: 1px solid rgba(255, 255, 255, .12);
+        border-radius: 14px;
+        padding: 6px 15px;
+        font-size: 13px;
+        font-family: 'Noto Serif TC', serif;
+        color: rgba(255, 255, 255, .6);
+        cursor: pointer;
+        transition: all .2s;
+        white-space: nowrap
+    }
+
+    .sec-tab:hover {
+        background: rgba(255, 255, 255, .12);
+        color: #fff
+    }
+
+    .sec-tab.active {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #fff;
+        font-weight: 600
+    }
+
+    .sec-toolbar {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 10px;
+        flex-wrap: wrap
+    }
+
+    .sec-tool-btn {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: rgba(255, 255, 255, .08);
+        border: 1px solid rgba(255, 255, 255, .15);
+        border-radius: 10px;
+        padding: 6px 13px;
+        font-size: 12px;
+        font-family: 'Noto Serif TC', serif;
+        color: rgba(255, 255, 255, .75);
+        cursor: pointer;
+        transition: all .2s
+    }
+
+    .sec-tool-btn:hover {
+        background: rgba(255, 255, 255, .2);
+        color: #fff
+    }
+
+    .sec-tool-btn.danger {
+        border-color: rgba(220, 80, 80, .35);
+        color: rgba(255, 190, 190, .9)
+    }
+
+    .sec-tool-btn.danger:hover {
+        background: rgba(220, 80, 80, .25)
+    }
+
+    .sec-editor {
+        width: 100%;
+        min-height: 320px;
+        background: rgba(255, 255, 255, .05);
+        border: 1px solid rgba(255, 255, 255, .15);
+        border-radius: 10px;
+        padding: 16px;
+        color: #fff;
+        font-size: 15px;
+        line-height: 1.85;
+        font-family: 'Noto Serif TC', 'Lora', serif;
+        outline: none;
+        resize: vertical;
+        transition: border-color .2s
+    }
+
+    .sec-editor:focus {
+        border-color: rgba(201, 150, 58, .5)
+    }
+
+    .sec-editor::placeholder {
+        color: rgba(255, 255, 255, .3);
+        font-style: italic
+    }
+
+    @media (max-width: 720px) {
+        .sec-editor {
+            min-height: 220px;
+            font-size: 16px
+        }
+    }
+
+    .dp-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 24px clamp(16px, 4vw, 48px) 60px
+    }
+
+    .dp-body-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 28px;
+        align-items: start
+    }
+
+    .dp-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 16px
+    }
+
+    .dp-sidebar-toggle {
+        display: none
+    }
+
+    @media (max-width: 860px) {
+        .dp-body-grid {
+            grid-template-columns: 1fr
+        }
+
+        .dp-sidebar {
+            display: none
+        }
+
+        .dp-sidebar.open {
+            display: flex
+        }
+
+        .dp-sidebar-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .15);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            margin-bottom: 16px
+        }
+
+        .dp-sidebar-toggle i {
+            font-size: 15px
+        }
     }
     </style>
 
@@ -2348,7 +2513,22 @@
 
         document.getElementById('detail-page').style.display = 'block';
         window.scrollTo(0, 0);
+        const sb = document.getElementById('dp-sidebar');
+        if (sb)
+            sb.classList.remove('open');
+        const sbBtn = document.getElementById('dp-sidebar-toggle');
+        if (sbBtn)
+            sbBtn.innerHTML = '<i class="ti ti-adjustments"></i>更多工具與預覽';
         document.getElementById('app').style.display = 'none';
+    }
+
+    function toggleDpSidebar() {
+        const sb = document.getElementById('dp-sidebar');
+        const btn = document.getElementById('dp-sidebar-toggle');
+        if (!sb || !btn)
+            return;
+        const isOpen = sb.classList.toggle('open');
+        btn.innerHTML = isOpen ? '<i class="ti ti-chevron-up"></i>收起工具與預覽' : '<i class="ti ti-adjustments"></i>更多工具與預覽';
     }
 
     function closeDetail() {
