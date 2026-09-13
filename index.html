@@ -1616,6 +1616,24 @@
         font-style: italic
     }
 
+    .sec-save-status {
+        font-size: 11px;
+        color: rgba(160, 220, 160, .75);
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, .05);
+        transition: all .2s
+    }
+
+    .sec-save-status.saving {
+        color: rgba(201, 150, 58, .85);
+        background: rgba(201, 150, 58, .12)
+    }
+
     @media (max-width: 720px) {
         .sec-editor {
             min-height: 50vh;
@@ -2042,7 +2060,7 @@
     </div>
 
     <div class="photo-credit" id="photo-credit"></div>
-    <div class="app-version" id="app-version" title="版本編號，用來確認網頁是否已更新到最新版">v2026.09.14.1</div>
+    <div class="app-version" id="app-version" title="版本編號，用來確認網頁是否已更新到最新版">v2026.09.14.2</div>
     <div class="toast" id="toast"></div>
 
     <script>
@@ -2647,19 +2665,23 @@
                 <button class="sec-tool-btn" onclick="startRenameSection()"><i class="ti ti-pencil" style="font-size:13px"></i>改名</button>
               </div>
               ${entry.sections.length > 1 ? `<button class="sec-tool-btn danger" onclick="deleteSection()"><i class="ti ti-trash" style="font-size:13px"></i>刪除此分類</button>` : ''}
+              <div style="flex:1"></div>
+              <span id="sec-save-status" class="sec-save-status">${sec.content ? '✓ 已儲存' : ''}</span>
             </div>
             <textarea class="sec-editor" id="sec-textarea" placeholder="在這裡記錄${sec.name}的內容…" oninput="autoSaveSection()">${sec.content || ''}</textarea>
-            <div style="font-size:11px;color:rgba(255,255,255,.25);margin-top:6px;text-align:right" id="sec-save-status">自動儲存中…</div>
           `;
     }
 
     let autoSaveTimer = null;
     function autoSaveSection() {
         clearTimeout(autoSaveTimer);
-        document.getElementById('sec-save-status').textContent = '編輯中…';
+        const st = document.getElementById('sec-save-status');
+        st.textContent = '編輯中…';
+        st.classList.add('saving');
         autoSaveTimer = setTimeout(() => {
             saveCurrentSectionContent();
-            document.getElementById('sec-save-status').textContent = '✓ 已儲存';
+            st.textContent = '✓ 已儲存';
+            st.classList.remove('saving');
         }, 800);
     }
 
