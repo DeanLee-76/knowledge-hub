@@ -964,6 +964,18 @@
         color: rgba(255, 255, 255, .3);
         z-index: 3;
         pointer-events: none
+    }
+
+    .app-version {
+        position: fixed;
+        bottom: 8px;
+        right: 12px;
+        font-size: 10px;
+        color: rgba(255, 255, 255, .35);
+        z-index: 3;
+        pointer-events: none;
+        font-family: 'SF Mono', Consolas, monospace;
+        letter-spacing: .03em
     }/* ── Inbox Editor ── */
     .ed-btn {
         background: rgba(255, 255, 255, .08);
@@ -2030,6 +2042,7 @@
     </div>
 
     <div class="photo-credit" id="photo-credit"></div>
+    <div class="app-version" id="app-version" title="版本編號，用來確認網頁是否已更新到最新版">v2026.09.14.1</div>
     <div class="toast" id="toast"></div>
 
     <script>
