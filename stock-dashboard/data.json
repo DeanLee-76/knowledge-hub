@@ -1,5 +1,5 @@
 {
-  "fetchedAt": "2026-11-19T06:31:54.852000",
+  "fetchedAt": "2026-11-19T12:18:29.341006",
   "data": {
     "2330.TW": {
       "symbol": "2330.TW",
@@ -156,7 +156,7 @@
           "close": 2100.0
         }
       ],
-      "updatedAt": "2026-11-19T06:31:55.177675"
+      "updatedAt": "2026-11-19T12:18:29.679768"
     },
     "2317.TW": {
       "symbol": "2317.TW",
@@ -313,7 +313,7 @@
           "close": 220.5
         }
       ],
-      "updatedAt": "2026-11-19T06:31:55.349799"
+      "updatedAt": "2026-11-19T12:18:29.834631"
     },
     "2886.TW": {
       "symbol": "2886.TW",
@@ -470,17 +470,17 @@
           "close": 53.4
         }
       ],
-      "updatedAt": "2026-11-19T06:31:55.496577"
+      "updatedAt": "2026-11-19T12:18:29.968137"
     },
     "0050.TW": {
       "symbol": "0050.TW",
       "name": "元大台灣50",
       "currency": "TWD",
       "price": 90.2,
-      "change": -3.8,
-      "changePct": -4.04,
-      "prevClose": 94.0,
-      "weekChange": -12.6,
+      "change": -3.9,
+      "changePct": -4.14,
+      "prevClose": 94.1,
+      "weekChange": -10.65,
       "monthChange": -19.5,
       "week52High": 116.6,
       "week52Low": 87.55,
@@ -619,21 +619,25 @@
           "close": 94.0
         },
         {
+          "date": "2026-11-18",
+          "close": 94.1
+        },
+        {
           "date": "2026-11-19",
           "close": 90.2
         }
       ],
-      "updatedAt": "2026-11-19T06:31:55.635572"
+      "updatedAt": "2026-11-19T12:18:30.091134"
     },
     "0056.TW": {
       "symbol": "0056.TW",
       "name": "元大高股息",
       "currency": "TWD",
       "price": 47.41,
-      "change": -2.51,
-      "changePct": -5.03,
-      "prevClose": 49.92,
-      "weekChange": -10.8,
+      "change": -2.07,
+      "changePct": -4.18,
+      "prevClose": 49.48,
+      "weekChange": -9.44,
       "monthChange": -14.24,
       "week52High": 57.95,
       "week52Low": 47.31,
@@ -772,11 +776,15 @@
           "close": 49.92
         },
         {
+          "date": "2026-11-18",
+          "close": 49.48
+        },
+        {
           "date": "2026-11-19",
           "close": 47.41
         }
       ],
-      "updatedAt": "2026-11-19T06:31:55.771517"
+      "updatedAt": "2026-11-19T12:18:30.252992"
     },
     "8462.TW": {
       "symbol": "8462.TW",
@@ -933,17 +941,17 @@
           "close": 151.0
         }
       ],
-      "updatedAt": "2026-11-19T06:31:55.914178"
+      "updatedAt": "2026-11-19T12:18:30.377807"
     },
     "00885.TW": {
       "symbol": "00885.TW",
       "name": "00885.TW",
       "currency": "TWD",
       "price": 17.58,
-      "change": -0.45,
-      "changePct": -2.5,
-      "prevClose": 18.03,
-      "weekChange": -3.3,
+      "change": -0.42,
+      "changePct": -2.33,
+      "prevClose": 18.0,
+      "weekChange": -2.98,
       "monthChange": -2.33,
       "week52High": 18.39,
       "week52Low": 17.46,
@@ -1082,21 +1090,25 @@
           "close": 18.03
         },
         {
+          "date": "2026-11-18",
+          "close": 18.0
+        },
+        {
           "date": "2026-11-19",
           "close": 17.58
         }
       ],
-      "updatedAt": "2026-11-19T06:31:56.031748"
+      "updatedAt": "2026-11-19T12:18:30.493530"
     },
     "009816.TW": {
       "symbol": "009816.TW",
       "name": "009816.TW",
       "currency": "TWD",
       "price": 13.5,
-      "change": -0.57,
-      "changePct": -4.05,
-      "prevClose": 14.07,
-      "weekChange": -12.05,
+      "change": -0.54,
+      "changePct": -3.85,
+      "prevClose": 14.04,
+      "weekChange": -10.18,
       "monthChange": -18.13,
       "week52High": 17.09,
       "week52Low": 13.2,
@@ -1235,11 +1247,15 @@
           "close": 14.07
         },
         {
+          "date": "2026-11-18",
+          "close": 14.04
+        },
+        {
           "date": "2026-11-19",
           "close": 13.5
         }
       ],
-      "updatedAt": "2026-11-19T06:31:56.147734"
+      "updatedAt": "2026-11-19T12:18:30.614273"
     },
     "AAPL": {
       "symbol": "AAPL",
@@ -1396,7 +1412,7 @@
           "close": 352.45
         }
       ],
-      "updatedAt": "2026-11-19T06:31:56.311647"
+      "updatedAt": "2026-11-19T12:18:30.780290"
     },
     "NVDA": {
       "symbol": "NVDA",
@@ -1553,7 +1569,7 @@
           "close": 150.96
         }
       ],
-      "updatedAt": "2026-11-19T06:31:56.439883"
+      "updatedAt": "2026-11-19T12:18:30.915779"
     },
     "TSLA": {
       "symbol": "TSLA",
@@ -1710,7 +1726,7 @@
           "close": 383.72
         }
       ],
-      "updatedAt": "2026-11-19T06:31:56.553773"
+      "updatedAt": "2026-11-19T12:18:31.049090"
     },
     "TSM": {
       "symbol": "TSM",
@@ -1867,7 +1883,7 @@
           "close": 362.62
         }
       ],
-      "updatedAt": "2026-11-19T06:31:56.702016"
+      "updatedAt": "2026-11-19T12:18:31.179147"
     },
     "LABU": {
       "symbol": "LABU",
@@ -2024,7 +2040,7 @@
           "close": 191.71
         }
       ],
-      "updatedAt": "2026-11-19T06:31:56.888451"
+      "updatedAt": "2026-11-19T12:18:31.335252"
     },
     "VTI": {
       "symbol": "VTI",
@@ -2181,7 +2197,7 @@
           "close": 359.48
         }
       ],
-      "updatedAt": "2026-11-19T06:31:57.041974"
+      "updatedAt": "2026-11-19T12:18:31.476290"
     },
     "VXUS": {
       "symbol": "VXUS",
@@ -2338,7 +2354,7 @@
           "close": 79.24
         }
       ],
-      "updatedAt": "2026-11-19T06:31:57.173015"
+      "updatedAt": "2026-11-19T12:18:31.599261"
     },
     "COHR": {
       "symbol": "COHR",
@@ -2495,7 +2511,7 @@
           "close": 212.84
         }
       ],
-      "updatedAt": "2026-11-19T06:31:57.291671"
+      "updatedAt": "2026-11-19T12:18:31.698741"
     }
   }
 }
